@@ -16,6 +16,23 @@ const getNextApiKey = () => {
 };
 
 const GeminiAPI = {
+    // Grammar correction for forum posts
+    async grammarCheck(postContent) {
+        const prompt = `You are an expert English editor. Please review the following forum post and return ONLY the corrected version with improved grammar, spelling, and clarity. Do not change the meaning or add extra text. Do not return any explanation, only the improved post content.
+
+Forum Post:
+"""
+${postContent}
+"""`;
+        try {
+            const response = await this.generateContent(prompt);
+            // Return the improved content directly
+            return response.trim();
+        } catch (error) {
+            console.error('Grammar check error:', error);
+            return postContent; // Fallback: return original if error
+        }
+    },
     async generateContent(prompt, retries = 3, timeout = 8000) {
         for (let attempt = 0; attempt < retries; attempt++) {
             try {

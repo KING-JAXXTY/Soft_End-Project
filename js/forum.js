@@ -135,6 +135,34 @@ function closeNewPostModal() {
 }
 
 // Handle new post submission
+// Grammar check button logic
+document.getElementById('grammarCheckBtn').addEventListener('click', async function() {
+    const textarea = document.getElementById('postContent');
+    const originalText = textarea.value.trim();
+    if (!originalText) {
+        notify.warning('Please enter some content to check.');
+        return;
+    }
+    const btn = this;
+    btn.disabled = true;
+    btn.textContent = 'Checking...';
+    try {
+        const corrected = await GeminiAPI.grammarCheck(originalText);
+        if (corrected && corrected !== originalText) {
+            // Show corrected text for review
+            const review = await notify.confirmText('Grammar Check Result', corrected, 'Replace original with corrected?');
+            if (review) {
+                textarea.value = corrected;
+            }
+        } else {
+            notify.info('No grammar improvements found.');
+        }
+    } catch (err) {
+        notify.error('Grammar check failed.');
+    }
+    btn.disabled = false;
+    btn.textContent = 'Check Grammar';
+});
 document.getElementById('newPostForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
