@@ -4839,15 +4839,16 @@ a[href^="mailto"] {
     }
 
     .message-form button[type="submit"] {
-        flex: 0 0 auto;
-        padding: 0.75rem 0.75rem !important;
-        font-size: 0.85rem !important;
-        min-width: 50px;
-        max-width: 60px;
-        height: 44px;
+        flex: 0 0 55px !important;
+        width: 55px !important;
+        padding: 0.5rem 0.25rem !important;
+        font-size: 0.8rem !important;
+        height: 44px !important;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        min-width: unset !important;
+        max-width: unset !important;
     }
 
     /* Keep page header horizontal on mobile */
