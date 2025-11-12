@@ -1,0 +1,9 @@
+node_modules
+.env
+*.log
+.git
+.vscode
+.DS_Store
+README.md
+START-SERVER.md
+CERTIFICATE_SYSTEM.md

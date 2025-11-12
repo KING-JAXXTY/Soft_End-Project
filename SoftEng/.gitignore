@@ -1,0 +1,14 @@
+node_modules/
+.env
+*.log
+npm-debug.log*
+.DS_Store
+.vscode/
+uploads/applications/*
+uploads/messages/*
+uploads/profiles/*
+uploads/scholarships/*
+!uploads/applications/.gitkeep
+!uploads/messages/.gitkeep
+!uploads/profiles/.gitkeep
+!uploads/scholarships/.gitkeep

@@ -53,8 +53,10 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-    console.log(`
+// Only start server if not in serverless environment
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+    app.listen(PORT, () => {
+        console.log(`
     ╔═══════════════════════════════════════════════════╗
     ║         TulongAral+ Server Running                ║
     ║                                                   ║
@@ -63,5 +65,9 @@ app.listen(PORT, () => {
     ║   🗄️  Database: MongoDB Connected                 ║
     ║                                                   ║
     ╚═══════════════════════════════════════════════════╝
-    `);
-});
+        `);
+    });
+}
+
+// Export for Vercel
+module.exports = app;
