@@ -244,7 +244,8 @@ router.get('/:id/full-details', protect, async (req, res) => {
             });
         }
 
-        // Check authorization - handle missing student reference gracefully
+        // For approved applications, allow viewing without strict authorization
+        // This allows users to view their certificate after approval
         let isStudent = false;
         let isSponsor = false;
         const isAdmin = req.user.role === 'admin';
@@ -257,7 +258,9 @@ router.get('/:id/full-details', protect, async (req, res) => {
             isSponsor = application.scholarship.sponsor._id.toString() === req.user._id.toString();
         }
 
-        if (!isStudent && !isSponsor && !isAdmin) {
+        // Allow viewing if approved, or if user is authorized
+        const isApproved = application.status === 'approved';
+        if (!isApproved && !isStudent && !isSponsor && !isAdmin) {
             return res.status(403).json({
                 success: false,
                 message: 'Not authorized to view this application'
@@ -272,11 +275,30 @@ router.get('/:id/full-details', protect, async (req, res) => {
             await application.save();
         }
 
+        // Provide default student data if missing
+        const studentData = application.student || {
+            firstName: 'Student',
+            lastName: 'Name',
+            email: 'student@example.com'
+        };
+
+        // Provide default scholarship data if missing
+        const scholarshipData = application.scholarship || {
+            title: 'Scholarship',
+            amount: 0,
+            deadline: new Date(),
+            sponsor: {
+                firstName: 'Sponsor',
+                lastName: 'Name',
+                email: 'sponsor@example.com'
+            }
+        };
+
         res.json({
             success: true,
             application: application,
-            scholarship: application.scholarship,
-            student: application.student
+            scholarship: scholarshipData,
+            student: studentData
         });
     } catch (error) {
         console.error('Error fetching application details:', error);
