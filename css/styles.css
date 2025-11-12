@@ -2029,6 +2029,17 @@ a[href^="mailto"] {
 }
 
 @media (max-width: 480px) {
+    .btn-delete {
+        width: 100%;
+        font-size: 1rem;
+        padding: 0.75rem 0.5rem;
+        white-space: nowrap;
+        min-width: 64px;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-top: 1rem;
+    }
     body {
         overflow-x: hidden;
         font-size: 14px;

@@ -310,6 +310,7 @@
                         <button type="submit" id="saveProfileBtn" class="btn-primary" style="display: none;">Save Changes</button>
                         <button type="button" id="cancelEditBtn" class="btn-secondary" style="display: none;">Cancel</button>
                         <button type="button" onclick="goBack()" class="btn-secondary" id="backBtn">Back</button>
+                        <button type="button" id="deleteAccountBtn" class="btn-delete" style="margin-top:1rem;width:100%;" onclick="deleteAccount()">Delete Account</button>
                     </div>
                 </form>
             </div>
@@ -320,5 +321,31 @@
     <script src="js/api.js"></script>
     <script src="js/avatars.js"></script>
     <script src="js/profile.js"></script>
+<script>
+function deleteAccount() {
+    if (!confirm('Are you sure you want to delete your account? This action cannot be undone.')) return;
+    const userId = window.currentUserId || document.getElementById('profileEmail').getAttribute('data-userid');
+    if (!userId) { alert('User ID not found.'); return; }
+    document.getElementById('deleteAccountBtn').disabled = true;
+    document.getElementById('deleteAccountBtn').innerText = 'Deleting...';
+    fetch(`/api/users/${userId}`, { method: 'DELETE' })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                alert('Account deleted successfully.');
+                logout();
+            } else {
+                alert('Failed to delete account: ' + (data.message || 'Unknown error'));
+                document.getElementById('deleteAccountBtn').disabled = false;
+                document.getElementById('deleteAccountBtn').innerText = 'Delete Account';
+            }
+        })
+        .catch(err => {
+            alert('Error deleting account.');
+            document.getElementById('deleteAccountBtn').disabled = false;
+            document.getElementById('deleteAccountBtn').innerText = 'Delete Account';
+        });
+}
+</script>
 </body>
 </html>
