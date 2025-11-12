@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Messages - TulongAral+</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav class="main-navbar">
+        <div class="logo">
+            <h1>TulongAral+</h1>
+        </div>
+        <div class="nav-links" id="navLinks">
+            <!-- Will be populated based on user role -->
+        </div>
+        <div class="nav-user">
+            <span id="userName">User</span>
+            <button onclick="logout()" class="btn-secondary btn-sm">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <!-- Removed Messages header and chat description as requested -->
+        </div>
+
+        <div class="messages-container">
+            <!-- Conversations List -->
+            <div class="conversations-panel">
+                <div class="conversations-header">
+                    <h3>Conversations</h3>
+                </div>
+                <div id="conversationsList" class="conversations-list">
+                    <p class="loading">Loading conversations...</p>
+                </div>
+            </div>
+
+            <!-- Chat Window -->
+            <div class="chat-panel">
+                <div id="chatPlaceholder" class="chat-placeholder">
+                    <div class="placeholder-content">
+                        <h2>💬</h2>
+                        <p>Select a conversation to start messaging</p>
+                    </div>
+                </div>
+
+                <div id="chatWindow" class="chat-window" style="display: none;">
+                    <!-- Chat Header -->
+                    <div class="chat-header">
+                        <button id="mobileBackButton" class="mobile-back-button" title="Back to conversations">
+                            Back
+                        </button>
+                        <div class="chat-user-info">
+                            <img id="chatUserAvatar" src="" alt="Avatar" class="chat-avatar">
+                            <div>
+                                <h3 id="chatUserName"></h3>
+                                <span id="chatUserRole" class="user-role-badge"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Messages Area -->
+                    <div id="messagesArea" class="messages-area">
+                        <!-- Messages will be loaded here -->
+                    </div>
+
+                    <!-- Message Input -->
+                    <div class="message-input-container">
+                        <form id="messageForm" class="message-form">
+                            <input type="file" id="attachmentInput" style="display: none;" accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.zip">
+                            <button type="button" onclick="document.getElementById('attachmentInput').click()" class="btn-icon" title="Attach file">
+                                📎
+                            </button>
+                            <input 
+                                type="text" 
+                                id="messageInput" 
+                                placeholder="Type a message..." 
+                                autocomplete="off"
+                            >
+                            <button type="submit" class="btn-primary">Send</button>
+                        </form>
+                        <div id="attachmentPreview" class="attachment-preview" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/notifications.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/avatars.js"></script>
+    <script src="js/gemini-api.js"></script>
+    <script src="js/messages.js"></script>
+    
+    <script>
+        console.log(' Debug script loaded');
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log(' Page loaded - checking messages area...');
+            const area = document.getElementById('messagesArea');
+            console.log('   messagesArea element:', area);
+            console.log('   innerHTML:', area ? area.innerHTML.substring(0, 100) : 'NOT FOUND');
+        });
+    </script>
+    <script>console.log("DEBUG: Page loaded");</script>`n</body>
+</html>
+
+

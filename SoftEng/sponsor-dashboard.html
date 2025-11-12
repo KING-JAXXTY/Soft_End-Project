@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sponsor Dashboard - TulongAral+</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav class="main-navbar">
+        <div class="logo">
+            <h1>TulongAral+</h1>
+        </div>
+        <div class="nav-links">
+            <a href="sponsor-dashboard.html" class="active">Dashboard</a>
+            <a href="messages.html">Messages</a>
+            <a href="forum.html">Community Forum</a>
+            <a href="profile.html">Profile</a>
+        </div>
+        <div class="nav-user">
+            <span id="userName">Sponsor</span>
+            <button onclick="logout()" class="btn-secondary btn-sm">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Sponsor Dashboard</h1>
+            <p>Manage your scholarship programs</p>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="window.location.href='add-scholarship.html'" class="btn-primary">Add New Scholarship</button>
+                <button onclick="refreshDashboard()" class="btn-secondary">🔄 Refresh</button>
+            </div>
+        </div>
+
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <h3 id="totalScholarships">0</h3>
+                <p>Total Scholarships</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="totalApplicants">0</h3>
+                <p>Total Applicants</p>
+            </div>
+            <div class="stat-card warning">
+                <h3 id="pendingReviews">0</h3>
+                <p>Pending Reviews</p>
+            </div>
+            <div class="stat-card success">
+                <h3 id="approvedCount">0</h3>
+                <p>Approved</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>My Scholarship Programs</h2>
+            <div id="scholarshipsList" class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Type</th>
+                            <th>Available Slots</th>
+                            <th>Deadline</th>
+                            <th>Applicants</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scholarshipsTableBody">
+                        <!-- Scholarships will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>Recent Applications</h2>
+                <select id="statusFilter" onchange="filterApplications()">
+                    <option value="">All Status</option>
+                    <option value="pending">Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                </select>
+            </div>
+            <div id="applicationsList" class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Scholarship</th>
+                            <th>Application Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="applicationsTableBody">
+                        <!-- Applications will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Review Modal -->
+    <div id="reviewModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeReviewModal()">&times;</span>
+            <h2>Review Application</h2>
+            <div id="applicationDetail"></div>
+            <div class="form-group">
+                <label>Decision</label>
+                <select id="reviewStatus">
+                    <option value="approved">Approve</option>
+                    <option value="rejected">Reject</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Notes</label>
+                <textarea id="reviewNotes" rows="4" placeholder="Add notes or feedback..."></textarea>
+            </div>
+            <div class="modal-actions">
+                <button onclick="submitReview()" class="btn-primary">Submit</button>
+                <button onclick="closeReviewModal()" class="btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/notifications.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/sponsor.js"></script>
+</body>
+</html>

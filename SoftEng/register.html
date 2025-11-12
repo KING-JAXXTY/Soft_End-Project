@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Register - TulongAral+</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="auth-page">
+        <div class="auth-container register-container">
+            <div class="auth-header">
+                <h1>TulongAral+</h1>
+                <h2>Create Account</h2>
+                <p>Join our scholarship community</p>
+            </div>
+
+            <form id="registerForm" class="auth-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="firstName" required placeholder="Enter first name">
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" required placeholder="Enter last name">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required placeholder="Enter your email">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required placeholder="Create a password" minlength="6">
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password">
+                </div>
+
+                <div class="form-group">
+                    <label for="contactNumber">Contact Number</label>
+                    <input type="tel" id="contactNumber" name="contactNumber" required placeholder="09XXXXXXXXX">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="region">Region</label>
+                        <select id="region" name="region" required>
+                            <option value="" selected>Select Region</option>
+                            <option value="National Capital Region">National Capital Region</option>
+                            <option value="Ilocos Region">Ilocos Region</option>
+                            <option value="Cagayan Valley">Cagayan Valley</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="province">City/Municipality</label>
+                        <select id="province" name="province" required>
+                            <option value="" selected>Select City/Municipality</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="role">Register As</label>
+                    <select id="role" name="role" required>
+                        <option value="">Select Role</option>
+                        <option value="student">Student</option>
+                        <option value="sponsor">Sponsor</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Choose Your Avatar</label>
+                    <div class="avatar-selection imgs">
+                        <div class="avatar-option img-wrap" data-avatar="avatar1">
+                            <img src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortFlat&accessoriesType=Round&hairColor=Blonde&facialHairType=BeardLight&facialHairColor=Auburn&clotheType=ShirtVNeck&clotheColor=Black&eyeType=Squint&eyebrowType=Default&mouthType=Smile&skinColor=Light" />
+                        </div>
+                        <div class="avatar-option img-wrap" data-avatar="avatar2">
+                            <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairMiaWallace&accessoriesType=Blank&hairColor=Platinum&facialHairType=Blank&clotheType=ShirtScoopNeck&clotheColor=Gray02&eyeType=Default&eyebrowType=Default&mouthType=Serious&skinColor=Light" />
+                        </div>
+                        <div class="avatar-option img-wrap" data-avatar="avatar3">
+                            <img src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairDreads01&accessoriesType=Blank&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=Gray02&eyeType=Side&eyebrowType=Default&mouthType=Twinkle&skinColor=Black" />
+                        </div>
+                        <div class="avatar-option img-wrap" data-avatar="avatar4">
+                            <img src="https://avataaars.io/?avatarStyle=Transparent&topType=Hijab&accessoriesType=Round&hatColor=Blue03&clotheType=ShirtVNeck&clotheColor=Gray02&eyeType=Squint&eyebrowType=Default&mouthType=Twinkle&skinColor=Brown" />
+                        </div>
+                        <div class="avatar-option img-wrap" data-avatar="avatar5">
+                            <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairBun&accessoriesType=Prescription02&hairColor=PastelPink&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light" />
+                        </div>
+                        <div class="avatar-option img-wrap selected" data-avatar="avatar6">
+                            <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairNotTooLong&accessoriesType=Blank&hairColor=SilverGray&facialHairType=Blank&clotheType=Hoodie&clotheColor=Heather&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Serious&skinColor=DarkBrown" />
+                        </div>
+                        <div class="avatar-option img-wrap" data-avatar="avatar7">
+                            <img src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairTheCaesarSidePart&accessoriesType=Blank&hairColor=Red&facialHairType=BeardMedium&facialHairColor=Black&clotheType=BlazerSweater&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Twinkle&skinColor=Tanned" />
+                        </div>
+                        <div class="avatar-option img-wrap" data-avatar="avatar8">
+                            <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairShavedSides&accessoriesType=Blank&facialHairType=BeardMedium&facialHairColor=BlondeGolden&clotheType=ShirtScoopNeck&clotheColor=Gray02&eyeType=Default&eyebrowType=UpDown&mouthType=Serious&skinColor=Pale" />
+                        </div>
+                        <div class="avatar-option img-wrap" data-avatar="avatar9">
+                            <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairFroBand&accessoriesType=Blank&hairColor=Black&facialHairType=Blank&clotheType=ShirtScoopNeck&clotheColor=Gray02&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Twinkle&skinColor=Black" />
+                        </div>
+                        <div class="avatar-option img-wrap" data-avatar="avatar10">
+                            <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairDreads&accessoriesType=Blank&hairColor=Brown&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Smile&skinColor=Brown" />
+                        </div>
+                        <div class="avatar-option img-wrap" data-avatar="avatar11">
+                            <img src="https://avataaars.io/?avatarStyle=Transparent&topType=NoHair&accessoriesType=Blank&facialHairType=BeardMajestic&facialHairColor=Red&clotheType=CollarSweater&clotheColor=Gray02&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Serious&skinColor=Pale" />
+                        </div>
+                        <div class="avatar-option img-wrap" data-avatar="avatar12">
+                            <img src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortFlat&accessoriesType=Blank&hairColor=BrownDark&facialHairType=BeardMedium&facialHairColor=BrownDark&clotheType=ShirtCrewNeck&clotheColor=Black&eyeType=Side&eyebrowType=Default&mouthType=Eating&skinColor=DarkBrown" />
+                        </div>
+                    </div>
+                    <input type="hidden" id="avatar" name="avatar" value="avatar6">
+                </div>
+
+                <div id="errorMessage" class="error-message" style="display: none;"></div>
+
+                <button type="submit" class="btn-primary btn-full">Register</button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Already have an account? <a href="login.html" class="link">Login here</a></p>
+                <button onclick="window.location.href='index.html'" class="btn-text">Back to Home</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/notifications.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

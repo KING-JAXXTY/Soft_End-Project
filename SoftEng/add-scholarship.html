@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Add Scholarship - TulongAral+</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+    <nav class="main-navbar">
+        <div class="logo">
+            <h1>TulongAral+</h1>
+        </div>
+        <div class="nav-links">
+            <a href="sponsor-dashboard.html">Dashboard</a>
+            <a href="forum.html">Community Forum</a>
+            <a href="profile.html">Profile</a>
+        </div>
+        <div class="nav-user">
+            <span id="userName">Sponsor</span>
+            <button onclick="logout()" class="btn-secondary btn-sm">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Add New Scholarship</h1>
+            <p>Create a scholarship program for students</p>
+        </div>
+
+        <form id="addScholarshipForm" class="form-container">
+            <div class="form-section">
+                <h3>Scholarship Information</h3>
+
+                <div class="form-group">
+                    <label for="title">Scholarship Title *</label>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="text" id="title" name="title" required placeholder="e.g., Engineering Excellence Scholarship 2025" style="flex: 1;">
+                        <button type="button" onclick="fixGrammar('title')" class="btn-secondary" style="white-space: nowrap;">Fix Grammar</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description *</label>
+                    <textarea id="description" name="description" rows="4" required placeholder="Describe the scholarship program and its purpose..."></textarea>
+                    <button type="button" onclick="fixGrammar('description')" class="btn-secondary" style="margin-top: 0.5rem;">Fix Grammar</button>
+                </div>
+
+                <div class="form-group">
+                    <label for="eligibility">Eligibility Requirements *</label>
+                    <textarea id="eligibility" name="eligibility" rows="4" required placeholder="List the qualifications: GPA requirements, course, grade level, income level, etc."></textarea>
+                    <button type="button" onclick="fixGrammar('eligibility')" class="btn-secondary" style="margin-top: 0.5rem;">Fix Grammar</button>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="scholarshipType">Scholarship Type *</label>
+                        <select id="scholarshipType" name="scholarshipType" required>
+                            <option value="">Select Type</option>
+                            <option value="Full Scholarship">Full Scholarship</option>
+                            <option value="Partial Scholarship">Partial Scholarship</option>
+                            <option value="Allowance">Allowance</option>
+                            <option value="Grant">Grant</option>
+                            <option value="Financial Aid">Financial Aid</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="slots">Available Slots *</label>
+                        <input type="number" id="slots" name="slots" required min="1" placeholder="Number of slots">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="amount">Scholarship Amount (₱)</label>
+                        <input type="number" id="amount" name="amount" min="0" step="0.01" placeholder="e.g., 50000">
+                        <small class="form-help">Leave blank if amount varies or not disclosed</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="deadline">Application Deadline *</label>
+                        <input type="date" id="deadline" name="deadline" required>
+                        <small class="form-help">Scholarship will be automatically archived after this date</small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="benefits">Benefits Covered</label>
+                    <textarea id="benefits" name="benefits" rows="2" placeholder="e.g., Tuition Fee, Books, Living Allowance, Transportation"></textarea>
+                    <button type="button" onclick="fixGrammar('benefits')" class="btn-secondary" style="margin-top: 0.5rem;">Fix Grammar</button>
+                    <small class="form-help">What expenses does this scholarship cover?</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="selectionCriteria">Selection Criteria</label>
+                    <textarea id="selectionCriteria" name="selectionCriteria" rows="3" placeholder="e.g., Academic merit, Financial need, Interview performance, Essay quality"></textarea>
+                    <button type="button" onclick="fixGrammar('selectionCriteria')" class="btn-secondary" style="margin-top: 0.5rem;">Fix Grammar</button>
+                    <small class="form-help">How will recipients be selected?</small>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="contactEmail">Contact Email</label>
+                        <input type="email" id="contactEmail" name="contactEmail" placeholder="scholarships@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="contactPhone">Contact Phone</label>
+                        <input type="tel" id="contactPhone" name="contactPhone" placeholder="+63 XXX XXX XXXX">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="applicationLink">Application Link</label>
+                    <input type="url" id="applicationLink" name="applicationLink" placeholder="https://example.com/apply">
+                    <small class="form-help">External application portal (optional)</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="renewalPolicy">Renewal Policy</label>
+                    <textarea id="renewalPolicy" name="renewalPolicy" rows="2" placeholder="e.g., Renewable each year with GPA of 3.0 or higher"></textarea>
+                    <button type="button" onclick="fixGrammar('renewalPolicy')" class="btn-secondary" style="margin-top: 0.5rem;">Fix Grammar</button>
+                    <small class="form-help">Can students renew this scholarship?</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="documentsRequired">Documents Required *</label>
+                    <textarea id="documentsRequired" name="documentsRequired" rows="3" required placeholder="List required documents (e.g., Transcript of Records, Certificate of Good Moral Character, ID, Recommendation Letter)"></textarea>
+                    <button type="button" onclick="fixGrammar('documentsRequired')" class="btn-secondary" style="margin-top: 0.5rem;">Fix Grammar</button>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>Location Information</h3>
+                
+                <div class="form-group">
+                    <label for="scholarshipRegion">Region *</label>
+                    <select id="scholarshipRegion" name="scholarshipRegion" required>
+                        <option value="">Select Region</option>
+                        <option value="Ilocos Region">Ilocos Region</option>
+                        <option value="Cagayan Valley">Cagayan Valley</option>
+                        <option value="National Capital Region">National Capital Region</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="affiliatedInstitution">Affiliated Institution *</label>
+                    <select id="affiliatedInstitution" name="affiliatedInstitution" required>
+                        <option value="">Select Region First</option>
+                    </select>
+                    <p class="form-help">Select your affiliated institution to automatically place the marker on the map. You can also click directly on the map to set a custom location.</p>
+                </div>
+                
+                <div id="map" style="height: 400px; width: 100%; border-radius: 8px; margin-top: 10px;"></div>
+                <input type="hidden" id="latitude" name="latitude">
+                <input type="hidden" id="longitude" name="longitude">
+                <p id="coordinates" class="form-help"></p>
+            </div>
+
+            <div class="form-section">
+                <h3>File Attachments</h3>
+                <p class="form-help">Upload scholarship guidelines, posters, or additional documents (PDF, DOC, DOCX, PNG, JPG - Max 10MB per file)</p>
+                <div class="form-group">
+                    <label for="files" class="file-upload-label">
+                        <span class="file-upload-icon">📎</span>
+                        <span>Choose Files</span>
+                        <input type="file" id="files" name="files" multiple accept=".pdf,.doc,.docx,.png,.jpg,.jpeg">
+                    </label>
+                    <div id="filesList" class="files-list"></div>
+                </div>
+            </div>
+
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">Add Scholarship</button>
+                <button type="button" onclick="window.location.href='sponsor-dashboard.html'" class="btn-secondary">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/institution-coordinates.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/gemini-api.js"></script>
+    <script src="js/add-scholarship.js"></script>
+</body>
+</html>

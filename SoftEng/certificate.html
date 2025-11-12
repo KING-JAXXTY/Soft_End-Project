@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scholarship Certificate - TulongAral+</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .print-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .print-button {
+                display: none;
+            }
+            @page {
+                size: landscape;
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button onclick="window.print()" class="btn-primary print-button">Print Certificate</button>
+    
+    <div id="certificateContainer">
+        <p style="color: white; text-align: center;">Loading certificate...</p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/certificate.js"></script>
+    <script>
+        // Get application ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const applicationId = urlParams.get('id');
+        
+        if (!applicationId) {
+            document.getElementById('certificateContainer').innerHTML = 
+                '<p style="color: white; text-align: center;">No certificate ID provided</p>';
+        } else {
+            // Load certificate
+            (async function() {
+                try {
+                    const token = localStorage.getItem('authToken');
+                    const response = await fetch(`http://localhost:5000/api/applications/${applicationId}/full-details`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to load certificate');
+                    }
+
+                    const data = await response.json();
+                    const { application, scholarship, student } = data;
+                    
+                    if (application.status !== 'approved') {
+                        throw new Error('Application not approved');
+                    }
+                    
+                    const certificate = await generateCertificate(application, scholarship, student);
+                    document.getElementById('certificateContainer').innerHTML = '';
+                    document.getElementById('certificateContainer').appendChild(certificate);
+                } catch (error) {
+                    console.error('Error loading certificate:', error);
+                    document.getElementById('certificateContainer').innerHTML = 
+                        '<p style="color: white; text-align: center;">Error loading certificate. Please check the URL or contact support.</p>';
+                }
+            })();
+        }
+    </script>
+</body>
+</html>

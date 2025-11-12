@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Profile - TulongAral+</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav class="main-navbar">
+        <div class="logo">
+            <h1>TulongAral+</h1>
+        </div>
+        <div class="nav-links" id="navLinks">
+            <!-- Dynamic nav links based on role -->
+        </div>
+        <div class="nav-user">
+            <span id="userName">User</span>
+            <button onclick="logout()" class="btn-secondary btn-sm">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>My Profile</h1>
+            <p>Manage your account information</p>
+        </div>
+
+        <div class="profile-container">
+            <div class="profile-sidebar">
+                <div class="profile-picture">
+                    <div id="profileAvatar" class="profile-avatar">
+                        <img id="profileAvatarImg" src="" alt="Profile Avatar" />
+                    </div>
+                </div>
+                <div class="profile-info">
+                    <h3 id="profileName">User Name</h3>
+                    <p id="profileRole">Role</p>
+                    <p id="profileEmail">email@example.com</p>
+                </div>
+            </div>
+
+            <div class="profile-main">
+                <form id="profileForm" class="form-container">
+                    <div class="form-section">
+                        <h3>Personal Information</h3>
+                        
+                        <div class="form-group">
+                            <label>Profile Avatar</label>
+                            <button type="button" id="changeAvatarBtn" class="btn-secondary">Change Avatar</button>
+                            <div id="avatarSelectionContainer" class="avatar-selection imgs" style="display: none; margin-top: 1rem;">
+                                <div class="avatar-option img-wrap" data-avatar="avatar1">
+                                    <img src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortFlat&accessoriesType=Round&hairColor=Blonde&facialHairType=BeardLight&facialHairColor=Auburn&clotheType=ShirtVNeck&clotheColor=Black&eyeType=Squint&eyebrowType=Default&mouthType=Smile&skinColor=Light" />
+                                </div>
+                                <div class="avatar-option img-wrap" data-avatar="avatar2">
+                                    <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairMiaWallace&accessoriesType=Blank&hairColor=Platinum&facialHairType=Blank&clotheType=ShirtScoopNeck&clotheColor=Gray02&eyeType=Default&eyebrowType=Default&mouthType=Serious&skinColor=Light" />
+                                </div>
+                                <div class="avatar-option img-wrap" data-avatar="avatar3">
+                                    <img src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairDreads01&accessoriesType=Blank&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=Gray02&eyeType=Side&eyebrowType=Default&mouthType=Twinkle&skinColor=Black" />
+                                </div>
+                                <div class="avatar-option img-wrap" data-avatar="avatar4">
+                                    <img src="https://avataaars.io/?avatarStyle=Transparent&topType=Hijab&accessoriesType=Round&hatColor=Blue03&clotheType=ShirtVNeck&clotheColor=Gray02&eyeType=Squint&eyebrowType=Default&mouthType=Twinkle&skinColor=Brown" />
+                                </div>
+                                <div class="avatar-option img-wrap" data-avatar="avatar5">
+                                    <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairBun&accessoriesType=Prescription02&hairColor=PastelPink&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light" />
+                                </div>
+                                <div class="avatar-option img-wrap" data-avatar="avatar6">
+                                    <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairNotTooLong&accessoriesType=Blank&hairColor=SilverGray&facialHairType=Blank&clotheType=Hoodie&clotheColor=Heather&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Serious&skinColor=DarkBrown" />
+                                </div>
+                                <div class="avatar-option img-wrap" data-avatar="avatar7">
+                                    <img src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairTheCaesarSidePart&accessoriesType=Blank&hairColor=Red&facialHairType=BeardMedium&facialHairColor=Black&clotheType=BlazerSweater&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Twinkle&skinColor=Tanned" />
+                                </div>
+                                <div class="avatar-option img-wrap" data-avatar="avatar8">
+                                    <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairShavedSides&accessoriesType=Blank&facialHairType=BeardMedium&facialHairColor=BlondeGolden&clotheType=ShirtScoopNeck&clotheColor=Gray02&eyeType=Default&eyebrowType=UpDown&mouthType=Serious&skinColor=Pale" />
+                                </div>
+                                <div class="avatar-option img-wrap" data-avatar="avatar9">
+                                    <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairFroBand&accessoriesType=Blank&hairColor=Black&facialHairType=Blank&clotheType=ShirtScoopNeck&clotheColor=Gray02&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Twinkle&skinColor=Black" />
+                                </div>
+                                <div class="avatar-option img-wrap" data-avatar="avatar10">
+                                    <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairDreads&accessoriesType=Blank&hairColor=Brown&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Smile&skinColor=Brown" />
+                                </div>
+                                <div class="avatar-option img-wrap" data-avatar="avatar11">
+                                    <img src="https://avataaars.io/?avatarStyle=Transparent&topType=NoHair&accessoriesType=Blank&facialHairType=BeardMajestic&facialHairColor=Red&clotheType=CollarSweater&clotheColor=Gray02&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Serious&skinColor=Pale" />
+                                </div>
+                                <div class="avatar-option img-wrap" data-avatar="avatar12">
+                                    <img src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortFlat&accessoriesType=Blank&hairColor=BrownDark&facialHairType=BeardMedium&facialHairColor=BrownDark&clotheType=ShirtCrewNeck&clotheColor=Black&eyeType=Side&eyebrowType=Default&mouthType=Eating&skinColor=DarkBrown" />
+                                </div>
+                            </div>
+                            <input type="hidden" id="avatar" name="avatar" value="avatar1">
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" id="firstName" name="firstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" id="lastName" name="lastName" required>
+                            </div>
+                        </div>
+
+                        <!-- Personal Information (Hidden for Admin) -->
+                        <div id="personalInfoFields">
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" name="email" required disabled>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contactNumber">Contact Number</label>
+                                <input type="tel" id="contactNumber" name="contactNumber" required>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="region">Region</label>
+                                    <select id="region" name="region" required>
+                                        <option value="" selected>Select Region</option>
+                                        <option value="National Capital Region">National Capital Region</option>
+                                        <option value="Ilocos Region">Ilocos Region</option>
+                                        <option value="Cagayan Valley">Cagayan Valley</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="province">City/Municipality</label>
+                                    <select id="province" name="province" required>
+                                        <option value="" selected>Select City/Municipality</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">Bio (max 200 words)</label>
+                            <textarea id="address" name="address" rows="5" placeholder="Tell us about yourself..."></textarea>
+                            <small id="bioWordCount" style="color: #666; font-size: 0.9rem;">0 / 200 words</small>
+                        </div>
+                    </div>
+
+                    <!-- Student-specific fields -->
+                    <div id="studentFields" style="display: none;">
+                        <div class="form-section">
+                            <h3>Academic Information</h3>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="gpa">GPA</label>
+                                    <input type="number" id="gpa" name="gpa" step="0.01" min="0" max="5">
+                                </div>
+                                <div class="form-group">
+                                    <label for="yearLevel">Year Level</label>
+                                    <select id="yearLevel" name="yearLevel">
+                                        <option value="">Select Year</option>
+                                        <option value="1st Year">1st Year</option>
+                                        <option value="2nd Year">2nd Year</option>
+                                        <option value="3rd Year">3rd Year</option>
+                                        <option value="4th Year">4th Year</option>
+                                        <option value="Graduate">Graduate</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="course">Course/Program</label>
+                                <select id="course" name="course">
+                                    <option value="">Select Course/Program</option>
+                                    <optgroup label="Education">
+                                        <option value="Bachelor of Elementary Education">Bachelor of Elementary Education</option>
+                                        <option value="Bachelor of Secondary Education">Bachelor of Secondary Education</option>
+                                        <option value="Bachelor of Early Childhood Education">Bachelor of Early Childhood Education</option>
+                                        <option value="Bachelor of Special Needs Education">Bachelor of Special Needs Education</option>
+                                        <option value="Bachelor of Technical Teacher Education">Bachelor of Technical Teacher Education</option>
+                                        <option value="BS in Industrial Education">BS in Industrial Education</option>
+                                    </optgroup>
+                                    <optgroup label="Engineering & Technology">
+                                        <option value="BS in Civil Engineering">BS in Civil Engineering</option>
+                                        <option value="BS in Electrical Engineering">BS in Electrical Engineering</option>
+                                        <option value="BS in Mechanical Engineering">BS in Mechanical Engineering</option>
+                                        <option value="BS in Electronics Engineering">BS in Electronics Engineering</option>
+                                        <option value="BS in Computer Engineering">BS in Computer Engineering</option>
+                                        <option value="BS in Industrial Engineering">BS in Industrial Engineering</option>
+                                        <option value="BS in Chemical Engineering">BS in Chemical Engineering</option>
+                                        <option value="BS in Geodetic Engineering">BS in Geodetic Engineering</option>
+                                        <option value="BS in Mining Engineering">BS in Mining Engineering</option>
+                                        <option value="BS in Architecture">BS in Architecture</option>
+                                        <option value="BS in Information Technology">BS in Information Technology</option>
+                                        <option value="BS in Computer Science">BS in Computer Science</option>
+                                        <option value="BS in Information Systems">BS in Information Systems</option>
+                                    </optgroup>
+                                    <optgroup label="Science & Health">
+                                        <option value="BS in Biology">BS in Biology</option>
+                                        <option value="BS in Chemistry">BS in Chemistry</option>
+                                        <option value="BS in Physics">BS in Physics</option>
+                                        <option value="BS in Environmental Science">BS in Environmental Science</option>
+                                        <option value="BS in Nursing">BS in Nursing</option>
+                                        <option value="BS in Pharmacy">BS in Pharmacy</option>
+                                        <option value="BS in Medical Technology">BS in Medical Technology</option>
+                                        <option value="BS in Radiologic Technology">BS in Radiologic Technology</option>
+                                        <option value="BS in Nutrition and Dietetics">BS in Nutrition and Dietetics</option>
+                                        <option value="BS in Physical Therapy">BS in Physical Therapy</option>
+                                        <option value="BS in Occupational Therapy">BS in Occupational Therapy</option>
+                                        <option value="BS in Psychology">BS in Psychology</option>
+                                    </optgroup>
+                                    <optgroup label="Business & Management">
+                                        <option value="BS in Business Administration">BS in Business Administration</option>
+                                        <option value="BS in Accountancy">BS in Accountancy</option>
+                                        <option value="BS in Management Accounting">BS in Management Accounting</option>
+                                        <option value="BS in Marketing">BS in Marketing</option>
+                                        <option value="BS in Entrepreneurship">BS in Entrepreneurship</option>
+                                        <option value="BS in Office Administration">BS in Office Administration</option>
+                                        <option value="BS in Customs Administration">BS in Customs Administration</option>
+                                        <option value="BS in Real Estate Management">BS in Real Estate Management</option>
+                                        <option value="BS in Tourism Management">BS in Tourism Management</option>
+                                        <option value="BS in Hospitality Management">BS in Hospitality Management</option>
+                                        <option value="BS in Hotel and Restaurant Management">BS in Hotel and Restaurant Management</option>
+                                    </optgroup>
+                                    <optgroup label="Law & Social Sciences">
+                                        <option value="Bachelor of Laws (LLB)">Bachelor of Laws (LLB)</option>
+                                        <option value="BA in Political Science">BA in Political Science</option>
+                                        <option value="BA in Sociology">BA in Sociology</option>
+                                        <option value="BA in Public Administration">BA in Public Administration</option>
+                                        <option value="BA in International Studies">BA in International Studies</option>
+                                        <option value="BA in Social Work">BA in Social Work</option>
+                                        <option value="BA in Philosophy">BA in Philosophy</option>
+                                    </optgroup>
+                                    <optgroup label="Arts & Humanities">
+                                        <option value="BA in English">BA in English</option>
+                                        <option value="BA in Filipino">BA in Filipino</option>
+                                        <option value="BA in History">BA in History</option>
+                                        <option value="BA in Literature">BA in Literature</option>
+                                        <option value="BA in Journalism">BA in Journalism</option>
+                                        <option value="BA in Communication">BA in Communication</option>
+                                        <option value="BA in Broadcasting">BA in Broadcasting</option>
+                                        <option value="BA in Theater Arts">BA in Theater Arts</option>
+                                        <option value="BA in Fine Arts">BA in Fine Arts</option>
+                                        <option value="BA in Music">BA in Music</option>
+                                    </optgroup>
+                                    <optgroup label="Media & Design">
+                                        <option value="BS in Multimedia Arts">BS in Multimedia Arts</option>
+                                        <option value="BS in Digital Illustration and Animation">BS in Digital Illustration and Animation</option>
+                                        <option value="BS in Advertising">BS in Advertising</option>
+                                        <option value="BS in Film">BS in Film</option>
+                                        <option value="BS in Graphic Design">BS in Graphic Design</option>
+                                    </optgroup>
+                                    <optgroup label="Mathematics & Statistics">
+                                        <option value="BS in Mathematics">BS in Mathematics</option>
+                                        <option value="BS in Statistics">BS in Statistics</option>
+                                        <option value="BS in Applied Mathematics">BS in Applied Mathematics</option>
+                                    </optgroup>
+                                    <optgroup label="Agriculture & Environmental Studies">
+                                        <option value="BS in Agriculture">BS in Agriculture</option>
+                                        <option value="BS in Agricultural Engineering">BS in Agricultural Engineering</option>
+                                        <option value="BS in Forestry">BS in Forestry</option>
+                                        <option value="BS in Fisheries">BS in Fisheries</option>
+                                        <option value="BS in Environmental Planning">BS in Environmental Planning</option>
+                                    </optgroup>
+                                    <optgroup label="Maritime & Aviation">
+                                        <option value="BS in Marine Transportation">BS in Marine Transportation</option>
+                                        <option value="BS in Marine Engineering">BS in Marine Engineering</option>
+                                        <option value="BS in Aeronautical Engineering">BS in Aeronautical Engineering</option>
+                                        <option value="BS in Aviation Technology">BS in Aviation Technology</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sponsor-specific fields -->
+                    <div id="sponsorFields" style="display: none;">
+                        <div class="form-section">
+                            <h3>Organization Information</h3>
+                            
+                            <div class="form-group">
+                                <label for="sponsorName">Sponsor/Organization Name</label>
+                                <input type="text" id="sponsorName" name="sponsorName">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sponsorType">Sponsor Type</label>
+                                <select id="sponsorType" name="sponsorType">
+                                    <option value="Individual">Individual</option>
+                                    <option value="Organization">Organization</option>
+                                    <option value="School">School</option>
+                                    <option value="Private Company">Private Company</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="affiliatedInstitution">Affiliated Institution</label>
+                                <select id="affiliatedInstitution" name="affiliatedInstitution">
+                                    <option value="">Select Institution</option>
+                                    <!-- Institutions will be populated based on region -->
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="aboutDescription">About/Description</label>
+                                <textarea id="aboutDescription" name="aboutDescription" rows="4" placeholder="Describe your organization and mission..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="errorMessage" class="error-message" style="display: none;"></div>
+                    <div id="successMessage" class="success-message" style="display: none;"></div>
+
+                    <div class="form-actions">
+                        <button type="button" id="editProfileBtn" class="btn-primary">Edit Profile</button>
+                        <button type="submit" id="saveProfileBtn" class="btn-primary" style="display: none;">Save Changes</button>
+                        <button type="button" id="cancelEditBtn" class="btn-secondary" style="display: none;">Cancel</button>
+                        <button type="button" onclick="goBack()" class="btn-secondary" id="backBtn">Back</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/notifications.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/avatars.js"></script>
+    <script src="js/profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dashboard - TulongAral+</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav class="main-navbar">
+        <div class="logo">
+            <h1>TulongAral+</h1>
+        </div>
+        <div class="nav-links">
+            <a href="student-home.html">Home</a>
+            <a href="student-dashboard.html" class="active">Dashboard</a>
+            <a href="messages.html">Messages</a>
+            <a href="forum.html">Community Forum</a>
+            <a href="profile.html">Profile</a>
+        </div>
+        <div class="nav-user">
+            <span id="userName">Student</span>
+            <button onclick="logout()" class="btn-secondary btn-sm">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>My Dashboard</h1>
+            <p>Track your scholarship applications</p>
+        </div>
+
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <h3 id="totalApplications">0</h3>
+                <p>Total Applications</p>
+            </div>
+            <div class="stat-card success">
+                <h3 id="approvedApplications">0</h3>
+                <p>Approved</p>
+            </div>
+            <div class="stat-card warning">
+                <h3 id="pendingApplications">0</h3>
+                <p>Pending</p>
+            </div>
+            <div class="stat-card danger">
+                <h3 id="rejectedApplications">0</h3>
+                <p>Rejected</p>
+            </div>
+        </div>
+
+        <!-- AI Scholarship Recommendations Section -->
+        <div class="section" style="margin-bottom: 2rem;">
+            <div class="section-header" style="cursor: pointer;" onclick="toggleAISection()">
+                <h2>
+                    <span id="aiToggleIcon" style="display: inline-block; transition: transform 0.3s;">▶</span>
+                    AI-Powered Recommendations
+                </h2>
+            </div>
+            
+            <!-- Collapsible AI Content -->
+            <div id="aiSectionContent" style="display: none; margin-top: 1rem;">
+                <!-- AI Info Form -->
+                <div id="aiInfoForm" style="background: var(--surface); padding: 2rem; border-radius: 1rem;">
+                    <p style="margin-bottom: 1.5rem; color: var(--text-secondary);">
+                        Please provide the following information to get personalized AI scholarship recommendations:
+                    </p>
+                    
+                    <div style="display: grid; gap: 1rem;">
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">GPA <span style="color: var(--danger);">*</span></label>
+                            <input type="number" id="aiGpa" step="0.01" min="0" max="5.0" placeholder="e.g., 3.75" 
+                                   style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 0.5rem; background: var(--background);">
+                        </div>
+                        
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Field of Study <span style="color: var(--danger);">*</span></label>
+                            <select id="aiFieldOfStudy" 
+                                    style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 0.5rem; background: var(--background);">
+                                <option value="">Select Field of Study</option>
+                                
+                                <optgroup label="STEM (Science, Technology, Engineering, Mathematics)">
+                                    <option value="Biology">Biology</option>
+                                    <option value="Chemistry">Chemistry</option>
+                                    <option value="Physics">Physics</option>
+                                    <option value="Mathematics">Mathematics</option>
+                                    <option value="Statistics">Statistics</option>
+                                    <option value="Computer Science">Computer Science</option>
+                                    <option value="Information Technology">Information Technology</option>
+                                    <option value="Data Science">Data Science</option>
+                                    <option value="Engineering">Engineering (Civil, Mechanical, Electrical, etc.)</option>
+                                    <option value="Environmental Science">Environmental Science</option>
+                                    <option value="Architecture">Architecture</option>
+                                    <option value="Astronomy">Astronomy</option>
+                                </optgroup>
+                                
+                                <optgroup label="Health & Medical Sciences">
+                                    <option value="Nursing">Nursing</option>
+                                    <option value="Medicine">Medicine</option>
+                                    <option value="Pharmacy">Pharmacy</option>
+                                    <option value="Medical Technology">Medical Technology</option>
+                                    <option value="Public Health">Public Health</option>
+                                    <option value="Physical Therapy">Physical Therapy</option>
+                                    <option value="Nutrition & Dietetics">Nutrition & Dietetics</option>
+                                    <option value="Dentistry">Dentistry</option>
+                                    <option value="Veterinary Medicine">Veterinary Medicine</option>
+                                </optgroup>
+                                
+                                <optgroup label="Business & Economics">
+                                    <option value="Business Administration">Business Administration</option>
+                                    <option value="Accountancy">Accountancy</option>
+                                    <option value="Economics">Economics</option>
+                                    <option value="Finance">Finance</option>
+                                    <option value="Marketing">Marketing</option>
+                                    <option value="Entrepreneurship">Entrepreneurship</option>
+                                    <option value="Human Resource Management">Human Resource Management</option>
+                                    <option value="Management Information Systems">Management Information Systems</option>
+                                </optgroup>
+                                
+                                <optgroup label="Social Sciences">
+                                    <option value="Psychology">Psychology</option>
+                                    <option value="Sociology">Sociology</option>
+                                    <option value="Anthropology">Anthropology</option>
+                                    <option value="Political Science">Political Science</option>
+                                    <option value="International Relations">International Relations</option>
+                                    <option value="Criminology">Criminology</option>
+                                    <option value="Social Work">Social Work</option>
+                                    <option value="Development Studies">Development Studies</option>
+                                </optgroup>
+                                
+                                <optgroup label="Humanities & Arts">
+                                    <option value="Literature">Literature</option>
+                                    <option value="Philosophy">Philosophy</option>
+                                    <option value="History">History</option>
+                                    <option value="Linguistics">Linguistics</option>
+                                    <option value="Communication Arts">Communication Arts</option>
+                                    <option value="Journalism">Journalism</option>
+                                    <option value="Fine Arts">Fine Arts</option>
+                                    <option value="Performing Arts">Performing Arts</option>
+                                    <option value="Music">Music</option>
+                                    <option value="Theater">Theater</option>
+                                </optgroup>
+                                
+                                <optgroup label="Education">
+                                    <option value="Elementary Education">Elementary Education</option>
+                                    <option value="Secondary Education">Secondary Education</option>
+                                    <option value="Special Education">Special Education</option>
+                                    <option value="Early Childhood Education">Early Childhood Education</option>
+                                    <option value="Educational Management">Educational Management</option>
+                                    <option value="Physical Education">Physical Education</option>
+                                </optgroup>
+                                
+                                <optgroup label="Law & Legal Studies">
+                                    <option value="Law">Law</option>
+                                    <option value="Legal Management">Legal Management</option>
+                                    <option value="Paralegal Studies">Paralegal Studies</option>
+                                </optgroup>
+                                
+                                <optgroup label="Agriculture & Related Fields">
+                                    <option value="Agriculture">Agriculture</option>
+                                    <option value="Agribusiness">Agribusiness</option>
+                                    <option value="Agricultural Engineering">Agricultural Engineering</option>
+                                    <option value="Forestry">Forestry</option>
+                                    <option value="Fisheries">Fisheries</option>
+                                </optgroup>
+                                
+                                <optgroup label="Technical & Vocational">
+                                    <option value="Automotive Technology">Automotive Technology</option>
+                                    <option value="Electronics Technology">Electronics Technology</option>
+                                    <option value="Welding Technology">Welding Technology</option>
+                                    <option value="Culinary Arts">Culinary Arts</option>
+                                    <option value="Hotel & Restaurant Management">Hotel & Restaurant Management</option>
+                                    <option value="Tourism Management">Tourism Management</option>
+                                </optgroup>
+                                
+                                <optgroup label="Maritime & Aviation">
+                                    <option value="Marine Engineering">Marine Engineering</option>
+                                    <option value="Marine Transportation">Marine Transportation</option>
+                                    <option value="Aeronautical Engineering">Aeronautical Engineering</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Year Level <span style="color: var(--danger);">*</span></label>
+                            <select id="aiYearLevel" 
+                                    style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 0.5rem; background: var(--background);">
+                                <option value="">Select Year Level</option>
+                                <option value="1st Year">1st Year</option>
+                                <option value="2nd Year">2nd Year</option>
+                                <option value="3rd Year">3rd Year</option>
+                                <option value="4th Year">4th Year</option>
+                                <option value="Graduate">Graduate</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Financial Need <span style="color: var(--danger);">*</span></label>
+                            <select id="aiFinancialNeed" 
+                                    style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 0.5rem; background: var(--background);">
+                                <option value="">Select Financial Need</option>
+                                <option value="High">High - Need full financial support</option>
+                                <option value="Medium">Medium - Need partial support</option>
+                                <option value="Low">Low - Can cover most expenses</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Achievements & Awards <span style="color: var(--danger);">*</span></label>
+                            <textarea id="aiAchievements" rows="3" placeholder="List your academic achievements, awards, competitions, leadership roles, etc." 
+                                      style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 0.5rem; background: var(--background); resize: vertical;"></textarea>
+                        </div>
+                        
+                        <button onclick="submitAIInfo()" class="btn-primary" style="margin-top: 1rem;">
+                            Get AI Recommendations
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- AI Results Container (hidden initially) -->
+                <div id="aiRecommendationsContainer" style="margin-top: 1rem; display: none;">
+                    <!-- AI recommendations will be displayed here -->
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>My Applications</h2>
+                <select id="statusFilter" onchange="filterApplications()">
+                    <option value="">All Status</option>
+                    <option value="pending">Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                </select>
+            </div>
+
+            <div id="applicationsList" class="applications-list">
+                <!-- Applications will be loaded here -->
+            </div>
+
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <p>You haven't applied to any scholarships yet.</p>
+                <button onclick="window.location.href='student-home.html'" class="btn-primary">Browse Scholarships</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/gemini-api.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/certificate.js"></script>
+    <script src="js/student-dashboard.js"></script>
+</body>
+</html>

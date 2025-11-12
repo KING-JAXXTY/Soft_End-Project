@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Home - TulongAral+</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+    <nav class="main-navbar">
+        <div class="logo">
+            <h1>TulongAral+</h1>
+        </div>
+        <div class="nav-links">
+            <a href="student-home.html" class="active">Home</a>
+            <a href="student-dashboard.html">Dashboard</a>
+            <a href="messages.html">Messages</a>
+            <a href="forum.html">Community Forum</a>
+            <a href="profile.html">Profile</a>
+        </div>
+        <div class="nav-user">
+            <span id="userName">Student</span>
+            <button onclick="logout()" class="btn-secondary btn-sm">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Available Scholarships</h1>
+            <p>Browse and apply for scholarship opportunities</p>
+        </div>
+
+        <div class="search-section">
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search scholarships by title...">
+                <button onclick="searchScholarships()" class="btn-primary">Search</button>
+            </div>
+            <div class="filter-bar">
+                <select id="regionFilter" onchange="filterScholarships()">
+                    <option value="">All Regions</option>
+                    <option value="Ilocos Region">Ilocos Region</option>
+                    <option value="Cagayan Valley">Cagayan Valley</option>
+                    <option value="National Capital Region">National Capital Region</option>
+                </select>
+                <select id="typeFilter" onchange="filterScholarships()">
+                    <option value="">All Types</option>
+                    <option value="Full Scholarship">Full Scholarship</option>
+                    <option value="Partial Scholarship">Partial Scholarship</option>
+                    <option value="Allowance">Allowance</option>
+                    <option value="Grant">Grant</option>
+                    <option value="Financial Aid">Financial Aid</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="scholarshipsList" class="scholarships-grid">
+            <!-- Scholarships will be loaded here dynamically -->
+        </div>
+
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <p>No scholarships found. Try adjusting your search filters.</p>
+        </div>
+    </div>
+
+    <!-- Scholarship Detail Modal -->
+    <div id="scholarshipModal" class="modal" style="display: none;">
+        <div class="modal-content modal-large">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="scholarshipDetail">
+                <!-- Scholarship details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/certificate.js"></script>
+    <script src="js/student.js"></script>
+</body>
+</html>

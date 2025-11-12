@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TulongAral+ - Filipino Scholarship Platform</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+    <div class="landing-page">
+        <header class="hero-section">
+            <nav class="navbar">
+                <div class="logo">
+                    <h1>TulongAral+</h1>
+                </div>
+                <div class="nav-buttons">
+                    <button onclick="window.location.href='login.html'" class="btn-secondary">Login</button>
+                    <button onclick="window.location.href='register.html'" class="btn-primary">Register</button>
+                </div>
+            </nav>
+            
+            <div class="hero-content">
+                <h2>Empowering Filipino Dreams Through Education</h2>
+                <p class="hero-subtitle">Connecting students with life-changing scholarship opportunities in Northern Luzon and Metro Manila</p>
+                <p class="hero-region">🇵🇭 Serving Ilocos Norte, Ilocos Sur, Cagayan, and Manila</p>
+                <div class="hero-actions">
+                    <button onclick="window.location.href='register.html'" class="btn-large btn-primary">Start Your Journey</button>
+                    <button onclick="scrollToFeatures()" class="btn-large btn-secondary">Learn More</button>
+                </div>
+            </div>
+        </header>
+
+        <section class="stats-section">
+            <div class="stat-item">
+                <h3 id="scholarshipsCount">0</h3>
+                <p>Active Scholarships</p>
+            </div>
+            <div class="stat-item">
+                <h3 id="studentsCount">0</h3>
+                <p>Students Helped</p>
+            </div>
+            <div class="stat-item">
+                <h3 id="sponsorsCount">0</h3>
+                <p>Verified Sponsors</p>
+            </div>
+        </section>
+
+        <section id="features" class="features-section">
+            <h2>Why Choose TulongAral+?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>For Students</h3>
+                    <p>Search and apply for scholarships from verified sponsors across the Philippines</p>
+                </div>
+                <div class="feature-card">
+                    <h3>For Sponsors</h3>
+                    <p>Post scholarship opportunities and connect with deserving students</p>
+                </div>
+                <div class="feature-card">
+                    <h3>AI-Powered Matching</h3>
+                    <p>Advanced AI algorithm analyzes your profile to recommend the best scholarship matches</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Map Integration</h3>
+                    <p>View scholarship locations with interactive maps powered by Leaflet</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Community Forum</h3>
+                    <p>Connect with other students and sponsors in our discussion forum</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="how-it-works-section">
+            <h2>How It Works</h2>
+            <p class="section-subtitle">Simple steps to your educational success</p>
+            
+            <div class="steps-container">
+                <div class="step-column">
+                    <h3 class="step-title">For Students</h3>
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Create Account</h4>
+                                <p>Sign up with your details and complete your profile</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Browse Scholarships</h4>
+                                <p>Search through verified opportunities using our interactive map</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Apply & Submit</h4>
+                                <p>Complete applications and upload required documents</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>Track Progress</h4>
+                                <p>Monitor your application status in real-time</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-column">
+                    <h3 class="step-title">For Sponsors</h3>
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Register as Sponsor</h4>
+                                <p>Create your sponsor account and verify your organization</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Post Scholarship</h4>
+                                <p>Add scholarship details, requirements, and deadlines</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Review Applications</h4>
+                                <p>Access and evaluate student applications efficiently</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>Make Impact</h4>
+                                <p>Select deserving students and change lives</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <h2>Ready to Get Started?</h2>
+            <p>Join thousands of Filipino students finding their path to education</p>
+            <button onclick="window.location.href='register.html'" class="btn-large btn-primary">Register Now</button>
+        </section>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>TulongAral+</h3>
+                    <p>Empowering Filipino Students Through Education</p>
+                    <p class="footer-region">🇵🇭 Serving Northern Luzon & Metro Manila</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="register.html">Register</a></li>
+                        <li><a href="login.html">Login</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" onclick="openAboutModal(); return false;">About Us</a></li>
+                        <li><a href="#" onclick="openPrivacyModal(); return false;">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Coverage Areas</h4>
+                    <ul class="footer-regions">
+                        <li>📍 Ilocos Norte</li>
+                        <li>📍 Ilocos Sur</li>
+                        <li>📍 Cagayan</li>
+                        <li>📍 Manila</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 TulongAral+. All rights reserved.</p>
+                <p>Made with ❤️ for Filipino Students</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- About Us Modal -->
+    <div id="aboutModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeAboutModal()">&times;</span>
+            <h2>About TulongAral+</h2>
+            <div class="modal-body">
+                <!-- Add your custom message here -->
+                <p>TulongAral+ is dedicated to bridging the gap between students and scholarship opportunities in Northern Luzon and Metro Manila.</p>
+                <p>Our mission is to empower Filipino students by providing easy access to verified scholarship programs and connecting them with generous sponsors who believe in the power of education.</p>
+                <p>We serve students across Ilocos Norte, Ilocos Sur, Cagayan, and Manila, helping them discover life-changing educational opportunities.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Policy Modal -->
+    <div id="privacyModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closePrivacyModal()">&times;</span>
+            <h2>Privacy Policy</h2>
+            <div class="modal-body">
+                <!-- Add your custom privacy policy here -->
+                <h3>Information We Collect</h3>
+                <p>We collect information you provide when registering, including your name, email, contact details, and educational background.</p>
+                
+                <h3>How We Use Your Information</h3>
+                <p>All data collected is used solely for scholarship matching and platform improvement. We use your information to:</p>
+                <ul>
+                    <li>Match you with relevant scholarship opportunities</li>
+                    <li>Facilitate communication between students and sponsors</li>
+                    <li>Improve our platform services</li>
+                </ul>
+                
+                <h3>Data Protection</h3>
+                <p>We are committed to protecting your personal information. We do not share your information with third parties without your explicit consent. All data is stored securely and handled in accordance with data protection regulations.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
