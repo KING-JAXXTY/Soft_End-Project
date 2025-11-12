@@ -4822,6 +4822,50 @@ a[href^="mailto"] {
     50% { opacity: 0.7; }
 }
 
+/* Mobile fixes for message input and header */
+@media (max-width: 479px) {
+    /* Fix message form to use flex equally for input */
+    .message-form {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .message-form input[type="text"] {
+        flex: 1 1 70% !important;
+        min-width: 0;
+        padding: 0.625rem 0.875rem !important;
+        font-size: 0.95rem !important;
+    }
+
+    .message-form button[type="submit"] {
+        flex: 1 1 30% !important;
+        padding: 0.625rem 0.75rem !important;
+        font-size: 0.85rem !important;
+        min-width: 60px;
+        white-space: nowrap;
+    }
+
+    /* Keep page header horizontal on mobile */
+    .page-header {
+        flex-direction: row !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        gap: 0.5rem !important;
+    }
+
+    .page-header h1 {
+        flex: 1 1 auto;
+        font-size: 1.25rem !important;
+    }
+
+    .page-header p {
+        flex: 1 1 100%;
+        margin: 0 !important;
+        font-size: 0.875rem;
+    }
+}
+
 
 
 
