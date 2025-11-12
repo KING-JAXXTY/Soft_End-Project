@@ -12,23 +12,38 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 let isConnected = false;
+let connectingPromise = null;
 
 const connectDB = async () => {
+    // If already connected, return
     if (isConnected && mongoose.connection.readyState === 1) {
         return;
     }
+    
+    // If currently connecting, wait for it
+    if (connectingPromise) {
+        return connectingPromise;
+    }
 
     try {
-        await mongoose.connect(process.env.MONGODB_URI, {
-            serverSelectionTimeoutMS: 10000,
+        connectingPromise = mongoose.connect(process.env.MONGODB_URI, {
+            serverSelectionTimeoutMS: 15000,
             socketTimeoutMS: 45000,
+            connectTimeoutMS: 15000,
+            maxPoolSize: 5,
+            minPoolSize: 1,
         });
-
+        
+        await connectingPromise;
         isConnected = true;
         console.log('MongoDB Connected');
     } catch (error) {
         console.error('MongoDB Error:', error.message);
         isConnected = false;
+        connectingPromise = null;
+        throw error;
+    } finally {
+        connectingPromise = null;
     }
 };
 
@@ -38,7 +53,10 @@ app.use('/api', async (req, res, next) => {
         await connectDB();
         next();
     } catch (error) {
-        res.status(500).json({ success: false, message: 'Database unavailable' });
+        res.status(503).json({ 
+            success: false, 
+            message: 'Database connection failed. Please check your network connection and try again.' 
+        });
     }
 });
 
@@ -56,7 +74,10 @@ app.use('/api/gemini', require('./routes/gemini'));
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).json({ success: false, message: err.message || 'Server Error' });
+    res.status(500).json({ 
+        success: false, 
+        message: err.message || 'Server Error' 
+    });
 });
 
 if (!process.env.VERCEL) {
