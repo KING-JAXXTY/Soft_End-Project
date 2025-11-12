@@ -5,7 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Messages - TulongAral+</title>
     <link rel="stylesheet" href="css/styles.css">
-    <script>window.__VERCEL_LIVE__ = false;</script>
+    <script>
+        window.__VERCEL_LIVE__ = false;
+        // Hide Vercel toolbar if it appears
+        document.addEventListener('DOMContentLoaded', function() {
+            const toolbar = document.querySelector('[style*="z-index"][style*="2147483647"]');
+            if (toolbar) toolbar.style.display = 'none';
+        });
+    </script>
 </head>
 <body>
     <nav class="main-navbar">
