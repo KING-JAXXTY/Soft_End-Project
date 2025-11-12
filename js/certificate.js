@@ -439,7 +439,7 @@ async function checkForApprovedApplications() {
     try {
          // Fetch recent applications
         const token = localStorage.getItem('authToken');
-        const response = await fetch(`${API_BASE_URL}/applications/my-applications`, {
+        const response = await fetch(`${API_BASE_URL}/applications/student/my-applications`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
