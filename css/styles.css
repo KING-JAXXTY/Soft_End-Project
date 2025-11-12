@@ -3556,6 +3556,16 @@ a[href^="mailto"] {
     .feature-card p {
         font-size: 0.8rem;
     }
+
+    /* Fix delete button text wrapping on small screens */
+    .btn-delete,
+    .btn-delete-small {
+        white-space: nowrap;
+        min-width: 64px;
+        max-width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
 
 /* Loading Spinner */
