@@ -310,7 +310,7 @@
                         <button type="submit" id="saveProfileBtn" class="btn-primary" style="display: none;">Save Changes</button>
                         <button type="button" id="cancelEditBtn" class="btn-secondary" style="display: none;">Cancel</button>
                         <button type="button" onclick="goBack()" class="btn-secondary" id="backBtn">Back</button>
-                        <button type="button" id="deleteAccountBtn" class="btn-delete" style="margin-top:1rem;" onclick="showDeleteModal()">Delete Account</button>
+                        <!-- Delete Account button removed -->
                     </div>
                 </form>
             </div>
@@ -321,17 +321,7 @@
     <script src="js/api.js"></script>
     <script src="js/avatars.js"></script>
     <script src="js/profile.js"></script>
-<!-- Delete Account Modal -->
-<div id="deleteAccountModal" class="modal" style="display:none;">
-    <div class="modal-content" style="max-width:400px;margin:auto;">
-        <h3 style="color:var(--danger-color);margin-bottom:1rem;">Delete Account</h3>
-        <p>Are you sure you want to delete your account? This action cannot be undone.</p>
-        <div style="display:flex;gap:1rem;justify-content:flex-end;margin-top:2rem;">
-            <button type="button" class="btn-secondary" onclick="closeDeleteModal()">Cancel</button>
-            <button type="button" class="btn-delete" id="confirmDeleteBtn" onclick="deleteAccount()">Delete</button>
-        </div>
-    </div>
-</div>
+<!-- Delete Account modal removed -->
 <script>
 // Ensure correct userId is set for deletion
 document.addEventListener('DOMContentLoaded', function() {
@@ -347,41 +337,7 @@ document.addEventListener('DOMContentLoaded', function() {
     } catch (e) {}
 });
 
-function showDeleteModal() {
-    document.getElementById('deleteAccountModal').style.display = 'block';
-}
-function closeDeleteModal() {
-    document.getElementById('deleteAccountModal').style.display = 'none';
-}
-function deleteAccount() {
-    const userId = window.currentUserId || document.getElementById('profileEmail').getAttribute('data-userid');
-    if (!userId) { alert('User ID not found.'); return; }
-    document.getElementById('confirmDeleteBtn').disabled = true;
-    document.getElementById('confirmDeleteBtn').innerText = 'Deleting...';
-    fetch(`/api/users/${userId}`, {
-        method: 'DELETE',
-        headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
-        }
-    })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success || data.message === 'Account deleted successfully') {
-                closeDeleteModal();
-                alert('Account deleted successfully.');
-                logout();
-            } else {
-                alert('Failed to delete account: ' + (data.message || 'Unknown error'));
-                document.getElementById('confirmDeleteBtn').disabled = false;
-                document.getElementById('confirmDeleteBtn').innerText = 'Delete';
-            }
-        })
-        .catch(err => {
-            alert('Error deleting account.');
-            document.getElementById('confirmDeleteBtn').disabled = false;
-            document.getElementById('confirmDeleteBtn').innerText = 'Delete';
-        });
-}
+// Delete Account functions removed
 </script>
 </script>
 </script>
