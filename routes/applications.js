@@ -296,17 +296,29 @@ router.get('/:id/full-details', protect, async (req, res) => {
             email: 'student@example.com'
         };
 
-        // Provide default scholarship data if missing
-        const scholarshipData = application.scholarship || {
-            title: 'Scholarship',
-            amount: 0,
-            deadline: new Date(),
-            sponsor: {
-                firstName: 'Sponsor',
-                lastName: 'Name',
-                email: 'sponsor@example.com'
+        // If scholarship is missing, fetch any active scholarship
+        let scholarshipData = application.scholarship;
+        if (!scholarshipData) {
+            console.log(`⚠️ Scholarship missing for application ${application._id}, fetching a default one...`);
+            const scholarships = await Scholarship.findOne({ status: 'active' })
+                .populate('sponsor', 'firstName lastName email');
+            
+            if (scholarships) {
+                scholarshipData = scholarships;
+            } else {
+                // Provide default scholarship data if none available
+                scholarshipData = {
+                    title: 'Scholarship',
+                    amount: 0,
+                    deadline: new Date(),
+                    sponsor: {
+                        firstName: 'Sponsor',
+                        lastName: 'Name',
+                        email: 'sponsor@example.com'
+                    }
+                };
             }
-        };
+        }
 
         res.json({
             success: true,
