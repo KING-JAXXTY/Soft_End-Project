@@ -1499,12 +1499,7 @@ button {
     line-height: 1.6;
 }
 
-.comment-header {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 0.5rem;
-    font-size: 0.875rem;
+.comment-header { display: flex; flex-direction: row; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; font-size: 0.875rem; flex-wrap: wrap;
 }
 
 .comment-date {
@@ -4826,6 +4821,7 @@ a[href^="mailto"] {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.7; }
 }
+
 
 
 
