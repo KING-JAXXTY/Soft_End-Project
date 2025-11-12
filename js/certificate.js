@@ -51,63 +51,63 @@ async function generateCertificate(application, scholarship, student) {
     // Create certificate content with all required information
     const certificateHTML = `
         ${decoration}
-        <div style="position: relative; z-index: 1; background: white; width: 100%; min-height: 410px; border-radius: 10px; padding: 20px; box-shadow: inset 0 2px 20px rgba(0,0,0,0.1);">
-            <div style="text-align: center; border: 2px double #667eea; padding: 18px; min-height: 370px; display: flex; flex-direction: column; justify-content: space-between;">
+        <div style="position: relative; z-index: 1; background: white; width: 100%; min-height: 500px; border-radius: 10px; padding: 30px; box-shadow: inset 0 2px 20px rgba(0,0,0,0.1);">
+            <div style="text-align: center; border: 3px double #667eea; padding: 25px; min-height: 450px; display: flex; flex-direction: column; justify-content: space-between;">
                 
                 <!-- Header -->
                 <div>
-                    <div style="font-size: 1.6rem; font-weight: bold; color: #667eea; margin-bottom: 3px;">
+                    <div style="font-size: 2rem; font-weight: bold; color: #667eea; margin-bottom: 5px;">
                         TulongAral+
                     </div>
-                    <div style="font-size: 1.2rem; color: #764ba2; font-weight: 700; margin-bottom: 8px; letter-spacing: 1px;">
+                    <div style="font-size: 1.5rem; color: #764ba2; font-weight: 700; margin-bottom: 12px; letter-spacing: 1px;">
                         SCHOLARSHIP CERTIFICATE
                     </div>
-                    <div style="height: 2px; width: 150px; background: linear-gradient(90deg, transparent, #667eea, #764ba2, transparent); margin: 0 auto 8px;"></div>
-                    <div style="font-size: 0.7rem; color: #888; font-style: italic;">Certificate of Approval</div>
+                    <div style="height: 3px; width: 180px; background: linear-gradient(90deg, transparent, #667eea, #764ba2, transparent); margin: 0 auto 12px;"></div>
+                    <div style="font-size: 1rem; color: #888; font-style: italic;">Certificate of Approval</div>
                 </div>
 
                 <!-- Body -->
-                <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 10px 6px;">
-                    <div style="font-size: 0.75rem; color: #555; margin-bottom: 8px; line-height: 1.3;">
+                <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 15px 10px;">
+                    <div style="font-size: 1.1rem; color: #555; margin-bottom: 12px; line-height: 1.3;">
                         This is to certify that
                     </div>
-                    
-                    <div style="font-size: 1.4rem; font-weight: bold; color: #333; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.1;">${student.firstName} ${student.lastName}
+
+                    <div style="font-size: 2rem; font-weight: bold; color: #333; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.1;">${student.firstName} ${student.lastName}
                     </div>
-                    
-                    <div style="font-size: 0.7rem; color: #666; margin-bottom: 8px; line-height: 1.2;">
+
+                    <div style="font-size: 1rem; color: #666; margin-bottom: 12px; line-height: 1.2;">
                         has been successfully approved for the
                     </div>
-                    
-                    <div style="font-size: 1rem; font-weight: 700; color: #667eea; margin-bottom: 8px; line-height: 1.1; padding: 0 6px;">
+
+                    <div style="font-size: 1.5rem; font-weight: 700; color: #667eea; margin-bottom: 12px; line-height: 1.1; padding: 0 10px;">
                         ${scholarship.title}
                     </div>
-                    
-                    <div style="background: linear-gradient(135deg, #667eea15, #764ba215); padding: 8px; border-radius: 6px; margin: 8px 0;">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.65rem;">
+
+                    <div style="background: linear-gradient(135deg, #667eea15, #764ba215); padding: 12px; border-radius: 8px; margin: 12px 0;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 0.95rem;">
                             <div style="text-align: left;">
-                                <div style="font-weight: 600; color: #667eea; margin-bottom: 2px;">Amount</div>
-                                <div style="color: #333; font-weight: 700; font-size: 0.8rem;">₱${scholarship.amount.toLocaleString()}</div>
+                                <div style="font-weight: 600; color: #667eea; margin-bottom: 3px;">Amount</div>
+                                <div style="color: #333; font-weight: 700; font-size: 1.1rem;">₱${scholarship.amount.toLocaleString()}</div>
                             </div>
                             <div style="text-align: right;">
-                                <div style="font-weight: 600; color: #764ba2; margin-bottom: 2px;">Type</div>
-                                <div style="color: #333; font-weight: 600; font-size: 0.7rem;">${scholarship.scholarshipType || 'Scholarship'}</div>
+                                <div style="font-weight: 600; color: #764ba2; margin-bottom: 3px;">Type</div>
+                                <div style="color: #333; font-weight: 600; font-size: 0.95rem;">${scholarship.scholarshipType || 'Scholarship'}</div>
                             </div>
                         </div>
                     </div>
 
-                    <div style="margin-top: 8px; font-size: 0.65rem; color: #666; line-height: 1.3;">
-                        <div style="margin-bottom: 4px;">
-                            <span style="font-weight: 600; color: #667eea;">Institution:</span> 
+                    <div style="margin-top: 12px; font-size: 0.95rem; color: #666; line-height: 1.4;">
+                        <div style="margin-bottom: 6px;">
+                            <span style="font-weight: 600; color: #667eea;">Institution:</span>
                             <span style="color: #333;">${scholarship.affiliatedInstitution || 'N/A'}</span>
                         </div>
-                        <div style="margin-bottom: 4px;">
-                            <span style="font-weight: 600; color: #764ba2;">Approved By:</span> 
+                        <div style="margin-bottom: 6px;">
+                            <span style="font-weight: 600; color: #764ba2;">Approved By:</span>
                             <span style="color: #333;">${sponsorName}</span>
                         </div>
                         ${scholarship.region ? `
-                        <div style="margin-bottom: 4px;">
-                            <span style="font-weight: 600; color: #667eea;">Region:</span> 
+                        <div style="margin-bottom: 6px;">
+                            <span style="font-weight: 600; color: #667eea;">Region:</span>
                             <span style="color: #333;">${scholarship.region}</span>
                         </div>
                         ` : ''}
@@ -116,29 +116,27 @@ async function generateCertificate(application, scholarship, student) {
 
                 <!-- Footer -->
                 <div>
-                    <div style="height: 1px; width: 120px; background: linear-gradient(90deg, transparent, #667eea, transparent); margin: 10px auto 8px;"></div>
-                    
-                    <div style="display: flex; justify-content: space-between; align-items: end; margin-top: 10px; padding: 0 12px; font-size: 0.6rem; color: #666;">
+                    <div style="height: 2px; width: 150px; background: linear-gradient(90deg, transparent, #667eea, transparent); margin: 15px auto 12px;"></div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: end; margin-top: 15px; padding: 0 15px; font-size: 0.9rem; color: #666;">
                         <div style="text-align: left;">
-                            <div style="font-weight: 700; color: #667eea; margin-bottom: 2px;">Date</div>
-                            <div style="color: #333; font-weight: 600; font-size: 0.55rem;">${formattedDate}</div>
+                            <div style="font-weight: 700; color: #667eea; margin-bottom: 3px;">Date</div>
+                            <div style="color: #333; font-weight: 600; font-size: 0.85rem;">${formattedDate}</div>
                         </div>
                         <div style="text-align: center;">
-                            <div style="width: 100px; height: 1px; background: #333; margin-bottom: 3px;"></div>
-                            <div style="font-size: 0.55rem; color: #999;">Signature</div>
+                            <div style="width: 120px; height: 2px; background: #333; margin-bottom: 4px;"></div>
+                            <div style="font-size: 0.8rem; color: #999;">Signature</div>
                         </div>
                         <div style="text-align: right;">
-                            <div style="font-weight: 700; color: #764ba2; margin-bottom: 2px;">Cert ID</div>
-                            <div style="font-family: 'Courier New', monospace; color: #667eea; font-weight: 700; font-size: 0.6rem;">${application.certificateId || application._id.toString().slice(-8).toUpperCase()}</div>
+                            <div style="font-weight: 700; color: #764ba2; margin-bottom: 3px;">Cert ID</div>
+                            <div style="font-family: 'Courier New', monospace; color: #667eea; font-weight: 700; font-size: 0.85rem;">${application.certificateId || application._id.toString().slice(-8).toUpperCase()}</div>
                         </div>
                     </div>
 
-                    <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #e5e7eb; font-size: 0.55rem; color: #999; font-style: italic;">
+                    <div style="margin-top: 12px; padding-top: 12px; border-top: 2px solid #e5e7eb; font-size: 0.8rem; color: #999; font-style: italic;">
                         Official proof of scholarship approval - verify at tulongaral.com
                     </div>
-                </div>
-                
-            </div>
+                </div>            </div>
         </div>
     `;
 
