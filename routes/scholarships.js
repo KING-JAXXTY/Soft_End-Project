@@ -303,9 +303,23 @@ router.delete('/:id', protect, authorize('sponsor', 'admin'), async (req, res) =
                 message: 'Not authorized to delete this scholarship'
             });
         }
-        
+
+        // Check if there are pending applications for this scholarship
+        const Application = require('../models/Application');
+        const pendingApplications = await Application.countDocuments({
+            scholarship: scholarship._id,
+            status: { $in: ['pending', 'submitted'] }
+        });
+
+        if (pendingApplications > 0) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot delete scholarship with ${pendingApplications} pending application(s). Please review all applications first.`
+            });
+        }
+
         await scholarship.deleteOne();
-        
+
         res.json({
             success: true,
             message: 'Scholarship deleted successfully'
