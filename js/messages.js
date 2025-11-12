@@ -312,24 +312,17 @@ document.getElementById('messageForm')?.addEventListener('submit', async (e) => 
 
 async function sendMessage() {
     const input = document.getElementById('messageInput');
-    const attachmentInput = document.getElementById('attachmentInput');
     const content = input.value.trim();
-    const file = attachmentInput.files[0];
     
-    console.log('Attempting to send message:', { content, hasFile: !!file, conversation: currentConversation?._id });
+    console.log('Attempting to send message:', { content, conversation: currentConversation?._id });
     
-    if (!content && !file) {
-        console.log('No content or file to send');
+    if (!content) {
+        console.log('No content to send');
         return;
     }
     
     // Check if chatting with AI
     if (currentRecipient && currentRecipient._id === 'gemini-ai') {
-        if (file) {
-            alert('File attachments are not supported in AI chat');
-            return;
-        }
-        
         input.value = '';
         await sendAIMessage(content);
         return;
@@ -341,20 +334,17 @@ async function sendMessage() {
     }
     
     try {
-        console.log('Calling API.sendMessage...');
-        const result = await API.sendMessage(currentConversation._id, content, file);
-        console.log('Message sent:', result);
+    console.log('Calling API.sendMessage...');
+    const result = await API.sendMessage(currentConversation._id, content);
+    console.log('Message sent:', result);
         
-        // Clear inputs
-        input.value = '';
-        attachmentInput.value = '';
-        document.getElementById('attachmentPreview').style.display = 'none';
-        
-        // Reload messages
-        console.log('Reloading messages...');
-        await loadMessages(currentConversation._id);
-        await loadConversations();
-        console.log('Messages reloaded');
+    // Clear input
+    input.value = '';
+    // Reload messages
+    console.log('Reloading messages...');
+    await loadMessages(currentConversation._id);
+    await loadConversations();
+    console.log('Messages reloaded');
         
     } catch (error) {
         console.error('Error sending message:', error);
@@ -364,17 +354,7 @@ async function sendMessage() {
 
 // Show attachment preview
 document.getElementById('attachmentInput')?.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    const preview = document.getElementById('attachmentPreview');
-    
-    if (file) {
-        preview.innerHTML = `
-            <span>${getFileIcon(file.name)} ${file.name} (${formatFileSize(file.size)})</span>
-            <button type="button" onclick="clearAttachment()" class="btn-sm btn-secondary">Remove</button>
-        `;
-        preview.style.display = 'flex';
-    }
-});
+    // Attachment input removed
 
 function clearAttachment() {
     document.getElementById('attachmentInput').value = '';
