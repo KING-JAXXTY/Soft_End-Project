@@ -25,9 +25,25 @@ Forum Post:
 ${postContent}
 """`;
         try {
-            const response = await this.generateContent(prompt);
-            // Return the improved content directly
-            return response.trim();
+            const data = await fetch(`${GEMINI_API_URL}?key=${getNextApiKey()}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{ text: prompt }]
+                    }]
+                })
+            });
+            if (!data.ok) {
+                const errorText = await data.text();
+                console.error('Gemini API Error Response:', errorText);
+                throw new Error(`Gemini API error: ${data.status} - ${errorText}`);
+            }
+            const json = await data.json();
+            console.log('Gemini API response data:', json);
+            return json.candidates[0].content.parts[0].text.trim();
         } catch (error) {
             console.error('Grammar check error:', error);
             return postContent; // Fallback: return original if error
