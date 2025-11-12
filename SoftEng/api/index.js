@@ -42,5 +42,6 @@ app.use((err, req, res, next) => {
     });
 });
 
-// Export for Vercel serverless
+// Export handler for Vercel serverless
 module.exports = app;
+module.exports.default = app;
