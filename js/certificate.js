@@ -391,25 +391,25 @@ async function downloadCertificate(applicationId) {
         // Use html2pdf.js library for PDF generation
         if (typeof html2pdf !== 'undefined') {
             const opt = {
-                margin: 0,
+                margin: [5, 5, 5, 5],
                 filename: `scholarship-certificate-${applicationId}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { 
-                    scale: 2, 
-                    useCORS: true, 
+                html2canvas: {
+                    scale: 2,
+                    useCORS: true,
                     letterRendering: true,
                     logging: false,
                     scrollY: 0,
                     scrollX: 0
                 },
-                jsPDF: { 
-                    unit: 'px', 
-                    format: [800, 600],
+                jsPDF: {
+                    unit: 'px',
+                    format: [900, 550],
                     orientation: 'landscape',
                     compress: true
                 }
             };
-            
+
             await html2pdf().set(opt).from(wrapper).save();
         } else {
             // Fallback: alert user to install library
