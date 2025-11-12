@@ -32,9 +32,7 @@ async function archiveExpiredScholarships() {
 
 // Create uploads directory if it doesn't exist
 const uploadsDir = path.join(__dirname, '../uploads/scholarships');
-if (!fs.existsSync(uploadsDir)) {
-    fs.mkdirSync(uploadsDir, { recursive: true });
-}
+try { if (!fs.existsSync(uploadsDir)) { fs.mkdirSync(uploadsDir, { recursive: true }); } } catch (e) { /* Serverless: read-only filesystem */ }
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
@@ -463,4 +461,5 @@ router.delete('/:id/favorite', protect, async (req, res) => {
 });
 
 module.exports = router;
+
 

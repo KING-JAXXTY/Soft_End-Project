@@ -9,9 +9,7 @@ const fs = require('fs');
 
 // Create uploads directory
 const uploadsDir = path.join(__dirname, '../uploads/applications');
-if (!fs.existsSync(uploadsDir)) {
-    fs.mkdirSync(uploadsDir, { recursive: true });
-}
+try { if (!fs.existsSync(uploadsDir)) { fs.mkdirSync(uploadsDir, { recursive: true }); } } catch (e) { /* Serverless: read-only filesystem */ }
 
 // Configure multer
 const storage = multer.diskStorage({
@@ -401,3 +399,4 @@ router.delete('/:id', protect, async (req, res) => {
 });
 
 module.exports = router;
+

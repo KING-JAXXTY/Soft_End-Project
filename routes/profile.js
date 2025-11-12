@@ -8,9 +8,7 @@ const fs = require('fs');
 
 // Create uploads directory
 const uploadsDir = path.join(__dirname, '../uploads/profiles');
-if (!fs.existsSync(uploadsDir)) {
-    fs.mkdirSync(uploadsDir, { recursive: true });
-}
+try { if (!fs.existsSync(uploadsDir)) { fs.mkdirSync(uploadsDir, { recursive: true }); } } catch (e) { /* Serverless: read-only filesystem */ }
 
 // Configure multer
 const storage = multer.diskStorage({
@@ -233,3 +231,4 @@ router.post('/picture', protect, upload.single('profilePicture'), async (req, re
 });
 
 module.exports = router;
+

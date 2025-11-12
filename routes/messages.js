@@ -9,9 +9,7 @@ const fs = require('fs');
 
 // Create uploads directory for messages
 const uploadsDir = path.join(__dirname, '../uploads/messages');
-if (!fs.existsSync(uploadsDir)) {
-    fs.mkdirSync(uploadsDir, { recursive: true });
-}
+try { if (!fs.existsSync(uploadsDir)) { fs.mkdirSync(uploadsDir, { recursive: true }); } } catch (e) { /* Serverless: read-only filesystem */ }
 
 // Configure multer for message attachments
 const storage = multer.diskStorage({
@@ -312,3 +310,4 @@ router.delete('/:messageId', protect, async (req, res) => {
 });
 
 module.exports = router;
+
