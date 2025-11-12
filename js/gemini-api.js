@@ -1,6 +1,19 @@
 // Gemini API Integration
-const GEMINI_API_KEY = 'AIzaSyApbgd0-jvPN7rptLZXtMN4-CI7bNEONPE';
+// Using two API keys to distribute requests and reduce rate limiting
+const GEMINI_API_KEYS = [
+    'AIzaSyApbgd0-jvPN7rptLZXtMN4-CI7bNEONPE',  // Original key
+    'AIzaSyDOmX7NlPotb2PDnIGPMGcUh5puhz3qp9M'   // New key
+];
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+
+// Track which key to use (round-robin)
+let currentKeyIndex = 0;
+
+const getNextApiKey = () => {
+    const key = GEMINI_API_KEYS[currentKeyIndex];
+    currentKeyIndex = (currentKeyIndex + 1) % GEMINI_API_KEYS.length;
+    return key;
+};
 
 const GeminiAPI = {
     async generateContent(prompt, retries = 3, timeout = 8000) {
@@ -9,8 +22,11 @@ const GeminiAPI = {
                 // Create abort controller for timeout
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+                // Use round-robin API key selection to distribute load
+                const apiKey = getNextApiKey();
                 
-                const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+                const response = await fetch(`${GEMINI_API_URL}?key=${apiKey}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
