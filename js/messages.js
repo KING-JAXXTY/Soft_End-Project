@@ -385,7 +385,6 @@ function clearAttachment() {
 function getFileIcon(filename) {
     const ext = filename.split('.').pop().toLowerCase();
     if (['jpg', 'jpeg', 'png', 'gif'].includes(ext)) return '🖼️';
-    if (ext === 'pdf') return '📄';
     if (['doc', 'docx'].includes(ext)) return '📝';
     if (ext === 'zip') return '📦';
     return '📎';
