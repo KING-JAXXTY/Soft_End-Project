@@ -244,18 +244,20 @@ router.get('/:id/full-details', protect, async (req, res) => {
             });
         }
 
-        // Validate populated references exist
-        if (!application.student || !application.scholarship || !application.scholarship.sponsor) {
-            return res.status(404).json({
-                success: false,
-                message: 'Related data not found'
-            });
+        // Check authorization - handle missing student reference gracefully
+        let isStudent = false;
+        let isSponsor = false;
+        const isAdmin = req.user.role === 'admin';
+
+        if (application.student) {
+            isStudent = req.user._id.toString() === application.student._id.toString();
         }
- 
-        // Check authorization
-        const isStudent = req.user._id.toString() === application.student._id.toString();
-        const isSponsor = application.scholarship.sponsor._id.toString() === req.user._id.toString();
-        const isAdmin = req.user.role === 'admin';        if (!isStudent && !isSponsor && !isAdmin) {
+        
+        if (application.scholarship && application.scholarship.sponsor) {
+            isSponsor = application.scholarship.sponsor._id.toString() === req.user._id.toString();
+        }
+
+        if (!isStudent && !isSponsor && !isAdmin) {
             return res.status(403).json({
                 success: false,
                 message: 'Not authorized to view this application'
