@@ -160,15 +160,13 @@ async function showApprovalModal(application) {
         // Fetch full application details
         const token = localStorage.getItem('authToken');
         console.log('Fetching application details for ID:', application._id);
-        
-        const response = await fetch(`http://localhost:5000/api/applications/${application._id}/full-details`, {
+
+        const response = await fetch(`${API_BASE_URL}/applications/${application._id}/full-details`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             }
-        });
-
-        console.log('Response status:', response.status);
+        });        console.log('Response status:', response.status);
 
         if (!response.ok) {
             const errorText = await response.text();
@@ -421,16 +419,14 @@ async function checkForApprovedApplications() {
     const shownApprovals = JSON.parse(localStorage.getItem('shownApprovals') || '[]');
 
     try {
-        // Fetch recent applications
+         // Fetch recent applications
         const token = localStorage.getItem('authToken');
-        const response = await fetch('http://localhost:5000/api/applications/my-applications', {
+        const response = await fetch(`${API_BASE_URL}/applications/my-applications`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             }
-        });
-
-        if (!response.ok) {
+        });        if (!response.ok) {
             throw new Error('Failed to fetch applications');
         }
 
