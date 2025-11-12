@@ -77,22 +77,19 @@ const GeminiAPI = {
 
     // Moderate forum post content
     async moderatePost(postTitle, postContent) {
-        const prompt = `You are a content moderator for a scholarship forum. Analyze this post and respond with ONLY a JSON object (no markdown, no extra text):
+                const prompt = `You are a content moderator for a scholarship forum. Analyze this post and respond with ONLY a JSON object (no markdown, no extra text):
 
 Post Title: "${postTitle}"
 Post Content: "${postContent}"
 
-Analyze for:
-1. Inappropriate content (profanity, hate speech, spam, harassment)
-2. Off-topic content (not related to scholarships/education)
-3. Duplicate/low-quality questions
+Analyze ONLY for inappropriate content (profanity, hate speech, spam, harassment, explicit language, threats). Ignore off-topic or low-quality content.
 
 Respond with this exact JSON format:
 {
-  "isInappropriate": true/false,
-  "reason": "brief explanation if inappropriate",
-  "shouldDelete": true/false,
-  "category": "inappropriate" or "off-topic" or "spam" or "safe"
+    "isInappropriate": true/false,
+    "reason": "brief explanation if inappropriate",
+    "shouldDelete": true/false,
+    "category": "inappropriate" or "safe"
 }`;
 
         try {
