@@ -358,7 +358,12 @@ function deleteAccount() {
     if (!userId) { alert('User ID not found.'); return; }
     document.getElementById('confirmDeleteBtn').disabled = true;
     document.getElementById('confirmDeleteBtn').innerText = 'Deleting...';
-    fetch(`/api/users/${userId}`, { method: 'DELETE' })
+    fetch(`/api/users/${userId}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+    })
         .then(res => res.json())
         .then(data => {
             if (data.success || data.message === 'Account deleted successfully') {
