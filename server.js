@@ -11,27 +11,39 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+    res.json({
+        status: 'ok',
+        mongodbUri: process.env.MONGODB_URI ? 'set' : 'NOT SET',
+        nodeEnv: process.env.NODE_ENV,
+        timestamp: new Date().toISOString()
+    });
+});
+
 let isConnected = false;
 let connectingPromise = null;
 
 const connectDB = async () => {
-    // If already connected, return
     if (isConnected && mongoose.connection.readyState === 1) {
         return;
     }
     
-    // If currently connecting, wait for it
     if (connectingPromise) {
         return connectingPromise;
     }
 
+    if (!process.env.MONGODB_URI) {
+        throw new Error('MONGODB_URI environment variable is not set');
+    }
+
     try {
         connectingPromise = mongoose.connect(process.env.MONGODB_URI, {
-            serverSelectionTimeoutMS: 15000,
-            socketTimeoutMS: 45000,
-            connectTimeoutMS: 15000,
+            serverSelectionTimeoutMS: 10000,
+            socketTimeoutMS: 30000,
+            connectTimeoutMS: 10000,
             maxPoolSize: 5,
-            minPoolSize: 1,
+            retryWrites: true,
         });
         
         await connectingPromise;
@@ -53,9 +65,10 @@ app.use('/api', async (req, res, next) => {
         await connectDB();
         next();
     } catch (error) {
+        console.error('DB Connection Error:', error.message);
         res.status(503).json({ 
             success: false, 
-            message: 'Database connection failed. Please check your network connection and try again.' 
+            message: 'Database unavailable: ' + error.message
         });
     }
 });
