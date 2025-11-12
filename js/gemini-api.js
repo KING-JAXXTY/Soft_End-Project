@@ -3,9 +3,13 @@ const GEMINI_API_KEY = 'AIzaSyApbgd0-jvPN7rptLZXtMN4-CI7bNEONPE';
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
 const GeminiAPI = {
-    async generateContent(prompt, retries = 3) {
+    async generateContent(prompt, retries = 3, timeout = 8000) {
         for (let attempt = 0; attempt < retries; attempt++) {
             try {
+                // Create abort controller for timeout
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), timeout);
+                
                 const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
                     method: 'POST',
                     headers: {
@@ -17,8 +21,11 @@ const GeminiAPI = {
                                 text: prompt
                             }]
                         }]
-                    })
+                    }),
+                    signal: controller.signal
                 });
+                
+                clearTimeout(timeoutId);
 
                 if (!response.ok) {
                     const errorText = await response.text();
@@ -88,10 +95,12 @@ Respond with this exact JSON format:
             };
         } catch (error) {
             console.error('Moderation error:', error);
-            // On error, don't delete posts
+            // On ANY error (rate limit, timeout, parse error), allow the post
+            // Users can manually moderate later if needed
+            console.warn('Moderation failed - allowing post anyway to avoid blocking users');
             return {
                 isInappropriate: false,
-                reason: "Error during moderation",
+                reason: "Moderation service temporarily unavailable",
                 shouldDelete: false,
                 category: "safe"
             };
