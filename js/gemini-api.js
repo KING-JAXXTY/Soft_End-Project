@@ -18,36 +18,49 @@ const getNextApiKey = () => {
 const GeminiAPI = {
     // Grammar correction for forum posts
     async grammarCheck(postContent) {
-        const prompt = `You are an expert English editor. Please review the following forum post and return ONLY the corrected version with improved grammar, spelling, and clarity. Do not change the meaning or add extra text. Do not return any explanation, only the improved post content.
+        const prompt = `Fix the grammar, spelling, and improve the clarity of this text. Keep the same meaning and tone. Return ONLY the corrected text without any explanation or special characters like asterisks or hyphens:
 
-Forum Post:
-"""
-${postContent}
-"""`;
-        try {
-            const data = await fetch(`${GEMINI_API_URL}?key=${getNextApiKey()}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    contents: [{
-                        parts: [{ text: prompt }]
-                    }]
-                })
-            });
-            if (!data.ok) {
-                const errorText = await data.text();
-                console.error('Gemini API Error Response:', errorText);
-                throw new Error(`Gemini API error: ${data.status} - ${errorText}`);
+"${postContent}"
+
+Corrected text:`;
+        // Try both API keys in round-robin fashion for reliability
+        for (let i = 0; i < GEMINI_API_KEYS.length; i++) {
+            const apiKey = getNextApiKey();
+            try {
+                const response = await fetch(`${GEMINI_API_URL}?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{ text: prompt }]
+                        }]
+                    })
+                });
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Gemini API Error Response:', errorText);
+                    continue; // Try next key
+                }
+                const json = await response.json();
+                console.log('Gemini API response data:', json);
+                let correctedText = json.candidates[0].content.parts[0].text || '';
+                // Clean up response (remove quotes, extra spaces, special characters)
+                correctedText = correctedText
+                    .replace(/^['"]|['"]$/g, '')  // Remove surrounding quotes
+                    .replace(/\*\*/g, '')          // Remove bold markdown
+                    .replace(/\*/g, '')            // Remove asterisks
+                    .replace(/^[\-\*]\s/gm, '')  // Remove bullet points
+                    .trim();
+                return correctedText;
+            } catch (error) {
+                console.error('Grammar check error:', error);
+                // Try next key
             }
-            const json = await data.json();
-            console.log('Gemini API response data:', json);
-            return json.candidates[0].content.parts[0].text.trim();
-        } catch (error) {
-            console.error('Grammar check error:', error);
-            return postContent; // Fallback: return original if error
         }
+        // If all keys fail, fallback to original
+        return postContent;
     },
     async generateContent(prompt, retries = 3, timeout = 8000) {
         for (let attempt = 0; attempt < retries; attempt++) {
