@@ -155,18 +155,28 @@ async function generateCertificate(application, scholarship, student) {
 // Show approval modal with certificate
 async function showApprovalModal(application) {
     console.log('showApprovalModal called with:', application);
-    
+    console.log('Application ID:', application._id);
+    console.log('API Base URL:', API_BASE_URL);
+
     try {
+        // Validate application ID exists
+        if (!application || !application._id) {
+            throw new Error('Invalid application: Missing application ID');
+        }
+
         // Fetch full application details
         const token = localStorage.getItem('authToken');
         console.log('Fetching application details for ID:', application._id);
 
-        const response = await fetch(`${API_BASE_URL}/applications/${application._id}/full-details`, {
+        const apiUrl = `${API_BASE_URL}/applications/${application._id}/full-details`;
+        console.log('Full API URL:', apiUrl);
+
+        const response = await fetch(apiUrl, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             }
-        });        console.log('Response status:', response.status);
+        });console.log('Response status:', response.status);
 
         if (!response.ok) {
             const errorText = await response.text();
@@ -295,7 +305,15 @@ async function showApprovalModal(application) {
     } catch (error) {
         console.error('Error in showApprovalModal:', error);
         console.error('Error stack:', error.stack);
-        alert('Error loading certificate: ' + error.message + '\n\nCongratulations! Your application has been approved!');
+        
+        let errorMsg = error.message;
+        if (error.message.includes('404')) {
+            errorMsg = 'Application not found. It may have been deleted or you don\'t have access to it.';
+        } else if (error.message.includes('500')) {
+            errorMsg = 'Server error loading application. Please try again later.';
+        }
+        
+        alert('Error loading certificate: ' + errorMsg + '\n\nCongratulations! Your application has been approved!');
     }
 }
 
