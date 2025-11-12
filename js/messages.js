@@ -353,8 +353,7 @@ async function sendMessage() {
 }
 
 // Show attachment preview
-document.getElementById('attachmentInput')?.addEventListener('change', (e) => {
-    // Attachment input removed
+// Attachment input removed
 
 function clearAttachment() {
     document.getElementById('attachmentInput').value = '';
@@ -405,6 +404,27 @@ document.addEventListener('DOMContentLoaded', () => {
         const backButton = document.getElementById('mobileBackButton');
         if (backButton) {
             backButton.addEventListener('click', closeMobileChat);
+        }
+
+        // Make chat user name clickable to view profile
+        const chatUserName = document.getElementById('chatUserName');
+        if (chatUserName) {
+            chatUserName.addEventListener('click', () => {
+                // Get user ID from currentRecipient or currentConversation
+                let userId = null;
+                if (currentRecipient && currentRecipient._id) {
+                    userId = currentRecipient._id;
+                } else if (currentConversation && currentConversation.participants) {
+                    // Fallback: get the other participant
+                    const currentUser = API.getCurrentUser();
+                    userId = currentConversation.participants.find(id => id !== currentUser._id);
+                }
+                if (userId) {
+                    window.location.href = `profile.html?user=${userId}`;
+                } else {
+                    alert('User profile not found.');
+                }
+            });
         }
     }
 });
@@ -638,5 +658,9 @@ Provide helpful, concise advice about scholarships, applications, eligibility, o
         });
         
         displayAIMessages();
+
     }
 }
+
+
+

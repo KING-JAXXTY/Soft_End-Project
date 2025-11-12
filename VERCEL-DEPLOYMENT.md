@@ -1,6 +1,8 @@
 # TulongAral+ Vercel Deployment Guide
 
-## 🚀 Deploy to Vercel
+## - npm run dev
+
+## 🚀 Deploy to Vercel 
 
 Your project is now configured for Vercel deployment! Follow these steps:
 
