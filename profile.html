@@ -334,6 +334,20 @@
     </div>
 </div>
 <script>
+// Ensure correct userId is set for deletion
+document.addEventListener('DOMContentLoaded', function() {
+    try {
+        const user = JSON.parse(localStorage.getItem('currentUser'));
+        if (user && user._id) {
+            window.currentUserId = user._id;
+            var emailElem = document.getElementById('profileEmail');
+            if (emailElem) {
+                emailElem.setAttribute('data-userid', user._id);
+            }
+        }
+    } catch (e) {}
+});
+
 function showDeleteModal() {
     document.getElementById('deleteAccountModal').style.display = 'block';
 }
@@ -341,28 +355,29 @@ function closeDeleteModal() {
     document.getElementById('deleteAccountModal').style.display = 'none';
 }
 function deleteAccount() {
-        const userId = window.currentUserId || document.getElementById('profileEmail').getAttribute('data-userid');
-        if (!userId) { alert('User ID not found.'); return; }
-        document.getElementById('confirmDeleteBtn').disabled = true;
-        document.getElementById('confirmDeleteBtn').innerText = 'Deleting...';
-        fetch(`/api/users/${userId}`, { method: 'DELETE' })
-                .then(res => res.json())
-                .then(data => {
-                        if (data.success) {
-                                closeDeleteModal();
-                                alert('Account deleted successfully.');
-                                logout();
-                        } else {
-                                alert('Failed to delete account: ' + (data.message || 'Unknown error'));
-                                document.getElementById('confirmDeleteBtn').disabled = false;
-                                document.getElementById('confirmDeleteBtn').innerText = 'Delete';
-                        }
-                })
-                .catch(err => {
-                        alert('Error deleting account.');
-                        document.getElementById('confirmDeleteBtn').disabled = false;
-                        document.getElementById('confirmDeleteBtn').innerText = 'Delete';
-                });
+    const userId = window.currentUserId || document.getElementById('profileEmail').getAttribute('data-userid');
+    if (!userId) { alert('User ID not found.'); return; }
+    document.getElementById('confirmDeleteBtn').disabled = true;
+    document.getElementById('confirmDeleteBtn').innerText = 'Deleting...';
+    fetch(`/api/users/${userId}`, { method: 'DELETE' })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success || data.message === 'Account deleted successfully') {
+                closeDeleteModal();
+                alert('Account deleted successfully.');
+                logout();
+            } else {
+                alert('Failed to delete account: ' + (data.message || 'Unknown error'));
+                document.getElementById('confirmDeleteBtn').disabled = false;
+                document.getElementById('confirmDeleteBtn').innerText = 'Delete';
+            }
+        })
+        .catch(err => {
+            alert('Error deleting account.');
+            document.getElementById('confirmDeleteBtn').disabled = false;
+            document.getElementById('confirmDeleteBtn').innerText = 'Delete';
+        });
+}
 }
 </script>
 </script>
