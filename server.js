@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const path = require('path');
 const mongoose = require('mongoose');
 
 dotenv.config();
@@ -43,9 +42,7 @@ app.use('/api', async (req, res, next) => {
     }
 });
 
-app.use(express.static(path.join(__dirname)));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
+// API Routes ONLY - Vercel serves static files directly
 app.use('/api/activity', require('./routes/activity'));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/scholarships', require('./routes/scholarships'));
@@ -56,10 +53,7 @@ app.use('/api/forum', require('./routes/forum'));
 app.use('/api/messages', require('./routes/messages'));
 app.use('/api/gemini', require('./routes/gemini'));
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
-});
-
+// Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({ success: false, message: err.message || 'Server Error' });
