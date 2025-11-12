@@ -244,6 +244,20 @@ router.get('/:id/full-details', protect, async (req, res) => {
             });
         }
 
+        // Log what we found in the database
+        console.log('📋 Application found:', {
+            id: application._id,
+            status: application.status,
+            studentRef: application.student ? 'EXISTS' : 'MISSING',
+            studentId: application.student ? application.student._id : 'N/A',
+            studentName: application.student ? `${application.student.firstName} ${application.student.lastName}` : 'N/A',
+            scholarshipRef: application.scholarship ? 'EXISTS' : 'MISSING',
+            scholarshipId: application.scholarship ? application.scholarship._id : 'N/A',
+            scholarshipTitle: application.scholarship ? application.scholarship.title : 'N/A',
+            sponsorRef: application.scholarship?.sponsor ? 'EXISTS' : 'MISSING',
+            sponsorName: application.scholarship?.sponsor ? `${application.scholarship.sponsor.firstName} ${application.scholarship.sponsor.lastName}` : 'N/A'
+        });
+
         // For approved applications, allow viewing without strict authorization
         // This allows users to view their certificate after approval
         let isStudent = false;
