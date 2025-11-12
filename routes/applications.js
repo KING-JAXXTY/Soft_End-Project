@@ -219,6 +219,14 @@ router.get('/sponsor/received', protect, authorize('sponsor'), async (req, res) 
 // @access  Private
 router.get('/:id/full-details', protect, async (req, res) => {
     try {
+        // Validate ObjectId
+        if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid application ID'
+            });
+        }
+
         const application = await Application.findById(req.params.id)
             .populate('student', 'firstName lastName email')
             .populate({
@@ -236,12 +244,18 @@ router.get('/:id/full-details', protect, async (req, res) => {
             });
         }
 
+        // Validate populated references exist
+        if (!application.student || !application.scholarship || !application.scholarship.sponsor) {
+            return res.status(404).json({
+                success: false,
+                message: 'Related data not found'
+            });
+        }
+ 
         // Check authorization
         const isStudent = req.user._id.toString() === application.student._id.toString();
         const isSponsor = application.scholarship.sponsor._id.toString() === req.user._id.toString();
-        const isAdmin = req.user.role === 'admin';
-
-        if (!isStudent && !isSponsor && !isAdmin) {
+        const isAdmin = req.user.role === 'admin';        if (!isStudent && !isSponsor && !isAdmin) {
             return res.status(403).json({
                 success: false,
                 message: 'Not authorized to view this application'
