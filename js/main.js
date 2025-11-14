@@ -7,18 +7,22 @@ function scrollToFeatures() {
 // Modal functions
 function openAboutModal() {
     document.getElementById('aboutModal').style.display = 'block';
+    document.body.classList.add('modal-open');
 }
 
 function closeAboutModal() {
     document.getElementById('aboutModal').style.display = 'none';
+    document.body.classList.remove('modal-open');
 }
 
 function openPrivacyModal() {
     document.getElementById('privacyModal').style.display = 'block';
+    document.body.classList.add('modal-open');
 }
 
 function closePrivacyModal() {
     document.getElementById('privacyModal').style.display = 'none';
+    document.body.classList.remove('modal-open');
 }
 
 // Close modal when clicking outside of it

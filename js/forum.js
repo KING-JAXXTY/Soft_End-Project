@@ -126,12 +126,14 @@ function searchPosts() {
 // Show new post modal
 function showNewPostModal() {
     document.getElementById('newPostModal').style.display = 'block';
+    document.body.classList.add('modal-open');
 }
 
 // Close new post modal
 function closeNewPostModal() {
     document.getElementById('newPostModal').style.display = 'none';
     document.getElementById('newPostForm').reset();
+    document.body.classList.remove('modal-open');
 }
 
 // Handle new post submission
@@ -310,11 +312,13 @@ function showPostDetail(post, comments) {
     `;
     
     document.getElementById('postDetailModal').style.display = 'block';
+    document.body.classList.add('modal-open');
 }
 
 // Close post detail modal
 function closePostDetailModal() {
     document.getElementById('postDetailModal').style.display = 'none';
+    document.body.classList.remove('modal-open');
 }
 
 // Show My Posts modal
@@ -355,11 +359,13 @@ function showMyPosts() {
     }
     
     document.getElementById('myPostsModal').style.display = 'block';
+    document.body.classList.add('modal-open');
 }
 
 // Close My Posts modal
 function closeMyPostsModal() {
     document.getElementById('myPostsModal').style.display = 'none';
+    document.body.classList.remove('modal-open');
 }
 
 // Delete post from My Posts modal
@@ -498,6 +504,7 @@ async function viewUserProfile(userId) {
         // Display in modal
         document.getElementById('userProfileContent').innerHTML = profileHTML;
         document.getElementById('userProfileModal').style.display = 'block';
+        document.body.classList.add('modal-open');
         
     } catch (error) {
         console.error('Error loading user profile:', error);
@@ -508,6 +515,7 @@ async function viewUserProfile(userId) {
 // Close user profile modal
 function closeUserProfileModal() {
     document.getElementById('userProfileModal').style.display = 'none';
+    document.body.classList.remove('modal-open');
 }
 
 // Delete post

@@ -281,6 +281,7 @@ function showScholarshipModal(scholarship) {
     `;
     
     modal.style.display = 'block';
+    document.body.classList.add('modal-open');
     
     // Initialize map if coordinates exist - with safer checking
     let lat, lng;
@@ -311,6 +312,7 @@ function showScholarshipModal(scholarship) {
 // Close modal
 function closeModal() {
     document.getElementById('scholarshipModal').style.display = 'none';
+    document.body.classList.remove('modal-open');
 }
 
 // Show application form

@@ -258,6 +258,7 @@ function reviewApplication(applicationId) {
     `;
     
     document.getElementById('reviewModal').style.display = 'block';
+    document.body.classList.add('modal-open');
 }
 
 // Message student
@@ -268,6 +269,7 @@ function messageStudent(studentId) {
 // Close review modal
 function closeReviewModal() {
     document.getElementById('reviewModal').style.display = 'none';
+    document.body.classList.remove('modal-open');
     currentReviewApp = null;
 }
 
