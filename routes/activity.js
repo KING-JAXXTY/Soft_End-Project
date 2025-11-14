@@ -12,42 +12,42 @@ router.get('/recent', protect, authorize('admin'), async (req, res) => {
     try {
         // Get recent users, scholarships, and applications (last 10 each)
         const [users, scholarships, applications] = await Promise.all([
-            User.find().sort({ createdAt: -1 }).limit(10),
-            Scholarship.find().sort({ createdAt: -1 }).limit(10).populate('sponsor', 'firstName lastName'),
-            Application.find().sort({ createdAt: -1 }).limit(10).populate('student', 'firstName lastName').populate('scholarship', 'title')
+            User.find().sort({ createdAt: -1 }).limit(10).lean(),
+            Scholarship.find().sort({ createdAt: -1 }).limit(10).populate('sponsor', 'firstName lastName').lean(),
+            Application.find().sort({ createdAt: -1 }).limit(10).populate('student', 'firstName lastName').populate('scholarship', 'title').lean()
         ]);
 
-        // Format activity log
+        // Format activity log with null checks
         const activities = [
-            ...users.map(u => ({
+            ...(users || []).map(u => ({
                 type: 'user',
                 action: 'User Registered',
-                user: `${u.firstName} ${u.lastName}`,
-                time: u.createdAt
+                user: u && u.firstName && u.lastName ? `${u.firstName} ${u.lastName}` : 'Unknown User',
+                time: u?.createdAt || new Date()
             })),
-            ...scholarships.map(s => ({
+            ...(scholarships || []).map(s => ({
                 type: 'scholarship',
                 action: 'Scholarship Created',
-                user: s.sponsor ? `${s.sponsor.firstName} ${s.sponsor.lastName}` : 'Unknown Sponsor',
-                detail: s.title,
-                time: s.createdAt
+                user: s?.sponsor?.firstName && s?.sponsor?.lastName ? `${s.sponsor.firstName} ${s.sponsor.lastName}` : 'Unknown Sponsor',
+                detail: s?.title || 'Untitled Scholarship',
+                time: s?.createdAt || new Date()
             })),
-            ...applications.map(a => ({
+            ...(applications || []).map(a => ({
                 type: 'application',
                 action: 'Application Submitted',
-                user: a.student ? `${a.student.firstName} ${a.student.lastName}` : 'Unknown Student',
-                detail: a.scholarship ? a.scholarship.title : 'Unknown Scholarship',
-                time: a.createdAt
+                user: a?.student?.firstName && a?.student?.lastName ? `${a.student.firstName} ${a.student.lastName}` : 'Unknown Student',
+                detail: a?.scholarship?.title || 'Unknown Scholarship',
+                time: a?.createdAt || new Date()
             }))
         ];
 
         // Sort all activities by time (desc)
-        activities.sort((a, b) => b.time - a.time);
+        activities.sort((a, b) => new Date(b.time) - new Date(a.time));
 
         res.json({ success: true, activities: activities.slice(0, 20) });
     } catch (error) {
         console.error('Error fetching activity log:', error);
-        res.status(500).json({ success: false, message: 'Error fetching activity log' });
+        res.status(500).json({ success: false, message: 'Error fetching activity log', error: error.message });
     }
 });
 
