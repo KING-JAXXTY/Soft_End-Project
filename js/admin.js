@@ -144,42 +144,37 @@ function filterScholarships() {
 function loadActivityLog() {
     const container = document.getElementById('activityLog');
     container.innerHTML = '<div class="activity-loading">Loading activity...</div>';
-    fetch('http://localhost:5000/api/activity/recent', {
-        headers: {
-            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-        }
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (!data.success) throw new Error(data.message || 'Failed to fetch activity');
-        if (!data.activities || !data.activities.length) {
-            container.innerHTML = '<div class="activity-empty">No recent activity found.</div>';
-            return;
-        }
-        container.innerHTML = data.activities.map(activity => {
-            let timeStr = 'N/A';
-            if (activity.time) {
-                const time = new Date(activity.time);
-                if (!isNaN(time.getTime())) {
-                    timeStr = time.toLocaleString();
-                }
+    
+    API.getRecentActivity()
+        .then(activities => {
+            if (!activities || !activities.length) {
+                container.innerHTML = '<div class="activity-empty">No recent activity found.</div>';
+                return;
             }
-            let detail = activity.detail ? `<span class='activity-detail'>${activity.detail}</span>` : '';
-            return `
-                <div class="activity-item">
-                    <div class="activity-content">
-                        <strong>${activity.action}</strong>
-                        <span class="activity-user">by ${activity.user}</span>
-                        ${detail}
+            container.innerHTML = activities.map(activity => {
+                let timeStr = 'N/A';
+                if (activity.time) {
+                    const time = new Date(activity.time);
+                    if (!isNaN(time.getTime())) {
+                        timeStr = time.toLocaleString();
+                    }
+                }
+                let detail = activity.detail ? `<span class='activity-detail'>${activity.detail}</span>` : '';
+                return `
+                    <div class="activity-item">
+                        <div class="activity-content">
+                            <strong>${activity.action}</strong>
+                            <span class="activity-user">by ${activity.user}</span>
+                            ${detail}
+                        </div>
+                        <span class="activity-time">${timeStr}</span>
                     </div>
-                    <span class="activity-time">${timeStr}</span>
-                </div>
-            `;
-        }).join('');
-    })
-    .catch(err => {
-        container.innerHTML = `<div class='activity-error'>Error loading activity: ${err.message}</div>`;
-    });
+                `;
+            }).join('');
+        })
+        .catch(err => {
+            container.innerHTML = `<div class='activity-error'>Error loading activity: ${err.message}</div>`;
+        });
 }
 
 // Delete user confirmation

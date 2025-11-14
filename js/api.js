@@ -641,6 +641,13 @@ const API = {
         }
 
         return data;
+    },
+
+    // ==================== ACTIVITY ====================
+    
+    async getRecentActivity() {
+        const data = await apiCall('/activity/recent', { method: 'GET' });
+        return data.activities || [];
     }
 };
 
