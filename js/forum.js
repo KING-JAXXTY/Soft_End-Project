@@ -569,11 +569,49 @@ window.addEventListener('DOMContentLoaded', () => {
     }, 30000); // 30 seconds
 });
 
+// Grammar Fix Functionality for Forum Posts
+async function fixPostGrammar(fieldId) {
+    const field = document.getElementById(fieldId);
+    const originalText = field.value.trim();
+    
+    if (!originalText) {
+        notify.warning('Please enter some text first');
+        return;
+    }
+    
+    // Get all grammar buttons and disable them
+    const buttons = document.querySelectorAll(`button[onclick="fixPostGrammar('${fieldId}')"]`);
+    buttons.forEach(btn => {
+        btn.disabled = true;
+        btn.textContent = '⏳ Checking...';
+    });
+    
+    try {
+        // Use the GeminiAPI grammar check function
+        const correctedText = await GeminiAPI.grammarCheck(originalText);
+        
+        // Update field with corrected text
+        field.value = correctedText;
+        
+        notify.success('Grammar corrected!');
+    } catch (error) {
+        console.error('Grammar fix error:', error);
+        notify.error('Failed to fix grammar. Please try again.');
+    } finally {
+        // Re-enable buttons
+        buttons.forEach(btn => {
+            btn.disabled = false;
+            btn.textContent = '✨ Fix Grammar';
+        });
+    }
+}
+
 // Close modals when clicking outside
 window.addEventListener('click', (e) => {
     const newPostModal = document.getElementById('newPostModal');
     const postDetailModal = document.getElementById('postDetailModal');
     const myPostsModal = document.getElementById('myPostsModal');
+    const userProfileModal = document.getElementById('userProfileModal');
     
     if (e.target === newPostModal) {
         closeNewPostModal();
@@ -583,5 +621,8 @@ window.addEventListener('click', (e) => {
     }
     if (e.target === myPostsModal) {
         closeMyPostsModal();
+    }
+    if (e.target === userProfileModal) {
+        closeUserProfileModal();
     }
 });

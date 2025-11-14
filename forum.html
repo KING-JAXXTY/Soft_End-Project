@@ -51,11 +51,17 @@
             <h2>Create New Post</h2>
             <form id="newPostForm">
                 <div class="form-group">
-                    <label for="postTitle">Title (max 200 characters)</label>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <label for="postTitle">Title (max 200 characters)</label>
+                        <button type="button" onclick="fixPostGrammar('postTitle')" class="btn-secondary btn-sm">✨ Fix Grammar</button>
+                    </div>
                     <input type="text" id="postTitle" name="postTitle" required maxlength="200" placeholder="Enter post title">
                 </div>
                 <div class="form-group">
-                    <label for="postContent">Content (max 5000 characters)</label>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <label for="postContent">Content (max 5000 characters)</label>
+                        <button type="button" onclick="fixPostGrammar('postContent')" class="btn-secondary btn-sm">✨ Fix Grammar</button>
+                    </div>
                     <textarea id="postContent" name="postContent" rows="6" required maxlength="5000" placeholder="Write your post here..."></textarea>
                 </div>
                 <div class="modal-actions">
