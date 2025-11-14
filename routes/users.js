@@ -47,37 +47,8 @@ router.get('/', protect, authorize('admin'), async (req, res) => {
     }
 });
 
-// @route   DELETE /api/users/:id
-// @desc    Delete user
-// @access  Private (Admin)
-router.delete('/:id', protect, authorize('admin'), async (req, res) => {
-    try {
-        const user = await User.findById(req.params.id);
-        
-        if (!user) {
-            return res.status(404).json({
-                success: false,
-                message: 'User not found'
-            });
-        }
-        
-        await user.deleteOne();
-        
-        res.json({
-            success: true,
-            message: 'User deleted successfully'
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            success: false,
-            message: 'Error deleting user'
-        });
-    }
-});
-
 // @route   DELETE /api/users/account
-// @desc    Delete own account
+// @desc    Delete own account (students and sponsors only, not admins)
 // @access  Private
 router.delete('/account', protect, async (req, res) => {
     try {
@@ -89,6 +60,14 @@ router.delete('/account', protect, async (req, res) => {
             return res.status(404).json({
                 success: false,
                 message: 'User not found'
+            });
+        }
+        
+        // Prevent admin from deleting their own account
+        if (user.role === 'admin') {
+            return res.status(403).json({
+                success: false,
+                message: 'Admins cannot delete their own accounts'
             });
         }
         
@@ -126,6 +105,35 @@ router.delete('/account', protect, async (req, res) => {
         res.status(500).json({
             success: false,
             message: 'Error deleting account'
+        });
+    }
+});
+
+// @route   DELETE /api/users/:id
+// @desc    Delete user by ID (admin only)
+// @access  Private (Admin)
+router.delete('/:id', protect, authorize('admin'), async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found'
+            });
+        }
+        
+        await user.deleteOne();
+        
+        res.json({
+            success: true,
+            message: 'User deleted successfully'
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: 'Error deleting user'
         });
     }
 });
