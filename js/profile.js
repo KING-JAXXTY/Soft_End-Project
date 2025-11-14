@@ -130,28 +130,74 @@ function checkAuth() {
 // Load profile data
 async function loadProfile() {
     try {
-        const profileResponse = await API.getProfile();
-        const profile = profileResponse.profile || profileResponse;
+        // Check if viewing another user's profile
+        const urlParams = new URLSearchParams(window.location.search);
+        const viewUserId = urlParams.get('id');
         const currentUser = API.getCurrentUser();
+        const isViewingOtherProfile = viewUserId && viewUserId !== currentUser._id;
+        
+        let profileResponse, profile, profileUser;
+        
+        if (isViewingOtherProfile) {
+            // Load another user's profile
+            profileResponse = await API.getUserProfile(viewUserId);
+            profile = profileResponse.profile || profileResponse;
+            profileUser = profile.user || {};
+            
+            // Update page header for viewing other user's profile
+            document.querySelector('.page-header h1').textContent = 'User Profile';
+            document.querySelector('.page-header p').textContent = 'Viewing user information';
+        } else {
+            // Load current user's profile
+            profileResponse = await API.getProfile();
+            profile = profileResponse.profile || profileResponse;
+            profileUser = currentUser;
+            
+            // Update page header for own profile
+            document.querySelector('.page-header h1').textContent = 'My Profile';
+            document.querySelector('.page-header p').textContent = 'Manage your account information';
+        }
         
         // Get avatar from profile.user (populated from backend) or fallback to currentUser
-        const userAvatar = profile.user?.avatar || currentUser.avatar || 'avatar1';
+        const userAvatar = profile.user?.avatar || profileUser.avatar || 'avatar1';
         
         // Populate basic info
-        document.getElementById('profileName').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
-        document.getElementById('profileRole').textContent = currentUser.role.toUpperCase();
+        document.getElementById('profileName').textContent = `${profileUser.firstName} ${profileUser.lastName}`;
+        document.getElementById('profileRole').textContent = profileUser.role.toUpperCase();
         
         // Hide email for admin users
-        if (currentUser.role === 'admin') {
+        if (profileUser.role === 'admin') {
             document.getElementById('profileEmail').style.display = 'none';
         } else {
-            document.getElementById('profileEmail').textContent = currentUser.email;
+            document.getElementById('profileEmail').textContent = profileUser.email;
             document.getElementById('profileEmail').style.display = 'block';
         }
         
         // Set avatar
         const avatarUrl = getAvatarUrl(userAvatar);
         document.getElementById('profileAvatarImg').src = avatarUrl;
+        
+        // If viewing another user's profile, hide edit controls and show back button
+        if (isViewingOtherProfile) {
+            setFormReadOnly(true);
+            document.getElementById('editProfileBtn').style.display = 'none';
+            document.getElementById('saveProfileBtn').style.display = 'none';
+            document.getElementById('cancelEditBtn').style.display = 'none';
+            document.getElementById('backBtn').style.display = 'inline-block';
+            // Hide avatar change button when viewing other profiles
+            const changeAvatarBtn = document.getElementById('changeAvatarBtn');
+            if (changeAvatarBtn) {
+                changeAvatarBtn.style.display = 'none';
+            }
+        } else {
+            // Own profile - show normal controls
+            document.getElementById('editProfileBtn').style.display = 'inline-block';
+            document.getElementById('backBtn').style.display = 'inline-block';
+            const changeAvatarBtn = document.getElementById('changeAvatarBtn');
+            if (changeAvatarBtn) {
+                changeAvatarBtn.style.display = 'inline-block';
+            }
+        }
         
         // Set avatar selection
         document.getElementById('avatar').value = userAvatar;
@@ -164,9 +210,9 @@ async function loadProfile() {
         });
         
         // Populate form fields
-        document.getElementById('firstName').value = currentUser.firstName;
-        document.getElementById('lastName').value = currentUser.lastName;
-        document.getElementById('email').value = currentUser.email;
+        document.getElementById('firstName').value = profileUser.firstName;
+        document.getElementById('lastName').value = profileUser.lastName;
+        document.getElementById('email').value = profileUser.email;
         document.getElementById('contactNumber').value = profile.phone || '';
         
         // Set region and populate municipalities
@@ -188,8 +234,8 @@ async function loadProfile() {
         
         document.getElementById('address').value = profile.bio || '';
         
-        // Show role-specific fields
-        if (currentUser.role === 'student') {
+        // Show role-specific fields based on the profile being viewed
+        if (profileUser.role === 'student') {
             document.getElementById('studentFields').style.display = 'block';
             document.getElementById('sponsorFields').style.display = 'none';
             
@@ -226,7 +272,7 @@ async function loadProfile() {
             document.getElementById('studentFields').style.display = 'none';
             document.getElementById('sponsorFields').style.display = 'none';
             // Hide contact/location fields for admin and remove required attributes
-            if (currentUser.role === 'admin') {
+            if (profileUser.role === 'admin') {
                 document.getElementById('personalInfoFields').style.display = 'none';
                 
                 // Remove required attribute from hidden fields so form can submit
@@ -416,6 +462,17 @@ document.getElementById('changeAvatarBtn').addEventListener('click', function() 
 
 // Go back to previous page
 function goBack() {
+    // Check if viewing another user's profile
+    const urlParams = new URLSearchParams(window.location.search);
+    const viewUserId = urlParams.get('id');
+    
+    if (viewUserId) {
+        // Return to forum if viewing another user's profile
+        window.location.href = 'forum.html';
+        return;
+    }
+    
+    // Otherwise, go to role-specific home
     const currentUser = API.getCurrentUser();
     if (currentUser.role === 'student') {
         window.location.href = 'student-home.html';
