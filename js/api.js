@@ -430,6 +430,13 @@ const API = {
         return data.profile;
     },
 
+    async deleteAccount() {
+        const data = await apiCall('/users/account', {
+            method: 'DELETE'
+        });
+        return data;
+    },
+
     async uploadProfilePicture(file) {
         const formData = new FormData();
         formData.append('profilePicture', file);

@@ -281,6 +281,14 @@ async function loadProfile() {
                 document.getElementById('province').removeAttribute('required');
             }
         }
+        
+        // Show delete account section only for students and sponsors (not admin or when viewing other profiles)
+        const deleteSection = document.getElementById('deleteAccountSection');
+        if (deleteSection && !isViewingOtherProfile && (profileUser.role === 'student' || profileUser.role === 'sponsor')) {
+            deleteSection.style.display = 'block';
+        } else if (deleteSection) {
+            deleteSection.style.display = 'none';
+        }
     } catch (error) {
         console.error('Error loading profile:', error);
     }
@@ -568,3 +576,38 @@ document.getElementById('cancelEditBtn').addEventListener('click', function() {
     document.getElementById('cancelEditBtn').style.display = 'none';
     document.getElementById('backBtn').style.display = 'inline-block';
 });
+
+// Delete Account function
+async function deleteAccount() {
+    const confirmed = await notify.confirm(
+        'Are you absolutely sure you want to delete your account? This action cannot be undone. All your data including applications, posts, and messages will be permanently deleted.'
+    );
+    
+    if (!confirmed) {
+        return;
+    }
+    
+    // Second confirmation
+    const doubleConfirmed = await notify.confirm(
+        'Final confirmation: Delete your account permanently?'
+    );
+    
+    if (!doubleConfirmed) {
+        return;
+    }
+    
+    try {
+        await API.deleteAccount();
+        notify.success('Account deleted successfully. You will be logged out.');
+        
+        // Wait a moment then logout
+        setTimeout(() => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        }, 2000);
+    } catch (error) {
+        console.error('Error deleting account:', error);
+        notify.error(error.message || 'Failed to delete account');
+    }
+}

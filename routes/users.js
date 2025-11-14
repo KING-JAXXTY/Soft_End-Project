@@ -4,6 +4,9 @@ const User = require('../models/User');
 const Profile = require('../models/Profile');
 const Scholarship = require('../models/Scholarship');
 const Application = require('../models/Application');
+const ForumPost = require('../models/ForumPost');
+const Message = require('../models/Message');
+const Conversation = require('../models/Conversation');
 const { protect, authorize } = require('../middleware/auth');
 
 // @route   GET /api/users
@@ -69,6 +72,60 @@ router.delete('/:id', protect, authorize('admin'), async (req, res) => {
         res.status(500).json({
             success: false,
             message: 'Error deleting user'
+        });
+    }
+});
+
+// @route   DELETE /api/users/account
+// @desc    Delete own account
+// @access  Private
+router.delete('/account', protect, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        
+        // Find user
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found'
+            });
+        }
+        
+        // Delete associated profile
+        await Profile.findOneAndDelete({ user: userId });
+        
+        // Delete associated applications if student
+        if (user.role === 'student') {
+            await Application.deleteMany({ student: userId });
+        }
+        
+        // Delete associated scholarships if sponsor
+        if (user.role === 'sponsor') {
+            await Scholarship.deleteMany({ sponsor: userId });
+        }
+        
+        // Delete forum posts
+        await ForumPost.deleteMany({ author: userId });
+        
+        // Delete messages
+        await Message.deleteMany({ $or: [{ sender: userId }, { recipient: userId }] });
+        
+        // Delete conversations
+        await Conversation.deleteMany({ participants: userId });
+        
+        // Finally delete the user
+        await user.deleteOne();
+        
+        res.json({
+            success: true,
+            message: 'Account deleted successfully'
+        });
+    } catch (error) {
+        console.error('Error deleting account:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error deleting account'
         });
     }
 });
