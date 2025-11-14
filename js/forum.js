@@ -411,12 +411,103 @@ function logout() {
 }
 
 // View user profile
-function viewUserProfile(userId) {
+async function viewUserProfile(userId) {
     if (!userId) {
         alert('User profile not available');
         return;
     }
-    window.location.href = `profile.html?id=${userId}`;
+    
+    try {
+        // Fetch user profile
+        const profileData = await API.getUserProfile(userId);
+        const profile = profileData.profile || profileData;
+        const user = profile.user || {};
+        
+        // Get avatar
+        const avatarUrl = getAvatarUrl(user.avatar || 'avatar1');
+        
+        // Build profile HTML
+        let profileHTML = `
+            <div class="user-profile-view">
+                <div class="profile-header-modal">
+                    <div class="profile-avatar-large">
+                        <img src="${avatarUrl}" alt="${user.firstName} ${user.lastName}" />
+                    </div>
+                    <div class="profile-info-modal">
+                        <h2>${user.firstName} ${user.lastName}</h2>
+                        <span class="badge badge-${user.role}">${user.role.toUpperCase()}</span>
+                        ${user.role !== 'admin' ? `<p class="profile-email">${user.email}</p>` : ''}
+                    </div>
+                </div>
+                
+                <div class="profile-details-modal">
+        `;
+        
+        // Add contact information if available
+        if (profile.phone || profile.region || profile.province) {
+            profileHTML += `
+                <div class="profile-section">
+                    <h3>Contact Information</h3>
+                    ${profile.phone ? `<p><strong>Phone:</strong> ${profile.phone}</p>` : ''}
+                    ${profile.region ? `<p><strong>Region:</strong> ${profile.region}</p>` : ''}
+                    ${profile.province ? `<p><strong>Province/City:</strong> ${profile.province}</p>` : ''}
+                </div>
+            `;
+        }
+        
+        // Add bio if available
+        if (profile.bio) {
+            profileHTML += `
+                <div class="profile-section">
+                    <h3>About</h3>
+                    <p>${profile.bio}</p>
+                </div>
+            `;
+        }
+        
+        // Add student-specific information
+        if (user.role === 'student' && profile.studentInfo) {
+            profileHTML += `
+                <div class="profile-section">
+                    <h3>Student Information</h3>
+                    ${profile.studentInfo.institution ? `<p><strong>Institution:</strong> ${profile.studentInfo.institution}</p>` : ''}
+                    ${profile.studentInfo.gradeLevel ? `<p><strong>Year Level:</strong> ${profile.studentInfo.gradeLevel}</p>` : ''}
+                    ${profile.studentInfo.major ? `<p><strong>Course/Major:</strong> ${profile.studentInfo.major}</p>` : ''}
+                    ${profile.studentInfo.gpa ? `<p><strong>GPA:</strong> ${profile.studentInfo.gpa}</p>` : ''}
+                </div>
+            `;
+        }
+        
+        // Add sponsor-specific information
+        if (user.role === 'sponsor' && profile.sponsorInfo) {
+            profileHTML += `
+                <div class="profile-section">
+                    <h3>Sponsor Information</h3>
+                    ${profile.sponsorInfo.organization ? `<p><strong>Organization:</strong> ${profile.sponsorInfo.organization}</p>` : ''}
+                    ${profile.sponsorInfo.website ? `<p><strong>Affiliated Institution:</strong> ${profile.sponsorInfo.website}</p>` : ''}
+                    ${profile.sponsorInfo.description ? `<p><strong>Description:</strong> ${profile.sponsorInfo.description}</p>` : ''}
+                </div>
+            `;
+        }
+        
+        profileHTML += `
+                </div>
+            </div>
+        `;
+        
+        // Display in modal
+        document.getElementById('userProfileContent').innerHTML = profileHTML;
+        document.getElementById('userProfileModal').style.display = 'block';
+        
+    } catch (error) {
+        console.error('Error loading user profile:', error);
+        notify.error('Failed to load user profile');
+    }
+}
+
+// Close user profile modal
+function closeUserProfileModal() {
+    document.getElementById('userProfileModal').style.display = 'none';
 }
 
 // Delete post

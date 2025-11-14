@@ -4892,6 +4892,112 @@ a[href^="mailto"] {
     }
 }
 
+/* User Profile Modal Styles */
+.user-profile-view {
+    padding: 1rem;
+}
+
+.profile-header-modal {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    color: white;
+}
+
+.profile-avatar-large {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    flex-shrink: 0;
+    background: white;
+}
+
+.profile-avatar-large img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-info-modal h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.75rem;
+    color: white;
+}
+
+.profile-info-modal .badge {
+    margin-bottom: 0.5rem;
+}
+
+.profile-email {
+    opacity: 0.9;
+    font-size: 0.95rem;
+    margin: 0.5rem 0 0 0;
+}
+
+.profile-details-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.profile-section {
+    padding: 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.profile-section h3 {
+    margin: 0 0 1rem 0;
+    color: var(--primary-color);
+    font-size: 1.25rem;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+.profile-section p {
+    margin: 0.5rem 0;
+    line-height: 1.6;
+}
+
+.profile-section strong {
+    color: var(--text-primary);
+    margin-right: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .profile-header-modal {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .profile-avatar-large {
+        width: 100px;
+        height: 100px;
+    }
+
+    .profile-info-modal h2 {
+        font-size: 1.5rem;
+    }
+
+    .profile-section {
+        padding: 1rem;
+    }
+
+    .user-profile-view {
+        padding: 0.5rem;
+    }
+}
+
+
 
 
 
