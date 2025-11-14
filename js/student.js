@@ -133,14 +133,8 @@ function filterScholarships() {
 
 // View scholarship details
 async function viewScholarship(id) {
-    try {
-        const scholarship = await API.getScholarshipById(id);
-        console.log('Scholarship data:', scholarship); // Debug log
-        showScholarshipModal(scholarship);
-    } catch (error) {
-        console.error('Error loading scholarship:', error);
-        alert('Error loading scholarship details');
-    }
+    // Navigate to scholarship detail page
+    window.location.href = `scholarship-detail.html?id=${id}`;
 }
 
 // Show scholarship modal
