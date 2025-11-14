@@ -64,7 +64,7 @@ async function loadScholarshipDetail() {
                 <div class="scholarship-header-content">
                     <h1 class="scholarship-title">${scholarship.title}</h1>
                     <div class="scholarship-meta">
-                        <span class="scholarship-type">${scholarship.type}</span>
+                        <span class="scholarship-type">${scholarship.scholarshipType || 'Scholarship'}</span>
                         <span class="scholarship-status ${scholarship.status}">${scholarship.status}</span>
                     </div>
                 </div>
@@ -77,20 +77,40 @@ async function loadScholarshipDetail() {
                         <p>${scholarship.description}</p>
                     </section>
 
+                    ${scholarship.eligibility ? `
                     <section class="detail-card">
                         <h2>Eligibility Criteria</h2>
                         <p>${scholarship.eligibility}</p>
                     </section>
+                    ` : ''}
 
+                    ${scholarship.benefits ? `
                     <section class="detail-card">
                         <h2>Benefits</h2>
                         <p>${scholarship.benefits}</p>
                     </section>
+                    ` : ''}
 
-                    ${scholarship.requirements ? `
+                    ${scholarship.requirements && scholarship.requirements.length > 0 ? `
                     <section class="detail-card">
                         <h2>Requirements</h2>
-                        <p>${scholarship.requirements}</p>
+                        <ul>
+                            ${scholarship.requirements.map(req => `<li>${req}</li>`).join('')}
+                        </ul>
+                    </section>
+                    ` : ''}
+
+                    ${scholarship.selectionCriteria ? `
+                    <section class="detail-card">
+                        <h2>Selection Criteria</h2>
+                        <p>${scholarship.selectionCriteria}</p>
+                    </section>
+                    ` : ''}
+
+                    ${scholarship.renewalPolicy ? `
+                    <section class="detail-card">
+                        <h2>Renewal Policy</h2>
+                        <p>${scholarship.renewalPolicy}</p>
                     </section>
                     ` : ''}
                 </div>
@@ -98,26 +118,54 @@ async function loadScholarshipDetail() {
                 <aside class="scholarship-sidebar">
                     <div class="detail-card sidebar-card">
                         <h3>Scholarship Information</h3>
+                        ${scholarship.amount ? `
                         <div class="info-row">
                             <span class="info-label">Amount</span>
-                            <span class="info-value">₱${scholarship.amount ? scholarship.amount.toLocaleString() : 'N/A'}</span>
+                            <span class="info-value">₱${scholarship.amount.toLocaleString()}</span>
                         </div>
+                        ` : ''}
+                        ${scholarship.deadline ? `
                         <div class="info-row">
                             <span class="info-label">Deadline</span>
-                            <span class="info-value">${scholarship.deadline ? new Date(scholarship.deadline).toLocaleDateString() : 'N/A'}</span>
+                            <span class="info-value">${new Date(scholarship.deadline).toLocaleDateString()}</span>
                         </div>
+                        ` : ''}
+                        ${scholarship.availableSlots ? `
                         <div class="info-row">
                             <span class="info-label">Slots Available</span>
-                            <span class="info-value">${scholarship.slots || 'N/A'}</span>
+                            <span class="info-value">${scholarship.availableSlots}</span>
                         </div>
+                        ` : ''}
+                        ${scholarship.region ? `
                         <div class="info-row">
                             <span class="info-label">Region</span>
-                            <span class="info-value">${scholarship.region || 'N/A'}</span>
+                            <span class="info-value">${scholarship.region}</span>
                         </div>
+                        ` : ''}
+                        ${scholarship.affiliatedInstitution ? `
                         <div class="info-row">
-                            <span class="info-label">Field of Study</span>
-                            <span class="info-value">${scholarship.fieldOfStudy || 'N/A'}</span>
+                            <span class="info-label">Institution</span>
+                            <span class="info-value">${scholarship.affiliatedInstitution}</span>
                         </div>
+                        ` : ''}
+                        ${scholarship.contactEmail ? `
+                        <div class="info-row">
+                            <span class="info-label">Contact Email</span>
+                            <span class="info-value"><a href="mailto:${scholarship.contactEmail}">${scholarship.contactEmail}</a></span>
+                        </div>
+                        ` : ''}
+                        ${scholarship.contactPhone ? `
+                        <div class="info-row">
+                            <span class="info-label">Contact Phone</span>
+                            <span class="info-value">${scholarship.contactPhone}</span>
+                        </div>
+                        ` : ''}
+                        ${scholarship.applicationLink ? `
+                        <div class="info-row">
+                            <span class="info-label">External Application</span>
+                            <span class="info-value"><a href="${scholarship.applicationLink}" target="_blank">Visit Site</a></span>
+                        </div>
+                        ` : ''}
                     </div>
 
                     ${currentUser.role === 'student' ? `
@@ -159,7 +207,7 @@ async function loadScholarshipDetail() {
 
 // Apply for scholarship
 async function applyForScholarship(scholarshipId) {
-    window.location.href = `student-home.html?apply=${scholarshipId}`;
+    window.location.href = `apply-scholarship.html?id=${scholarshipId}`;
 }
 
 // Initialize

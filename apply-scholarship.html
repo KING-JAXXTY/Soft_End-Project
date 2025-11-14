@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Apply for Scholarship - TulongAral+</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script>window.__VERCEL_LIVE__ = false;</script>
+</head>
+<body>
+    <nav class="main-navbar">
+        <div class="logo">
+            <h1>TulongAral+</h1>
+        </div>
+        <div class="nav-links">
+            <a href="student-home.html">Home</a>
+            <a href="student-dashboard.html">Dashboard</a>
+            <a href="messages.html">Messages</a>
+            <a href="forum.html">Community Forum</a>
+            <a href="profile.html">Profile</a>
+        </div>
+        <div class="nav-user">
+            <span id="userName">User</span>
+            <button onclick="logout()" class="btn-secondary btn-sm">Logout</button>
+        </div>
+    </nav>
+
+    <div class="container" style="max-width: 800px; margin: 2rem auto;">
+        <div class="detail-back-nav">
+            <button onclick="goBack()" class="btn-back">
+                <span>&larr;</span> Back
+            </button>
+        </div>
+
+        <div class="card" style="margin-top: 1rem;">
+            <div class="card-header">
+                <h2>Apply for Scholarship</h2>
+                <p id="scholarshipTitle" style="color: #666; margin-top: 0.5rem;"></p>
+            </div>
+
+            <div class="card-body">
+                <form id="applicationForm" onsubmit="submitApplication(event)">
+                    <div class="form-group">
+                        <label for="coverLetter">Cover Letter <span style="color: red;">*</span></label>
+                        <textarea 
+                            id="coverLetter" 
+                            rows="10" 
+                            required 
+                            placeholder="Tell us about yourself, your achievements, and why you deserve this scholarship..."
+                        ></textarea>
+                        <small>Explain why you are a good candidate for this scholarship. Include your academic background, achievements, goals, and how this scholarship will help you.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="documents">Supporting Documents</label>
+                        <input 
+                            type="file" 
+                            id="documents" 
+                            multiple 
+                            accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                        >
+                        <small>Upload your transcripts, certificates, ID, recommendation letters, or any other relevant documents. Accepted formats: PDF, DOC, DOCX, JPG, PNG</small>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 2rem;">
+                        <button type="button" onclick="goBack()" class="btn-secondary" style="margin-right: 1rem;">Cancel</button>
+                        <button type="submit" class="btn-primary">Submit Application</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/notifications.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/apply-scholarship.js"></script>
+</body>
+</html>

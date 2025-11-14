@@ -1,5 +1,4 @@
 // Auth.js - Login and Registration functionality
-
 // Municipalities/Cities by region
 const municipalitiesByRegion = {
     'National Capital Region': [
