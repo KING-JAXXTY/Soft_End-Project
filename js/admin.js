@@ -624,13 +624,13 @@ async function confirmSuspend(event) {
     
     const reason = document.getElementById('suspendReason').value.trim();
     if (!reason) {
-        showNotification('Please provide a reason for suspension', 'error');
+        notify.error('Please provide a reason for suspension');
         return;
     }
     
     try {
         await API.suspendUser(currentActionUserId, reason);
-        showNotification(`${currentActionUserName} has been suspended`, 'success');
+        notify.success(`${currentActionUserName} has been suspended`);
         closeSuspendModal();
         
         // Refresh the user search if we have a uniqueId to search
@@ -643,7 +643,7 @@ async function confirmSuspend(event) {
         await loadReports();
     } catch (error) {
         console.error('Suspension error:', error);
-        showNotification(error.message || 'Failed to suspend user', 'error');
+        notify.error(error.message || 'Failed to suspend user');
     }
 }
 
@@ -666,13 +666,13 @@ async function confirmWarn(event) {
     
     const reason = document.getElementById('warnReason').value.trim();
     if (!reason) {
-        showNotification('Please provide a reason for the warning', 'error');
+        notify.error('Please provide a reason for the warning');
         return;
     }
     
     try {
         await API.warnUser(currentActionUserId, reason);
-        showNotification(`Warning issued to ${currentActionUserName}`, 'success');
+        notify.success(`Warning issued to ${currentActionUserName}`);
         closeWarnModal();
         
         // Refresh the user search
@@ -685,7 +685,7 @@ async function confirmWarn(event) {
         await loadReports();
     } catch (error) {
         console.error('Warning error:', error);
-        showNotification(error.message || 'Failed to issue warning', 'error');
+        notify.error(error.message || 'Failed to issue warning');
     }
 }
 
@@ -696,7 +696,7 @@ async function unsuspendUser(userId, userName) {
     
     try {
         await API.unsuspendUser(userId);
-        showNotification(`${userName} has been unsuspended`, 'success');
+        notify.success(`${userName} has been unsuspended`);
         
         // Refresh the user search
         const searchInput = document.getElementById('reportedUserIdInput');
@@ -708,6 +708,9 @@ async function unsuspendUser(userId, userName) {
         await loadReports();
     } catch (error) {
         console.error('Unsuspension error:', error);
+        notify.error(error.message || 'Failed to unsuspend user');
+    }
+}
         showNotification(error.message || 'Failed to unsuspend user', 'error');
     }
 }
