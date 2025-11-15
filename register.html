@@ -8,74 +8,141 @@
 </head>
 <body>
     <div class="auth-page">
-        <div class="auth-container register-container">
+        <div class="auth-container register-container modern-register-card">
             <div class="auth-header">
                 <h1>TulongAral+</h1>
-                <h2>Create Account</h2>
-                <p>Join our scholarship community</p>
+                <h2>Create Your Account</h2>
+                <p>Join our scholarship community and start your journey</p>
             </div>
 
-            <form id="registerForm" class="auth-form">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="firstName">First Name</label>
-                        <input type="text" id="firstName" name="firstName" required placeholder="Enter first name">
+            <form id="registerForm" class="auth-form modern-form">
+                <div class="form-section">
+                    <h3 class="section-title">Personal Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                First Name
+                            </label>
+                            <input type="text" id="firstName" name="firstName" required placeholder="Enter first name">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                Last Name
+                            </label>
+                            <input type="text" id="lastName" name="lastName" required placeholder="Enter last name">
+                        </div>
                     </div>
+
                     <div class="form-group">
-                        <label for="lastName">Last Name</label>
-                        <input type="text" id="lastName" name="lastName" required placeholder="Enter last name">
+                        <label for="email">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                            Email Address
+                        </label>
+                        <input type="email" id="email" name="email" required placeholder="your.email@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactNumber">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                            </svg>
+                            Contact Number
+                        </label>
+                        <input type="tel" id="contactNumber" name="contactNumber" required placeholder="09XXXXXXXXX">
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" required placeholder="Enter your email">
-                </div>
-
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required placeholder="Create a password" minlength="6">
-                </div>
-
-                <div class="form-group">
-                    <label for="confirmPassword">Confirm Password</label>
-                    <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password">
-                </div>
-
-                <div class="form-group">
-                    <label for="contactNumber">Contact Number</label>
-                    <input type="tel" id="contactNumber" name="contactNumber" required placeholder="09XXXXXXXXX">
-                </div>
-
-                <div class="form-row">
+                <div class="form-section">
+                    <h3 class="section-title">Account Security</h3>
                     <div class="form-group">
-                        <label for="region">Region</label>
-                        <select id="region" name="region" required>
-                            <option value="" selected>Select Region</option>
-                            <option value="National Capital Region">National Capital Region</option>
-                            <option value="Ilocos Region">Ilocos Region</option>
-                            <option value="Cagayan Valley">Cagayan Valley</option>
+                        <label for="password">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            Password
+                        </label>
+                        <input type="password" id="password" name="password" required placeholder="Create a password" minlength="6">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                            Confirm Password
+                        </label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm your password">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title">Location Details</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="region">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                Region
+                            </label>
+                            <select id="region" name="region" required>
+                                <option value="" selected>Select Region</option>
+                                <option value="National Capital Region">National Capital Region</option>
+                                <option value="Ilocos Region">Ilocos Region</option>
+                                <option value="Cagayan Valley">Cagayan Valley</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="province">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                City/Municipality
+                            </label>
+                            <select id="province" name="province" required>
+                                <option value="" selected>Select City/Municipality</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title">Account Type</h3>
+                    <div class="form-group">
+                        <label for="role">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            Register As
+                        </label>
+                        <select id="role" name="role" required>
+                            <option value="">Select Role</option>
+                            <option value="student">Student - Apply for scholarships</option>
+                            <option value="sponsor">Sponsor - Create scholarship opportunities</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="province">City/Municipality</label>
-                        <select id="province" name="province" required>
-                            <option value="" selected>Select City/Municipality</option>
-                        </select>
-                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="role">Register As</label>
-                    <select id="role" name="role" required>
-                        <option value="">Select Role</option>
-                        <option value="student">Student</option>
-                        <option value="sponsor">Sponsor</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Choose Your Avatar</label>
+                <div class="form-section">
+                    <h3 class="section-title">Choose Your Avatar</h3>
                     <div class="avatar-selection imgs">
                         <div class="avatar-option img-wrap" data-avatar="avatar1">
                             <img src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortFlat&accessoriesType=Round&hairColor=Blonde&facialHairType=BeardLight&facialHairColor=Auburn&clotheType=ShirtVNeck&clotheColor=Black&eyeType=Squint&eyebrowType=Default&mouthType=Smile&skinColor=Light" />
@@ -119,11 +186,15 @@
 
                 <div id="errorMessage" class="error-message" style="display: none;"></div>
 
-                <button type="submit" class="btn-primary btn-full">Register</button>
+                <button type="submit" class="btn-primary btn-full modern-btn">Create Account</button>
             </form>
 
+            <div class="auth-divider">
+                <span>or</span>
+            </div>
+
             <div class="auth-footer">
-                <p>Already have an account? <a href="login.html" class="link">Login here</a></p>
+                <p>Already have an account? <a href="login.html" class="link">Sign in now</a></p>
                 <button onclick="window.location.href='index.html'" class="btn-text">Back to Home</button>
             </div>
         </div>
