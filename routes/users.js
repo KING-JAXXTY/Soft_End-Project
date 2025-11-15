@@ -438,6 +438,48 @@ router.put('/:id/warn', protect, authorize('admin'), async (req, res) => {
     }
 });
 
+// @route   DELETE /api/users/:id/warnings
+// @desc    Remove all warnings from a user (Admin only - Reclaim action)
+// @access  Private (Admin)
+router.delete('/:id/warnings', protect, authorize('admin'), async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found'
+            });
+        }
+
+        const previousWarnings = user.warnings;
+
+        // Clear all warnings
+        user.warnings = 0;
+        user.warningHistory = [];
+
+        await user.save();
+
+        res.json({
+            success: true,
+            message: `All warnings removed. User had ${previousWarnings} warning(s).`,
+            user: {
+                _id: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                warnings: user.warnings,
+                previousWarnings
+            }
+        });
+    } catch (error) {
+        console.error('Remove warnings error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error removing warnings'
+        });
+    }
+});
+
 // @route   GET /api/users/:id/status
 // @desc    Get user suspension and warning status
 // @access  Private (Admin)

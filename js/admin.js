@@ -540,6 +540,11 @@ async function searchReportedUser(userId) {
                         <button onclick="showWarnModal('${user._id}', '${user.firstName} ${user.lastName}')" class="btn-secondary btn-sm" style="background: #f59e0b; color: white;">
                             ⚠️ Issue Warning
                         </button>
+                        ${userStatus.warnings > 0 ? `
+                            <button onclick="removeAllWarnings('${user._id}', '${user.firstName} ${user.lastName}', ${userStatus.warnings})" class="btn-secondary btn-sm" style="background: #10b981; color: white;">
+                                ✓ Remove All Warnings
+                            </button>
+                        ` : ''}
                     ` : ''}
                 </div>
             </div>
@@ -747,6 +752,30 @@ async function unsuspendUser(userId, userName) {
     } catch (error) {
         console.error('Unsuspension error:', error);
         notify.error(error.message || 'Failed to unsuspend user');
+    }
+}
+
+async function removeAllWarnings(userId, userName, warningCount) {
+    if (!confirm(`Are you sure you want to remove all ${warningCount} warning(s) from ${userName}? This action will clear their warning history.`)) {
+        return;
+    }
+    
+    try {
+        await API.removeWarnings(userId);
+        notify.success(`All warnings removed from ${userName}`);
+        
+        // Refresh the user search
+        const searchInput = document.getElementById('reportedUserIdInput');
+        if (searchInput && searchInput.value) {
+            await searchReportedUser(searchInput.value);
+        }
+        
+        // Refresh report detail and reports list
+        await refreshReportDetail();
+        await loadReports();
+    } catch (error) {
+        console.error('Remove warnings error:', error);
+        notify.error(error.message || 'Failed to remove warnings');
     }
 }
 

@@ -717,6 +717,13 @@ const API = {
         return data;
     },
 
+    async removeWarnings(userId) {
+        const data = await apiCall(`/users/${userId}/warnings`, {
+            method: 'DELETE'
+        });
+        return data;
+    },
+
     async getUserStatus(userId) {
         const data = await apiCall(`/users/${userId}/status`, { method: 'GET' });
         return data.status;
