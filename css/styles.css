@@ -557,11 +557,11 @@ button {
 
 .auth-container {
     background: var(--surface);
-    padding: 1.75rem 1.5rem;
+    padding: 1.75rem 1rem;
     border-radius: 16px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     width: 100%;
-    max-width: 280px;
+    max-width: 260px;
     position: relative;
     z-index: 1;
     animation: fadeInUp 0.6s ease-out;
@@ -682,7 +682,7 @@ button {
     margin-bottom: 0.35rem;
     display: block;
     color: var(--text-primary);
-    width: 85%;
+    width: 90%;
     margin-left: auto;
     margin-right: auto;
     text-align: left;
@@ -690,8 +690,8 @@ button {
 
 .auth-form .form-group input,
 .auth-form .form-group select {
-    width: 85% !important;
-    max-width: 85% !important;
+    width: 90% !important;
+    max-width: 90% !important;
     padding: 0.65rem 0.75rem !important;
     font-size: 0.8125rem;
     box-sizing: border-box;
@@ -716,7 +716,7 @@ button {
     align-items: center;
     margin-bottom: 1rem;
     font-size: 0.75rem;
-    width: 85%;
+    width: 90%;
     margin-left: auto;
     margin-right: auto;
 }
@@ -735,7 +735,7 @@ button {
 }
 
 .auth-form .btn-full {
-    width: 85%;
+    width: 90%;
     padding: 0.75rem;
     font-size: 0.875rem;
     font-weight: 600;
@@ -760,7 +760,7 @@ button {
     margin-bottom: 0.875rem;
     font-size: 0.8125rem;
     border-left: 4px solid #c33;
-    width: 85%;
+    width: 90%;
     margin-left: auto;
     margin-right: auto;
 }
@@ -773,7 +773,7 @@ button {
     margin-bottom: 0.875rem;
     font-size: 0.8125rem;
     border-left: 4px solid #3c3;
-    width: 85%;
+    width: 90%;
     margin-left: auto;
     margin-right: auto;
 }
