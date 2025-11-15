@@ -528,7 +528,7 @@ button {
     align-items: center;
     justify-content: center;
     padding: 2rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
     position: relative;
     overflow: hidden;
 }
@@ -631,22 +631,6 @@ button {
     margin-bottom: 2rem;
 }
 
-.login-icon {
-    width: 64px;
-    height: 64px;
-    margin: 0 auto 1.25rem;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.25);
-}
-
-.login-icon svg {
-    color: white;
-}
-
 .auth-header h1 {
     color: var(--primary-color);
     margin-bottom: 0.5rem;
@@ -708,14 +692,6 @@ button {
 .auth-footer .btn-text:hover {
     color: var(--primary-color);
     background: rgba(37, 99, 235, 0.05);
-}
-
-.auth-footer .btn-text svg {
-    transition: transform 0.2s;
-}
-
-.auth-footer .btn-text:hover svg {
-    transform: translateX(-3px);
 }
 
 .auth-divider {
@@ -915,14 +891,6 @@ button {
 
 .modern-btn:active {
     transform: translateY(0);
-}
-
-.modern-btn svg {
-    transition: transform 0.2s;
-}
-
-.modern-btn:hover svg {
-    transform: translateX(3px);
 }
 
 .auth-form .btn-full {
