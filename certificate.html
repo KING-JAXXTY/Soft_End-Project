@@ -22,17 +22,10 @@
             overflow: hidden;
         }
         
-        .print-button {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-        
         .download-button {
             position: fixed;
             top: 20px;
-            right: 180px;
+            right: 20px;
             z-index: 1000;
         }
         
@@ -58,7 +51,6 @@
                 min-height: auto !important;
             }
             
-            .print-button,
             .download-button,
             .back-button {
                 display: none !important;
@@ -88,8 +80,7 @@
 </head>
 <body>
     <button onclick="window.history.back()" class="btn-secondary back-button">Back</button>
-    <button onclick="downloadCertificate()" class="btn-success download-button">Download PDF</button>
-    <button onclick="printCertificate()" class="btn-primary print-button">Print Certificate</button>
+    <button onclick="downloadCertificate()" class="btn-primary download-button">Download PDF</button>
     
     <div id="certificateContainer">
         <p style="color: white; text-align: center;">Loading certificate...</p>
@@ -100,16 +91,6 @@
     <script src="js/api.js"></script>
     <script src="js/certificate.js"></script>
     <script>
-        // Print function
-        function printCertificate() {
-            const container = document.getElementById('certificateContainer');
-            if (container && container.children.length > 0 && !container.textContent.includes('Loading')) {
-                window.print();
-            } else {
-                alert('Please wait for the certificate to load before printing.');
-            }
-        }
-        
         // Download as PDF function
         async function downloadCertificate() {
             const container = document.getElementById('certificateContainer');
@@ -145,7 +126,7 @@
                 await html2pdf().set(opt).from(certificate).save();
             } catch (error) {
                 console.error('Download error:', error);
-                alert('Failed to download certificate. Please try using the Print button instead.');
+                alert('Failed to download certificate. Please try again or contact support.');
             }
         }
         
