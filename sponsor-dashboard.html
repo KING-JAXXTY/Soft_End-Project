@@ -161,24 +161,58 @@
 
     <!-- Application Review Modal -->
     <div id="reviewModal" class="modal" style="display: none;">
-        <div class="modal-content">
+        <div class="modal-content review-modal-content">
             <span class="close" onclick="closeReviewModal()">&times;</span>
-            <h2>Review Application</h2>
-            <div id="applicationDetail"></div>
-            <div class="form-group">
-                <label>Decision</label>
-                <select id="reviewStatus">
-                    <option value="approved">Approve</option>
-                    <option value="rejected">Reject</option>
-                </select>
+            <div class="review-modal-header">
+                <div class="header-icon-wrapper">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                </div>
+                <div>
+                    <h2>Review Application</h2>
+                    <p class="review-modal-subtitle">Evaluate student application and provide feedback</p>
+                </div>
             </div>
-            <div class="form-group">
-                <label>Notes</label>
-                <textarea id="reviewNotes" rows="4" placeholder="Add notes or feedback..."></textarea>
+            
+            <div id="applicationDetail" class="review-application-detail"></div>
+            
+            <div class="review-decision-section">
+                <h3 class="section-title-review">Your Decision</h3>
+                <div class="form-group-modern">
+                    <label for="reviewStatus">Application Status</label>
+                    <div class="select-wrapper-review">
+                        <select id="reviewStatus" class="modern-select-review">
+                            <option value="approved">✓ Approve Application</option>
+                            <option value="rejected">✗ Reject Application</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group-modern">
+                    <label for="reviewNotes">Feedback & Notes</label>
+                    <textarea id="reviewNotes" rows="4" class="modern-textarea-review" placeholder="Provide feedback or additional notes for the student..."></textarea>
+                    <span class="field-hint">This message will be visible to the student</span>
+                </div>
             </div>
-            <div class="modal-actions">
-                <button onclick="submitReview()" class="btn-primary">Submit</button>
-                <button onclick="closeReviewModal()" class="btn-secondary">Cancel</button>
+            
+            <div class="modal-actions-modern">
+                <button onclick="closeReviewModal()" class="btn-secondary-modern">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                    Cancel
+                </button>
+                <button onclick="submitReview()" class="btn-primary-modern">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Submit Review
+                </button>
             </div>
         </div>
     </div>
