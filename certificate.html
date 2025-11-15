@@ -29,6 +29,13 @@
             z-index: 1000;
         }
         
+        .download-button {
+            position: fixed;
+            top: 20px;
+            right: 180px;
+            z-index: 1000;
+        }
+        
         .back-button {
             position: fixed;
             top: 20px;
@@ -37,35 +44,51 @@
         }
         
         @media print {
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                color-adjust: exact !important;
+            }
+            
             body {
                 background: white !important;
                 padding: 0;
                 margin: 0;
                 display: block;
+                min-height: auto !important;
             }
+            
             .print-button,
+            .download-button,
             .back-button {
                 display: none !important;
             }
+            
             #certificateContainer {
                 max-width: 100% !important;
-                margin: 0 !important;
-                padding: 0 !important;
+                margin: 0 auto !important;
+                padding: 20px !important;
+                overflow: visible !important;
             }
+            
             .certificate-container {
                 box-shadow: none !important;
-                margin: 0 !important;
+                margin: 0 auto !important;
                 page-break-inside: avoid;
+                break-inside: avoid;
+                overflow: visible !important;
             }
+            
             @page {
-                size: landscape;
-                margin: 0.5cm;
+                size: A4 landscape;
+                margin: 1cm;
             }
         }
     </style>
 </head>
 <body>
     <button onclick="window.history.back()" class="btn-secondary back-button">Back</button>
+    <button onclick="downloadCertificate()" class="btn-success download-button">Download PDF</button>
     <button onclick="printCertificate()" class="btn-primary print-button">Print Certificate</button>
     
     <div id="certificateContainer">
@@ -84,6 +107,45 @@
                 window.print();
             } else {
                 alert('Please wait for the certificate to load before printing.');
+            }
+        }
+        
+        // Download as PDF function
+        async function downloadCertificate() {
+            const container = document.getElementById('certificateContainer');
+            if (!container || container.children.length === 0 || container.textContent.includes('Loading')) {
+                alert('Please wait for the certificate to load before downloading.');
+                return;
+            }
+            
+            try {
+                const certificate = container.querySelector('.certificate-container');
+                if (!certificate) {
+                    alert('Certificate not found');
+                    return;
+                }
+                
+                const opt = {
+                    margin: 0.5,
+                    filename: 'scholarship-certificate.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { 
+                        scale: 2,
+                        useCORS: true,
+                        logging: false,
+                        letterRendering: true
+                    },
+                    jsPDF: { 
+                        unit: 'cm', 
+                        format: 'a4', 
+                        orientation: 'landscape' 
+                    }
+                };
+                
+                await html2pdf().set(opt).from(certificate).save();
+            } catch (error) {
+                console.error('Download error:', error);
+                alert('Failed to download certificate. Please try using the Print button instead.');
             }
         }
         
