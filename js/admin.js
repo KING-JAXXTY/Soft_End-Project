@@ -360,6 +360,29 @@ function displayReportDetail(report) {
     }
     
     container.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 2px solid var(--border-color);">
+            <h3 style="margin: 0;">Report Information</h3>
+            <button onclick="analyzeReportWithAI('${report._id}')" class="btn-primary" style="display: flex; align-items: center; gap: 0.5rem;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+                </svg>
+                AI Analysis
+            </button>
+        </div>
+        
+        <div id="aiAnalysisSection" style="display: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; color: white;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
+                </svg>
+                <h4 style="margin: 0; color: white;">AI Analysis</h4>
+            </div>
+            <div id="aiAnalysisContent">
+                <div class="loading-spinner" style="border-color: rgba(255,255,255,0.3); border-top-color: white;"></div>
+                <p style="text-align: center; margin-top: 1rem;">Analyzing report...</p>
+            </div>
+        </div>
+        
         <div style="margin-bottom: 1.5rem;">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
                 <div>
@@ -788,6 +811,75 @@ async function removeAllWarnings(userId, userName, warningCount) {
     } catch (error) {
         console.error('Remove warnings error:', error);
         notify.error(error.message || 'Failed to remove warnings');
+    }
+}
+
+// AI Analysis for Reports
+async function analyzeReportWithAI(reportId) {
+    const aiSection = document.getElementById('aiAnalysisSection');
+    const aiContent = document.getElementById('aiAnalysisContent');
+    
+    // Show the section with loading state
+    aiSection.style.display = 'block';
+    aiContent.innerHTML = `
+        <div class="loading-spinner" style="border-color: rgba(255,255,255,0.3); border-top-color: white;"></div>
+        <p style="text-align: center; margin-top: 1rem;">Analyzing report...</p>
+    `;
+    
+    try {
+        const report = await API.getReport(reportId);
+        
+        // Get user context if available
+        let userContext = '';
+        if (report.reportedUserId) {
+            try {
+                const userResponse = await API.searchUserById(report.reportedUserId);
+                const reportsResponse = await API.getUserReports(report.reportedUserId);
+                const userStatus = await API.getUserStatus(userResponse.user._id);
+                
+                userContext = `\n\nReported User Context:
+- Role: ${userResponse.user.role}
+- Total reports against this user: ${reportsResponse.stats.total}
+- Current warnings: ${userStatus.warnings}
+- Is suspended: ${userStatus.isSuspended ? 'Yes' : 'No'}`;
+            } catch (e) {
+                console.log('Could not fetch user context');
+            }
+        }
+        
+        const prompt = `You are an administrative assistant helping to analyze user reports for a scholarship platform called TulongAral+. Analyze this report and provide:
+
+1. A brief summary (2-3 sentences)
+2. Severity assessment (Low/Medium/High/Critical)
+3. Recommended action (Dismiss/Warning/Temporary Suspension/Permanent Suspension)
+4. Key concerns to consider
+
+Report Details:
+- Type: ${report.reportType}
+- Subject: ${report.subject}
+- Description: ${report.description}
+- Reporter Role: ${report.reporterRole}${userContext}
+
+Provide your analysis in a clear, professional format. Be concise and actionable.`;
+
+        const analysis = await API.getGeminiResponse(prompt);
+        
+        aiContent.innerHTML = `
+            <div style="background: rgba(255,255,255,0.1); border-radius: 8px; padding: 1rem; white-space: pre-wrap; line-height: 1.6;">
+${analysis}
+            </div>
+            <p style="margin-top: 1rem; font-size: 0.875rem; opacity: 0.8; text-align: center;">
+                Note: This is an AI-generated analysis. Final decisions should be made by administrators.
+            </p>
+        `;
+    } catch (error) {
+        console.error('AI analysis error:', error);
+        aiContent.innerHTML = `
+            <div style="background: rgba(255,255,255,0.1); border-radius: 8px; padding: 1rem; text-align: center;">
+                <p style="color: #ffebee; margin: 0;">Failed to generate AI analysis</p>
+                <p style="opacity: 0.8; margin-top: 0.5rem; font-size: 0.875rem;">${error.message || 'Please try again'}</p>
+            </div>
+        `;
     }
 }
 
