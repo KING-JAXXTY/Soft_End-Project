@@ -58,7 +58,7 @@
     <script>
         // Get application ID from URL
         const urlParams = new URLSearchParams(window.location.search);
-        const applicationId = urlParams.get('id');
+        const applicationId = urlParams.get('applicationId') || urlParams.get('id');
         
         if (!applicationId) {
             document.getElementById('certificateContainer').innerHTML = 
@@ -68,7 +68,10 @@
             (async function() {
                 try {
                     const token = localStorage.getItem('authToken');
-                    const response = await fetch(`http://localhost:5000/api/applications/${applicationId}/full-details`, {
+                    const API_BASE_URL = window.location.hostname === 'localhost' 
+                        ? 'http://localhost:5000/api' 
+                        : '/api';
+                    const response = await fetch(`${API_BASE_URL}/applications/${applicationId}/full-details`, {
                         headers: {
                             'Authorization': `Bearer ${token}`,
                             'Content-Type': 'application/json'
