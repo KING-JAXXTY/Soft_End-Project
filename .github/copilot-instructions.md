@@ -19,6 +19,7 @@
 - Always use media queries for responsive design with proper breakpoints and test on multiple device sizes and orientations
 - make sure we follow the shcolarship platform theme and color scheme and avoid using colors that clash with the overall design and branding of the platform
 - Dont ever use vibecoding ui design patterns
+- when changing something that already exists, make sure to check the whole codebase for any references to the changed part to avoid breaking functionality 
 
 ### Project Structure
 - Frontend: HTML, CSS, JavaScript (Vanilla JS, no frameworks)

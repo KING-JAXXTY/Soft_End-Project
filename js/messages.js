@@ -420,9 +420,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     userId = currentConversation.participants.find(id => id !== currentUser._id);
                 }
                 if (userId) {
-                    window.location.href = `profile.html?user=${userId}`;
+                    window.location.href = `view-profile.html?id=${userId}`;
                 } else {
-                    alert('User profile not found.');
+                    notify.error('User profile not found');
                 }
             });
         }
