@@ -430,8 +430,8 @@ router.put('/:id/warn', protect, authorize('admin'), async (req, res) => {
 router.get('/:id/status', protect, authorize('admin'), async (req, res) => {
     try {
         const user = await User.findById(req.params.id)
-            .populate('suspendedBy', 'firstName lastName')
-            .populate('warningHistory.issuedBy', 'firstName lastName');
+            .populate('suspendedBy', 'firstName lastName uniqueId')
+            .populate('warningHistory.issuedBy', 'firstName lastName uniqueId');
 
         if (!user) {
             return res.status(404).json({

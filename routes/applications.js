@@ -173,7 +173,7 @@ router.get('/student/my-applications', protect, authorize('student'), async (req
                 path: 'scholarship',
                 populate: {
                     path: 'sponsor',
-                    select: 'firstName lastName'
+                    select: 'firstName lastName uniqueId email avatar'
                 }
             })
             .sort({ appliedAt: -1 });
@@ -204,7 +204,7 @@ router.get('/sponsor/received', protect, authorize('sponsor'), async (req, res) 
         // Get applications for those scholarships
         const applications = await Application.find({ scholarship: { $in: scholarshipIds } })
             .populate('scholarship', 'title amount deadline')
-            .populate('student', 'firstName lastName email')
+            .populate('student', 'firstName lastName email uniqueId avatar')
             .sort({ appliedAt: -1 });
         
         res.json({
@@ -235,12 +235,12 @@ router.get('/:id/full-details', protect, async (req, res) => {
         }
 
         const application = await Application.findById(req.params.id)
-            .populate('student', 'firstName lastName email')
+            .populate('student', 'firstName lastName email uniqueId avatar')
             .populate({
                 path: 'scholarship',
                 populate: {
                     path: 'sponsor',
-                    select: 'firstName lastName email'
+                    select: 'firstName lastName email uniqueId avatar'
                 }
             });
 
@@ -308,7 +308,7 @@ router.get('/:id/full-details', protect, async (req, res) => {
         if (!scholarshipData) {
             console.log(`⚠️ Scholarship missing for application ${application._id}, fetching a default one...`);
             const scholarships = await Scholarship.findOne({ status: 'active' })
-                .populate('sponsor', 'firstName lastName email');
+                .populate('sponsor', 'firstName lastName email uniqueId avatar');
             
             if (scholarships) {
                 scholarshipData = scholarships;
@@ -357,7 +357,7 @@ router.get('/:id', protect, async (req, res) => {
         }
         const application = await Application.findById(req.params.id)
             .populate('scholarship', 'title amount deadline sponsor')
-            .populate('student', 'firstName lastName email');
+            .populate('student', 'firstName lastName email uniqueId avatar');
         if (!application) {
             return res.status(404).json({
                 success: false,

@@ -93,7 +93,7 @@ router.get('/', async (req, res) => {
         console.log('Database query:', JSON.stringify(query));
         
         const scholarships = await Scholarship.find(query)
-            .populate('sponsor', 'firstName lastName email')
+            .populate('sponsor', 'firstName lastName email uniqueId avatar')
             .sort({ createdAt: -1 });
         
         console.log(`Found ${scholarships.length} scholarships`);
@@ -128,7 +128,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         const scholarship = await Scholarship.findById(req.params.id)
-            .populate('sponsor', 'firstName lastName email');
+            .populate('sponsor', 'firstName lastName email uniqueId avatar');
         
         if (!scholarship) {
             return res.status(404).json({

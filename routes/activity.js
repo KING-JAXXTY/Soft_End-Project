@@ -13,8 +13,8 @@ router.get('/recent', protect, authorize('admin'), async (req, res) => {
         // Get recent users, scholarships, and applications (last 10 each)
         const [users, scholarships, applications] = await Promise.all([
             User.find().sort({ createdAt: -1 }).limit(10).lean(),
-            Scholarship.find().sort({ createdAt: -1 }).limit(10).populate('sponsor', 'firstName lastName').lean(),
-            Application.find().sort({ createdAt: -1 }).limit(10).populate('student', 'firstName lastName').populate('scholarship', 'title').lean()
+            Scholarship.find().sort({ createdAt: -1 }).limit(10).populate('sponsor', 'firstName lastName uniqueId').lean(),
+            Application.find().sort({ createdAt: -1 }).limit(10).populate('student', 'firstName lastName uniqueId').populate('scholarship', 'title').lean()
         ]);
 
         // Format activity log with null checks

@@ -59,7 +59,7 @@ router.get('/', protect, authorize('admin'), async (req, res) => {
 
         const reports = await Report.find(query)
             .populate('reporter', 'firstName lastName email uniqueId role avatar')
-            .populate('resolvedBy', 'firstName lastName')
+            .populate('resolvedBy', 'firstName lastName uniqueId')
             .populate('relatedScholarship', 'title')
             .sort({ createdAt: -1 });
 
@@ -120,7 +120,7 @@ router.get('/:id', protect, authorize('admin'), async (req, res) => {
     try {
         const report = await Report.findById(req.params.id)
             .populate('reporter', 'firstName lastName email uniqueId role avatar')
-            .populate('resolvedBy', 'firstName lastName')
+            .populate('resolvedBy', 'firstName lastName uniqueId')
             .populate('relatedScholarship', 'title');
 
         if (!report) {
@@ -169,7 +169,7 @@ router.put('/:id/status', protect, authorize('admin'), async (req, res) => {
 
         await report.save();
         await report.populate('reporter', 'firstName lastName email uniqueId role avatar');
-        await report.populate('resolvedBy', 'firstName lastName');
+        await report.populate('resolvedBy', 'firstName lastName uniqueId');
 
         res.json({
             success: true,
@@ -223,7 +223,7 @@ router.get('/user/:userId', protect, authorize('admin'), async (req, res) => {
         // Find all reports with this user ID
         const reports = await Report.find({ reportedUserId: userId })
             .populate('reporter', 'firstName lastName email uniqueId role avatar')
-            .populate('resolvedBy', 'firstName lastName')
+            .populate('resolvedBy', 'firstName lastName uniqueId')
             .sort({ createdAt: -1 });
 
         // Get count by status
