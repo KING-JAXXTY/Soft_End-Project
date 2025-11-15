@@ -706,6 +706,7 @@ button {
     margin-bottom: 2rem;
 }
 
+.instruction-header,
 .instructions-header {
     display: flex;
     align-items: center;
@@ -713,10 +714,15 @@ button {
     margin-bottom: 1rem;
 }
 
+.instruction-header svg,
 .instructions-header svg {
+    width: 24px;
+    height: 24px;
     flex-shrink: 0;
+    color: var(--primary-color);
 }
 
+.instruction-header h3,
 .instructions-header h3 {
     font-size: 1.125rem;
     font-weight: 600;
@@ -752,11 +758,15 @@ button {
 }
 
 .instruction-tip svg {
+    width: 20px;
+    height: 20px;
     flex-shrink: 0;
     margin-top: 0.125rem;
+    color: var(--primary-color);
 }
 
-.instruction-tip p {
+.instruction-tip p,
+.instruction-tip span {
     font-size: 0.875rem;
     color: var(--text-secondary);
     margin: 0;
@@ -771,10 +781,17 @@ button {
     margin-bottom: 2rem;
 }
 
+.documents-checklist h3,
 .documents-checklist h4 {
     font-size: 1rem;
     font-weight: 600;
     color: var(--text-primary);
+    margin: 0 0 0.5rem 0;
+}
+
+.documents-checklist .checklist-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
     margin: 0 0 1rem 0;
 }
 
