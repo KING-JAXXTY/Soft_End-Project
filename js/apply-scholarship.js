@@ -18,7 +18,7 @@ function getScholarshipId() {
     return urlParams.get('id');
 }
 
-// Load scholarship title
+// Load scholarship title and analyze required documents
 async function loadScholarshipInfo() {
     try {
         const scholarshipId = getScholarshipId();
@@ -32,9 +32,112 @@ async function loadScholarshipInfo() {
         const scholarship = await API.getScholarship(scholarshipId);
         document.getElementById('scholarshipTitle').textContent = scholarship.title;
         
+        // Analyze required documents with AI
+        if (scholarship.documentsRequired || scholarship.requirements) {
+            await analyzeRequiredDocuments(scholarship);
+        }
+        
     } catch (error) {
         console.error('Error loading scholarship:', error);
         notify.error('Failed to load scholarship information');
+    }
+}
+
+// Analyze scholarship requirements and auto-check relevant documents
+async function analyzeRequiredDocuments(scholarship) {
+    try {
+        // Show analyzing indicator
+        const checklistContainer = document.querySelector('.documents-checklist');
+        if (!checklistContainer) return;
+        
+        const analyzeIndicator = document.createElement('div');
+        analyzeIndicator.className = 'ai-analyzing';
+        analyzeIndicator.innerHTML = `
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                <path d="M2 17l10 5 10-5M2 12l10 5 10-5"></path>
+            </svg>
+            <span>AI analyzing required documents...</span>
+        `;
+        checklistContainer.insertBefore(analyzeIndicator, checklistContainer.firstChild);
+        
+        // Prepare comprehensive context for AI
+        const requirements = scholarship.requirements?.join(', ') || '';
+        const documentsText = scholarship.documentsRequired || '';
+        const eligibility = scholarship.eligibility || '';
+        const description = scholarship.description || '';
+        
+        const prompt = `Analyze this scholarship information and determine which documents are required:
+
+Scholarship: ${scholarship.title}
+Type: ${scholarship.scholarshipType}
+Documents Required: ${documentsText}
+Requirements: ${requirements}
+Eligibility: ${eligibility}
+Description: ${description}
+
+Based on the above information, which of these documents are REQUIRED (not optional)?
+1. transcript - Transcript of Records / Report Card
+2. id - Valid ID (Student ID, Government ID)
+3. certifications - Certificates & Awards
+4. recommendation - Recommendation Letter
+5. financial - Proof of Financial Need
+6. other - Other Supporting Documents
+
+Return ONLY a comma-separated list of the document codes that are REQUIRED (e.g., "transcript,id,financial").
+If a document type is mentioned as "if applicable", "optional", "if needed", or similar, DO NOT include it.
+Only include documents that are explicitly required or clearly mandatory.`;
+
+        const result = await GeminiAPI.generateContent(prompt);
+        console.log('AI Document Analysis Result:', result);
+        
+        // Parse AI response
+        const requiredDocs = result.toLowerCase()
+            .replace(/[^a-z,]/g, '')
+            .split(',')
+            .map(doc => doc.trim())
+            .filter(doc => doc);
+        
+        // Auto-check the required documents
+        requiredDocs.forEach(docCode => {
+            const checkbox = document.getElementById(`doc-${docCode}`);
+            if (checkbox) {
+                checkbox.checked = true;
+                // Add visual indicator that it was AI-suggested
+                const label = checkbox.closest('.checklist-item');
+                if (label && !label.querySelector('.ai-suggested')) {
+                    const badge = document.createElement('span');
+                    badge.className = 'ai-suggested';
+                    badge.textContent = 'AI Suggested';
+                    label.appendChild(badge);
+                }
+            }
+        });
+        
+        // Remove analyzing indicator
+        analyzeIndicator.remove();
+        
+        // Show success message if documents were identified
+        if (requiredDocs.length > 0) {
+            const successMsg = document.createElement('div');
+            successMsg.className = 'ai-success-msg';
+            successMsg.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>AI identified ${requiredDocs.length} required document${requiredDocs.length > 1 ? 's' : ''}</span>
+            `;
+            checklistContainer.insertBefore(successMsg, checklistContainer.children[1]);
+            
+            // Auto-remove success message after 5 seconds
+            setTimeout(() => successMsg.remove(), 5000);
+        }
+        
+    } catch (error) {
+        console.error('Error analyzing documents:', error);
+        // Silently fail - checklist will still be available for manual selection
+        const analyzeIndicator = document.querySelector('.ai-analyzing');
+        if (analyzeIndicator) analyzeIndicator.remove();
     }
 }
 
