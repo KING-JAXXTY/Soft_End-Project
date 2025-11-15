@@ -116,6 +116,29 @@ router.post('/login', [
             });
         }
 
+        // Auto-generate uniqueId if missing (for existing users created before uniqueId system)
+        if (!user.uniqueId) {
+            function generateUniqueId() {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                let id = 'TA-';
+                for (let i = 0; i < 8; i++) {
+                    id += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                return id;
+            }
+            
+            let unique = false;
+            while (!unique) {
+                user.uniqueId = generateUniqueId();
+                const existing = await User.findOne({ uniqueId: user.uniqueId });
+                if (!existing || existing._id.equals(user._id)) {
+                    unique = true;
+                }
+            }
+            await user.save({ validateBeforeSave: false });
+            console.log(`🆔 Generated unique ID for user: ${user.uniqueId}`);
+        }
+
         // Check if user is suspended
         if (user.isSuspended) {
             return res.status(403).json({
@@ -140,7 +163,10 @@ router.post('/login', [
                 firstName: user.firstName,
                 lastName: user.lastName,
                 role: user.role,
-                avatar: user.avatar
+                avatar: user.avatar,
+                uniqueId: user.uniqueId,
+                isSuspended: user.isSuspended || false,
+                warnings: user.warnings || 0
             }
         };
 

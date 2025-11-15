@@ -1,6 +1,6 @@
 // Sponsor Dashboard functionality
 
-// Check authentication
+// Check authentication and display account status
 function checkAuth() {
     const currentUser = API.getCurrentUser();
     
@@ -19,7 +19,43 @@ function checkAuth() {
         return null;
     }
     document.getElementById('userName').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
+    
+    // Display account status alerts
+    displayAccountStatus(currentUser);
+    
     return currentUser;
+}
+
+// Display account status (suspension/warnings)
+function displayAccountStatus(user) {
+    const alertContainer = document.getElementById('accountStatusAlert');
+    if (!alertContainer) return;
+    
+    if (user.isSuspended) {
+        alertContainer.innerHTML = `
+            <div style="background: #fef2f2; border: 2px solid #ef4444; padding: 1rem; border-radius: 8px; display: flex; align-items: start; gap: 1rem;">
+                <div style="color: #ef4444; font-size: 1.5rem;">🚫</div>
+                <div style="flex: 1;">
+                    <strong style="color: #ef4444; font-size: 1.125rem;">Account Suspended</strong>
+                    <p style="margin-top: 0.5rem; color: #991b1b;">Your account has been suspended and you may have limited access to features. Please contact support for assistance.</p>
+                </div>
+            </div>
+        `;
+        alertContainer.style.display = 'block';
+    } else if (user.warnings && user.warnings > 0) {
+        alertContainer.innerHTML = `
+            <div style="background: #fffbeb; border: 2px solid #f59e0b; padding: 1rem; border-radius: 8px; display: flex; align-items: start; gap: 1rem;">
+                <div style="color: #f59e0b; font-size: 1.5rem;">⚠️</div>
+                <div style="flex: 1;">
+                    <strong style="color: #f59e0b; font-size: 1.125rem;">Account Warning</strong>
+                    <p style="margin-top: 0.5rem; color: #92400e;">You have ${user.warnings} formal warning${user.warnings > 1 ? 's' : ''} on your account. Please review our community guidelines and terms of service.</p>
+                </div>
+            </div>
+        `;
+        alertContainer.style.display = 'block';
+    } else {
+        alertContainer.style.display = 'none';
+    }
 }
 
 let allScholarships = [];
