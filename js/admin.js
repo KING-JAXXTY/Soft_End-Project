@@ -79,7 +79,7 @@ async function loadDashboard() {
 }
 
 // Display users
-function displayUsers(users) {
+async function displayUsers(users) {
     const tbody = document.getElementById('usersTableBody');
     
     if (users.length === 0) {
@@ -87,20 +87,63 @@ function displayUsers(users) {
         return;
     }
     
-    tbody.innerHTML = users.map(user => `
+    // Fetch status for all users in parallel
+    const usersWithStatus = await Promise.all(users.map(async user => {
+        if (user.role === 'admin') {
+            return { ...user, status: null };
+        }
+        try {
+            const status = await API.getUserStatus(user._id);
+            return { ...user, status };
+        } catch (err) {
+            return { ...user, status: null };
+        }
+    }));
+    
+    tbody.innerHTML = usersWithStatus.map(user => {
+        const status = user.status;
+        const isSuspended = status?.isSuspended || false;
+        const warnings = status?.warnings || 0;
+        
+        return `
         <tr>
-            <td>${user.firstName} ${user.lastName}</td>
+            <td>
+                ${user.firstName} ${user.lastName}
+                ${isSuspended ? '<br><span class="badge" style="background: #ef4444;">Suspended</span>' : ''}
+                ${warnings > 0 ? `<br><span class="badge" style="background: #f59e0b;">${warnings} Warning${warnings > 1 ? 's' : ''}</span>` : ''}
+            </td>
             <td>${user.email}</td>
             <td><span class="badge badge-${user.role}">${user.role}</span></td>
             <td>${user.region || 'N/A'}</td>
             <td>${new Date(user.createdAt).toLocaleDateString()}</td>
             <td>
                 ${user.role !== 'admin' ? `
-                    <button onclick="deleteUserConfirm('${user._id}', '${user.firstName} ${user.lastName}')" class="btn-danger btn-sm">Delete</button>
+                    <div style="display: flex; gap: 0.25rem; flex-wrap: wrap;">
+                        ${isSuspended ? `
+                            <button onclick="unsuspendUser('${user._id}', '${user.firstName} ${user.lastName}')" class="btn-primary btn-sm" title="Remove Suspension">
+                                Unsuspend
+                            </button>
+                        ` : `
+                            <button onclick="showSuspendModal('${user._id}', '${user.firstName} ${user.lastName}', '${user.role}')" class="btn-danger btn-sm" title="Suspend User">
+                                Suspend
+                            </button>
+                        `}
+                        <button onclick="showWarnModal('${user._id}', '${user.firstName} ${user.lastName}')" class="btn-secondary btn-sm" style="background: #f59e0b; color: white;" title="Issue Warning">
+                            Warn
+                        </button>
+                        ${warnings > 0 ? `
+                            <button onclick="removeAllWarnings('${user._id}', '${user.firstName} ${user.lastName}', ${warnings})" class="btn-secondary btn-sm" style="background: #10b981; color: white;" title="Remove All Warnings">
+                                Clear
+                            </button>
+                        ` : ''}
+                        <button onclick="deleteUserConfirm('${user._id}', '${user.firstName} ${user.lastName}')" class="btn-danger btn-sm" title="Delete User">
+                            Delete
+                        </button>
+                    </div>
                 ` : '<span class="text-muted">Protected</span>'}
             </td>
         </tr>
-    `).join('');
+    `}).join('');
 }
 
 // Filter users
