@@ -116,32 +116,6 @@
         <div class="section modern-section">
             <div class="section-header-modern">
                 <div class="section-title-group">
-                    <h2>My Scholarship Programs</h2>
-                </div>
-            </div>
-            <div id="scholarshipsList" class="table-container modern-table-container">
-                <table class="data-table modern-table">
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Type</th>
-                            <th>Available Slots</th>
-                            <th>Deadline</th>
-                            <th>Applicants</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="scholarshipsTableBody">
-                        <!-- Scholarships will be loaded here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="section modern-section">
-            <div class="section-header-modern">
-                <div class="section-title-group">
                     <h2>Recent Applications</h2>
                 </div>
                 <select id="statusFilter" onchange="filterApplications()" class="modern-select">
@@ -172,6 +146,32 @@
 
     <!-- Application Review Modal -->
     <div id="reviewModal" class="modal" style="display: none;">
+        <div class="section modern-section">
+            <div class="section-header-modern">
+                <div class="section-title-group">
+                    <h2>My Scholarship Programs</h2>
+                </div>
+            </div>
+            <div id="scholarshipsList" class="table-container modern-table-container">
+                <table class="data-table modern-table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Type</th>
+                            <th>Available Slots</th>
+                            <th>Deadline</th>
+                            <th>Applicants</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scholarshipsTableBody">
+                        <!-- Scholarships will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <div class="modal-content review-modal-content">
             <span class="close" onclick="closeReviewModal()">&times;</span>
             <div class="review-modal-header">

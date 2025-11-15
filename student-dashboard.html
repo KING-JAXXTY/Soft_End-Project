@@ -123,7 +123,93 @@
             </div>
         </div>
 
-        <!-- AI Scholarship Recommendations Section -->
+        <!-- Applications Section -->
+        <div class="dashboard-section applications-section">
+            <div class="section-header-applications">
+                <div>
+                    <h2>My Applications</h2>
+                    <p class="section-description">Track and manage your scholarship applications</p>
+                </div>
+                <select id="statusFilter" class="filter-select" onchange="filterApplications()">
+                    <option value="">All Status</option>
+                    <option value="pending">Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                </select>
+            </div>
+
+            <div id="applicationsList" class="applications-list">
+                <!-- Applications will be loaded here -->
+            </div>
+
+            <div id="emptyState" class="empty-state-enhanced" style="display: none;">
+                <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <h3>No Applications Yet</h3>
+                <p>You haven't applied to any scholarships yet. Browse available scholarships and start your journey!</p>
+                <button onclick="window.location.href='student-home.html'" class="btn-primary">Browse Scholarships</button>
+            </div>
+        </div>
+
+        <!-- Deadline Tracker -->
+        <div class="dashboard-section deadline-section">
+            <div class="section-header-deadline">
+                <div class="deadline-title-wrapper">
+                    <svg class="deadline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <div>
+                        <h2>Upcoming Deadlines</h2>
+                        <p class="section-description">Stay on track with your applications</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="deadlinesList" class="deadlines-list">
+                <!-- Loading state -->
+                <div class="deadline-loading">
+                    <div class="loading-spinner"></div>
+                    <p>Loading deadlines...</p>
+                </div>
+            </div>
+
+            <div id="deadlinesEmpty" class="deadlines-empty" style="display: none;">
+                <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h3>All Caught Up!</h3>
+                <p>No upcoming deadlines in the next 30 days</p>
+            </div>
+        </div>
+        <!-- My Reports Section (Collapsible) -->
+        <div class="dashboard-section" style="margin-top: 2rem;">
+            <div class="collapsible-header" onclick="toggleReportsPanel()" style="cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 1rem; background: var(--surface); border: 1px solid var(--border-color); border-radius: 8px; transition: all 0.3s ease;">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <svg id="reportsChevron" style="width: 20px; height: 20px; transition: transform 0.3s ease;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                    <h3 style="margin: 0; font-size: 1rem; font-weight: 600;">My Reports</h3>
+                    <span id="reportsCount" class="badge" style="background: var(--primary-color); font-size: 0.75rem;">0</span>
+                </div>
+                <span style="font-size: 0.875rem; color: var(--text-secondary);">Click to expand</span>
+            </div>
+
+            <div id="myReportsPanel" style="display: none; margin-top: 1rem; overflow: hidden; transition: all 0.3s ease;">
+                <div id="myReportsList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
+                    <!-- Reports will be loaded here -->
+                </div>
+
+                <div id="myReportsEmpty" class="empty-state-enhanced" style="display: none; padding: 2rem;">
+                    <svg class="empty-state-icon" style="width: 48px; height: 48px; margin: 0 auto;" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <h4 style="margin-top: 1rem;">No Reports Submitted</h4>
+                    <p style="font-size: 0.875rem; color: var(--text-secondary);">You haven't submitted any reports yet.</p>
+                </div>
+            </div>
+        </div>
+
         <div class="dashboard-section ai-section">
             <div class="section-header-ai" onclick="toggleAISection()" style="cursor: pointer; user-select: none;">
                 <div class="ai-section-title">
@@ -304,93 +390,6 @@
             </div>
         </div>
 
-        <!-- Applications Section -->
-        <div class="dashboard-section applications-section">
-            <div class="section-header-applications">
-                <div>
-                    <h2>My Applications</h2>
-                    <p class="section-description">Track and manage your scholarship applications</p>
-                </div>
-                <select id="statusFilter" class="filter-select" onchange="filterApplications()">
-                    <option value="">All Status</option>
-                    <option value="pending">Pending</option>
-                    <option value="approved">Approved</option>
-                    <option value="rejected">Rejected</option>
-                </select>
-            </div>
-
-            <div id="applicationsList" class="applications-list">
-                <!-- Applications will be loaded here -->
-            </div>
-
-            <div id="emptyState" class="empty-state-enhanced" style="display: none;">
-                <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                <h3>No Applications Yet</h3>
-                <p>You haven't applied to any scholarships yet. Browse available scholarships and start your journey!</p>
-                <button onclick="window.location.href='student-home.html'" class="btn-primary">Browse Scholarships</button>
-            </div>
-        </div>
-
-        <!-- My Reports Section (Collapsible) -->
-        <div class="dashboard-section" style="margin-top: 2rem;">
-            <div class="collapsible-header" onclick="toggleReportsPanel()" style="cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 1rem; background: var(--surface); border: 1px solid var(--border-color); border-radius: 8px; transition: all 0.3s ease;">
-                <div style="display: flex; align-items: center; gap: 0.75rem;">
-                    <svg id="reportsChevron" style="width: 20px; height: 20px; transition: transform 0.3s ease;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="9 18 15 12 9 6"></polyline>
-                    </svg>
-                    <h3 style="margin: 0; font-size: 1rem; font-weight: 600;">My Reports</h3>
-                    <span id="reportsCount" class="badge" style="background: var(--primary-color); font-size: 0.75rem;">0</span>
-                </div>
-                <span style="font-size: 0.875rem; color: var(--text-secondary);">Click to expand</span>
-            </div>
-
-            <div id="myReportsPanel" style="display: none; margin-top: 1rem; overflow: hidden; transition: all 0.3s ease;">
-                <div id="myReportsList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
-                    <!-- Reports will be loaded here -->
-                </div>
-
-                <div id="myReportsEmpty" class="empty-state-enhanced" style="display: none; padding: 2rem;">
-                    <svg class="empty-state-icon" style="width: 48px; height: 48px; margin: 0 auto;" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    <h4 style="margin-top: 1rem;">No Reports Submitted</h4>
-                    <p style="font-size: 0.875rem; color: var(--text-secondary);">You haven't submitted any reports yet.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Deadline Tracker -->
-        <div class="dashboard-section deadline-section">
-            <div class="section-header-deadline">
-                <div class="deadline-title-wrapper">
-                    <svg class="deadline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <div>
-                        <h2>Upcoming Deadlines</h2>
-                        <p class="section-description">Stay on track with your applications</p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="deadlinesList" class="deadlines-list">
-                <!-- Loading state -->
-                <div class="deadline-loading">
-                    <div class="loading-spinner"></div>
-                    <p>Loading deadlines...</p>
-                </div>
-            </div>
-
-            <div id="deadlinesEmpty" class="deadlines-empty" style="display: none;">
-                <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <h3>All Caught Up!</h3>
-                <p>No upcoming deadlines in the next 30 days</p>
-            </div>
-        </div>
     </div>
 
     <!-- Report Issue Modal -->
