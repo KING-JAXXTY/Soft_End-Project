@@ -81,6 +81,7 @@ async function loadUserProfile() {
             email: user.email || profile.email,
             role: user.role || profile.role,
             avatar: user.avatar || profile.avatar,
+            uniqueId: user.uniqueId || profile.uniqueId,
             bio: profile.bio,
             phone: profile.phone,
             region: profile.region,
