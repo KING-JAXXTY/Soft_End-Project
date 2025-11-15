@@ -734,6 +734,15 @@ const API = {
             method: 'POST'
         });
         return data;
+    },
+
+    // Gemini AI Integration
+    async getGeminiResponse(prompt) {
+        const data = await apiCall('/gemini/generate', {
+            method: 'POST',
+            body: JSON.stringify({ prompt })
+        });
+        return data.text;
     }
 };
 
