@@ -682,6 +682,10 @@ button {
     margin-bottom: 0.35rem;
     display: block;
     color: var(--text-primary);
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
 }
 
 .auth-form .form-group input,
@@ -712,6 +716,9 @@ button {
     align-items: center;
     margin-bottom: 1rem;
     font-size: 0.75rem;
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .auth-form .form-row {
@@ -753,6 +760,9 @@ button {
     margin-bottom: 0.875rem;
     font-size: 0.8125rem;
     border-left: 4px solid #c33;
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .success-message {
@@ -763,6 +773,9 @@ button {
     margin-bottom: 0.875rem;
     font-size: 0.8125rem;
     border-left: 4px solid #3c3;
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Avatar Selection in Register */
