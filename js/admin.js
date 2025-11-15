@@ -962,9 +962,9 @@ function showConfirmModal(title, message, onConfirm) {
     modal.className = 'modal';
     modal.style.display = 'flex';
     modal.innerHTML = `
-        <div class="modal-content" style="max-width: 500px;">
-            <h2>${title}</h2>
-            <p style="margin: 1.5rem 0; line-height: 1.6;">${message}</p>
+        <div class="modal-content" style="max-width: 400px;">
+            <h2 style="font-size: 1.25rem; margin-bottom: 1rem;">${title}</h2>
+            <p style="margin: 0 0 1.5rem 0; line-height: 1.5; font-size: 0.95rem;">${message}</p>
             <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
                 <button class="btn-secondary" onclick="this.closest('.modal').remove()">Cancel</button>
                 <button class="btn-primary confirm-btn">Confirm</button>
