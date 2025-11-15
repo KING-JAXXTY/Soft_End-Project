@@ -69,7 +69,7 @@ async function loadDashboard() {
         console.log('✅ Admin dashboard loaded successfully');
     } catch (error) {
         console.error('❌ Error loading dashboard:', error);
-        alert('Error loading dashboard. Please refresh the page.');
+        notify.error('Error loading dashboard. Please refresh the page.');
     } finally {
         isLoading = false;
         // Remove loading indicator
@@ -262,16 +262,16 @@ async function confirmDelete() {
     try {
         if (deleteTarget.type === 'user') {
             await API.deleteUser(deleteTarget._id);
-            alert('User deleted successfully');
+            notify.success('User deleted successfully');
         } else if (deleteTarget.type === 'scholarship') {
             await API.deleteScholarship(deleteTarget._id);
-            alert('Scholarship deleted successfully');
+            notify.success('Scholarship deleted successfully');
         }
         
         closeDeleteModal();
         loadDashboard();
     } catch (error) {
-        alert('Error deleting item');
+        notify.error('Error deleting item');
     }
 }
 
@@ -810,51 +810,57 @@ async function confirmWarn(event) {
 }
 
 async function unsuspendUser(userId, userName) {
-    if (!confirm(`Are you sure you want to unsuspend ${userName}? They will be able to log in again.`)) {
-        return;
-    }
-    
-    try {
-        await API.unsuspendUser(userId);
-        notify.success(`${userName} has been unsuspended`);
-        
-        // Refresh the user search
-        const searchInput = document.getElementById('reportedUserIdInput');
-        if (searchInput && searchInput.value) {
-            await searchReportedUser(searchInput.value);
+    showConfirmModal(
+        'Unsuspend User',
+        `Are you sure you want to unsuspend ${userName}? They will be able to log in again.`,
+        async () => {
+            try {
+                await API.unsuspendUser(userId);
+                notify.success(`${userName} has been unsuspended`);
+                
+                // Refresh the user search
+                const searchInput = document.getElementById('reportedUserIdInput');
+                if (searchInput && searchInput.value) {
+                    await searchReportedUser(searchInput.value);
+                }
+                
+                // Refresh report detail and reports list
+                await refreshReportDetail();
+                await loadReports();
+                await loadDashboard(); // Refresh user table
+            } catch (error) {
+                console.error('Unsuspension error:', error);
+                notify.error(error.message || 'Failed to unsuspend user');
+            }
         }
-        
-        // Refresh report detail and reports list
-        await refreshReportDetail();
-        await loadReports();
-    } catch (error) {
-        console.error('Unsuspension error:', error);
-        notify.error(error.message || 'Failed to unsuspend user');
-    }
+    );
 }
 
 async function removeAllWarnings(userId, userName, warningCount) {
-    if (!confirm(`Are you sure you want to remove all ${warningCount} warning(s) from ${userName}? This action will clear their warning history.`)) {
-        return;
-    }
-    
-    try {
-        await API.removeWarnings(userId);
-        notify.success(`All warnings removed from ${userName}`);
-        
-        // Refresh the user search
-        const searchInput = document.getElementById('reportedUserIdInput');
-        if (searchInput && searchInput.value) {
-            await searchReportedUser(searchInput.value);
+    showConfirmModal(
+        'Remove All Warnings',
+        `Are you sure you want to remove all ${warningCount} warning(s) from ${userName}? This action will clear their warning history.`,
+        async () => {
+            try {
+                await API.removeWarnings(userId);
+                notify.success(`All warnings removed from ${userName}`);
+                
+                // Refresh the user search
+                const searchInput = document.getElementById('reportedUserIdInput');
+                if (searchInput && searchInput.value) {
+                    await searchReportedUser(searchInput.value);
+                }
+                
+                // Refresh report detail and reports list
+                await refreshReportDetail();
+                await loadReports();
+                await loadDashboard(); // Refresh user table
+            } catch (error) {
+                console.error('Remove warnings error:', error);
+                notify.error(error.message || 'Failed to remove warnings');
+            }
         }
-        
-        // Refresh report detail and reports list
-        await refreshReportDetail();
-        await loadReports();
-    } catch (error) {
-        console.error('Remove warnings error:', error);
-        notify.error(error.message || 'Failed to remove warnings');
-    }
+    );
 }
 
 // AI Analysis for Reports
@@ -949,6 +955,39 @@ window.addEventListener('click', (event) => {
         closeWarnModal();
     }
 });
+
+// Generic confirmation modal
+function showConfirmModal(title, message, onConfirm) {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'flex';
+    modal.innerHTML = `
+        <div class="modal-content" style="max-width: 500px;">
+            <h2>${title}</h2>
+            <p style="margin: 1.5rem 0; line-height: 1.6;">${message}</p>
+            <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+                <button class="btn-secondary" onclick="this.closest('.modal').remove()">Cancel</button>
+                <button class="btn-primary confirm-btn">Confirm</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Handle confirm button
+    const confirmBtn = modal.querySelector('.confirm-btn');
+    confirmBtn.addEventListener('click', async () => {
+        modal.remove();
+        await onConfirm();
+    });
+    
+    // Handle click outside
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.remove();
+        }
+    });
+}
 
 // Logout
 function logout() {
