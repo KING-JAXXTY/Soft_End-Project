@@ -255,7 +255,7 @@ router.post('/migrate-unique-ids', protect, authorize('admin'), async (req, res)
 // @access  Private (Admin)
 router.put('/:id/suspend', protect, authorize('admin'), async (req, res) => {
     try {
-        const { reason } = req.body;
+        const { reason, duration, isPermanent } = req.body;
 
         if (!reason) {
             return res.status(400).json({
@@ -293,18 +293,30 @@ router.put('/:id/suspend', protect, authorize('admin'), async (req, res) => {
         user.suspendedAt = Date.now();
         user.suspendedBy = req.user._id;
         user.suspensionReason = reason;
+        user.isPermanentSuspension = isPermanent || false;
+
+        // Calculate suspension end date if not permanent
+        if (!isPermanent && duration) {
+            const suspendedUntil = new Date();
+            suspendedUntil.setDate(suspendedUntil.getDate() + parseInt(duration));
+            user.suspendedUntil = suspendedUntil;
+        } else {
+            user.suspendedUntil = null;
+        }
 
         await user.save();
 
         res.json({
             success: true,
-            message: 'User suspended successfully',
+            message: isPermanent ? 'User permanently suspended' : `User suspended for ${duration} days`,
             user: {
                 _id: user._id,
                 firstName: user.firstName,
                 lastName: user.lastName,
                 isSuspended: user.isSuspended,
-                suspendedAt: user.suspendedAt
+                suspendedAt: user.suspendedAt,
+                suspendedUntil: user.suspendedUntil,
+                isPermanentSuspension: user.isPermanentSuspension
             }
         });
     } catch (error) {
@@ -334,6 +346,8 @@ router.put('/:id/unsuspend', protect, authorize('admin'), async (req, res) => {
         user.suspendedAt = null;
         user.suspendedBy = null;
         user.suspensionReason = null;
+        user.suspendedUntil = null;
+        user.isPermanentSuspension = false;
 
         await user.save();
 

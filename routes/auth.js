@@ -139,12 +139,30 @@ router.post('/login', [
             console.log(`🆔 Generated unique ID for user: ${user.uniqueId}`);
         }
 
-        // Check if user is suspended
+        // Check if user is suspended and if suspension has expired
         if (user.isSuspended) {
-            return res.status(403).json({
-                success: false,
-                message: `Your account has been suspended. Reason: ${user.suspensionReason || 'Policy violation'}. Please contact support.`
-            });
+            // Check if suspension has expired (not permanent and past end date)
+            if (!user.isPermanentSuspension && user.suspendedUntil && new Date() > user.suspendedUntil) {
+                // Auto-unsuspend
+                user.isSuspended = false;
+                user.suspendedAt = null;
+                user.suspendedBy = null;
+                user.suspensionReason = null;
+                user.suspendedUntil = null;
+                user.isPermanentSuspension = false;
+                await user.save({ validateBeforeSave: false });
+                console.log(`✅ Auto-unsuspended user: ${user.email} (suspension expired)`);
+            } else {
+                // Still suspended
+                const suspensionMsg = user.isPermanentSuspension 
+                    ? 'Your account has been permanently suspended.' 
+                    : `Your account is suspended until ${new Date(user.suspendedUntil).toLocaleDateString()}.`;
+                    
+                return res.status(403).json({
+                    success: false,
+                    message: `${suspensionMsg} Reason: ${user.suspensionReason || 'Policy violation'}. Please contact support.`
+                });
+            }
         }
 
         // NOTE: isActive check removed - all accounts are active by default

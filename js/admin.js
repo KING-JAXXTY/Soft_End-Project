@@ -623,14 +623,25 @@ async function confirmSuspend(event) {
     event.preventDefault();
     
     const reason = document.getElementById('suspendReason').value.trim();
+    const durationValue = document.getElementById('suspensionDuration').value;
+    
     if (!reason) {
         notify.error('Please provide a reason for suspension');
         return;
     }
     
+    const isPermanent = durationValue === 'permanent';
+    const duration = isPermanent ? null : parseInt(durationValue);
+    
     try {
-        await API.suspendUser(currentActionUserId, reason);
-        notify.success(`${currentActionUserName} has been suspended`);
+        await API.suspendUser(currentActionUserId, reason, duration, isPermanent);
+        
+        if (isPermanent) {
+            notify.success(`${currentActionUserName} has been permanently suspended`);
+        } else {
+            notify.success(`${currentActionUserName} has been suspended for ${duration} day(s)`);
+        }
+        
         closeSuspendModal();
         
         // Refresh the user search if we have a uniqueId to search
@@ -709,9 +720,6 @@ async function unsuspendUser(userId, userName) {
     } catch (error) {
         console.error('Unsuspension error:', error);
         notify.error(error.message || 'Failed to unsuspend user');
-    }
-}
-        showNotification(error.message || 'Failed to unsuspend user', 'error');
     }
 }
 

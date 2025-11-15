@@ -46,7 +46,24 @@ function getUserIdFromUrl() {
 
 // Go back to previous page
 function goBack() {
-    window.history.back();
+    // Check if there's history to go back to
+    if (window.history.length > 1 && document.referrer) {
+        window.history.back();
+    } else {
+        // If opened in new tab or no history, redirect based on role
+        const currentUser = API.getCurrentUser();
+        if (currentUser) {
+            if (currentUser.role === 'admin') {
+                window.location.href = 'admin-dashboard.html';
+            } else if (currentUser.role === 'sponsor') {
+                window.location.href = 'sponsor-dashboard.html';
+            } else {
+                window.location.href = 'student-home.html';
+            }
+        } else {
+            window.close(); // Try to close the tab if possible
+        }
+    }
 }
 
 // Load user profile

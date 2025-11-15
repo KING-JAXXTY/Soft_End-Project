@@ -60,6 +60,14 @@ const UserSchema = new mongoose.Schema({
         type: Date,
         default: null
     },
+    suspendedUntil: {
+        type: Date,
+        default: null
+    },
+    isPermanentSuspension: {
+        type: Boolean,
+        default: false
+    },
     suspendedBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

@@ -689,10 +689,10 @@ const API = {
         return data;
     },
 
-    async suspendUser(userId, reason) {
+    async suspendUser(userId, reason, duration, isPermanent) {
         const data = await apiCall(`/users/${userId}/suspend`, {
             method: 'PUT',
-            body: JSON.stringify({ reason })
+            body: JSON.stringify({ reason, duration, isPermanent })
         });
         return data;
     },

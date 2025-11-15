@@ -210,6 +210,17 @@
             
             <form id="suspendForm" onsubmit="confirmSuspend(event)">
                 <div class="form-group">
+                    <label for="suspensionDuration">Suspension Duration:</label>
+                    <select id="suspensionDuration" class="form-control" required style="margin-bottom: 1rem;">
+                        <option value="1">1 Day</option>
+                        <option value="7">7 Days (1 Week)</option>
+                        <option value="30">30 Days (1 Month)</option>
+                        <option value="90">90 Days (3 Months)</option>
+                        <option value="permanent">Permanent</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
                     <label for="suspendReason">Reason for suspension (required):</label>
                     <textarea 
                         id="suspendReason" 
