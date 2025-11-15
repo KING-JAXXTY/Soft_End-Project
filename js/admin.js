@@ -433,23 +433,88 @@ async function searchReportedUser(userId) {
     container.innerHTML = '<p style="color: var(--text-secondary);">Searching...</p>';
     
     try {
-        const response = await API.searchUserById(userId);
-        const user = response.user;
+        // Get user info and their report count
+        const [userResponse, reportsResponse] = await Promise.all([
+            API.searchUserById(userId),
+            API.getUserReports(userId)
+        ]);
+        
+        const user = userResponse.user;
+        const reportStats = reportsResponse.stats;
+        
+        // Determine warning level based on report count
+        let warningBadge = '';
+        if (reportStats.total >= 5) {
+            warningBadge = '<span class="badge" style="background: #ef4444;">⚠️ HIGH RISK - ' + reportStats.total + ' Reports</span>';
+        } else if (reportStats.total >= 3) {
+            warningBadge = '<span class="badge" style="background: #f59e0b;">⚠️ MODERATE - ' + reportStats.total + ' Reports</span>';
+        } else if (reportStats.total > 0) {
+            warningBadge = '<span class="badge" style="background: #fbbf24;">' + reportStats.total + ' Report(s)</span>';
+        } else {
+            warningBadge = '<span class="badge" style="background: #10b981;">No Reports</span>';
+        }
         
         container.innerHTML = `
-            <div style="background: var(--surface); border: 1px solid var(--border-color); padding: 1rem; border-radius: 8px; margin-top: 0.5rem;">
-                <strong>User Found:</strong>
-                <p><strong>Name:</strong> ${user.firstName} ${user.lastName}</p>
-                <p><strong>Email:</strong> ${user.email}</p>
-                <p><strong>Role:</strong> <span class="badge">${user.role}</span></p>
-                <p><strong>User ID:</strong> ${user.uniqueId}</p>
-                <button onclick="window.open('view-profile.html?id=${user._id}', '_blank')" class="btn-secondary btn-sm">
-                    View Profile
-                </button>
+            <div style="background: var(--surface); border: 2px solid ${reportStats.total >= 3 ? '#ef4444' : 'var(--border-color)'}; padding: 1rem; border-radius: 8px; margin-top: 0.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                    <div>
+                        <strong>User Found:</strong>
+                        <p><strong>Name:</strong> ${user.firstName} ${user.lastName}</p>
+                        <p><strong>Email:</strong> ${user.email}</p>
+                        <p><strong>Role:</strong> <span class="badge">${user.role}</span></p>
+                        <p><strong>User ID:</strong> ${user.uniqueId}</p>
+                    </div>
+                    <div style="text-align: right;">
+                        ${warningBadge}
+                    </div>
+                </div>
+                
+                ${reportStats.total > 0 ? `
+                    <div style="background: var(--background); padding: 0.75rem; border-radius: 6px; margin-top: 1rem;">
+                        <strong>Report Breakdown:</strong>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-top: 0.5rem; font-size: 0.875rem;">
+                            <div>Pending: <strong>${reportStats.pending}</strong></div>
+                            <div>Reviewing: <strong>${reportStats.reviewing}</strong></div>
+                            <div>Resolved: <strong>${reportStats.resolved}</strong></div>
+                        </div>
+                    </div>
+                ` : ''}
+                
+                <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                    <button onclick="window.open('view-profile.html?id=${user._id}', '_blank')" class="btn-secondary btn-sm">
+                        View Profile
+                    </button>
+                    ${reportStats.total > 0 ? `
+                        <button onclick="viewAllUserReports('${userId}')" class="btn-primary btn-sm">
+                            View All ${reportStats.total} Report(s)
+                        </button>
+                    ` : ''}
+                </div>
             </div>
         `;
     } catch (error) {
         container.innerHTML = `<p style="color: var(--danger-color);">User not found with ID: ${userId}</p>`;
+    }
+}
+
+async function viewAllUserReports(userId) {
+    try {
+        const response = await API.getUserReports(userId);
+        
+        // Close current modal
+        closeReportModal();
+        
+        // Filter reports to show only this user's reports
+        displayReports(response.reports);
+        
+        // Update filter display
+        notify.info(`Showing ${response.count} report(s) about user ${userId}`);
+        
+        // Scroll to reports section
+        document.querySelector('#reportsTableBody').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (error) {
+        console.error('Error loading user reports:', error);
+        notify.error('Failed to load user reports');
     }
 }
 

@@ -684,6 +684,11 @@ const API = {
         return data.stats;
     },
 
+    async getUserReports(userId) {
+        const data = await apiCall(`/reports/user/${userId}`, { method: 'GET' });
+        return data;
+    },
+
     async migrateUserIds() {
         const data = await apiCall('/users/migrate-unique-ids', {
             method: 'POST'

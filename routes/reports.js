@@ -213,4 +213,43 @@ router.get('/stats/summary', protect, authorize('admin'), async (req, res) => {
     }
 });
 
+// @route   GET /api/reports/user/:userId
+// @desc    Get all reports about a specific user by their uniqueId
+// @access  Private (Admin)
+router.get('/user/:userId', protect, authorize('admin'), async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        // Find all reports with this user ID
+        const reports = await Report.find({ reportedUserId: userId })
+            .populate('reporter', 'firstName lastName email uniqueId role avatar')
+            .populate('resolvedBy', 'firstName lastName')
+            .sort({ createdAt: -1 });
+
+        // Get count by status
+        const totalCount = reports.length;
+        const pendingCount = reports.filter(r => r.status === 'Pending').length;
+        const reviewingCount = reports.filter(r => r.status === 'Reviewing').length;
+        const resolvedCount = reports.filter(r => r.status === 'Resolved').length;
+
+        res.json({
+            success: true,
+            count: totalCount,
+            stats: {
+                total: totalCount,
+                pending: pendingCount,
+                reviewing: reviewingCount,
+                resolved: resolvedCount
+            },
+            reports
+        });
+    } catch (error) {
+        console.error('Error fetching user reports:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error fetching user reports'
+        });
+    }
+});
+
 module.exports = router;
