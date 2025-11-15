@@ -847,20 +847,31 @@ async function analyzeReportWithAI(reportId) {
             }
         }
         
-        const prompt = `You are an administrative assistant helping to analyze user reports for a scholarship platform called TulongAral+. Analyze this report and provide:
+        const prompt = `You are an administrative assistant helping to analyze user reports for a scholarship platform called TulongAral+. Analyze this report and provide a concise analysis.
 
-1. A brief summary (2-3 sentences)
-2. Severity assessment (Low/Medium/High/Critical)
-3. Recommended action (Dismiss/Warning/Temporary Suspension/Permanent Suspension)
-4. Key concerns to consider
+IMPORTANT FORMATTING RULES:
+- Do NOT use asterisks (*), hyphens (-), or any special characters
+- Do NOT use bullet points or numbered lists
+- Write in plain text paragraphs only
+- Keep it brief and to the point
+
+Provide the following in 4 short paragraphs:
+
+1. Summary: Briefly describe what happened in 1-2 sentences.
+
+2. Severity: State the severity level (Low, Medium, High, or Critical) and explain why in 1 sentence.
+
+3. Recommended Action: State one clear action (Dismiss, Warning, Temporary Suspension, or Permanent Suspension) and explain why in 1 sentence.
+
+4. Key Concerns: Mention the most important thing to consider in 1 sentence.
 
 Report Details:
-- Type: ${report.reportType}
-- Subject: ${report.subject}
-- Description: ${report.description}
-- Reporter Role: ${report.reporterRole}${userContext}
+Type: ${report.reportType}
+Subject: ${report.subject}
+Description: ${report.description}
+Reporter Role: ${report.reporterRole}${userContext}
 
-Provide your analysis in a clear, professional format. Be concise and actionable.`;
+Write in clear, professional language without any special formatting characters.`;
 
         const analysis = await GeminiAPI.generateText(prompt);
         
