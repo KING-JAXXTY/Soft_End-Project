@@ -145,8 +145,10 @@ async function loadProfile() {
             profileUser = profile.user || {};
             
             // Update page header for viewing other user's profile
-            document.querySelector('.page-header h1').textContent = 'User Profile';
-            document.querySelector('.page-header p').textContent = 'Viewing user information';
+            const pageHeaderH1 = document.querySelector('.profile-page-header h1');
+            const pageHeaderP = document.querySelector('.profile-page-header p');
+            if (pageHeaderH1) pageHeaderH1.textContent = 'User Profile';
+            if (pageHeaderP) pageHeaderP.textContent = 'Viewing user information';
         } else {
             // Load current user's profile
             profileResponse = await API.getProfile();
@@ -154,8 +156,10 @@ async function loadProfile() {
             profileUser = currentUser;
             
             // Update page header for own profile
-            document.querySelector('.page-header h1').textContent = 'My Profile';
-            document.querySelector('.page-header p').textContent = 'Manage your account information';
+            const pageHeaderH1 = document.querySelector('.profile-page-header h1');
+            const pageHeaderP = document.querySelector('.profile-page-header p');
+            if (pageHeaderH1) pageHeaderH1.textContent = 'My Profile';
+            if (pageHeaderP) pageHeaderP.textContent = 'Manage your account information and preferences';
         }
         
         // Get avatar from profile.user (populated from backend) or fallback to currentUser
