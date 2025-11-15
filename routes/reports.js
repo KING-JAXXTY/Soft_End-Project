@@ -19,6 +19,19 @@ router.post('/', protect, authorize('student', 'sponsor'), async (req, res) => {
             });
         }
 
+        // If reporting a user, check if they're trying to report an admin
+        if (reportedUserId) {
+            const User = require('../models/User');
+            const reportedUser = await User.findById(reportedUserId);
+            
+            if (reportedUser && reportedUser.role === 'admin') {
+                return res.status(403).json({
+                    success: false,
+                    message: 'You cannot report admin users. Please contact platform support for admin-related issues.'
+                });
+            }
+        }
+
         // Create report
         const report = await Report.create({
             reportType,
