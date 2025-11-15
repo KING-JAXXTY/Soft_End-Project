@@ -760,6 +760,7 @@ async function confirmSuspend(event) {
         // Refresh report detail and reports list
         await refreshReportDetail();
         await loadReports();
+        await loadDashboard(); // Refresh user table
     } catch (error) {
         console.error('Suspension error:', error);
         notify.error(error.message || 'Failed to suspend user');
@@ -803,6 +804,7 @@ async function confirmWarn(event) {
         // Refresh report detail and reports list
         await refreshReportDetail();
         await loadReports();
+        await loadDashboard(); // Refresh user table
     } catch (error) {
         console.error('Warning error:', error);
         notify.error(error.message || 'Failed to issue warning');
