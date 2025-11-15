@@ -345,6 +345,17 @@ function stopAutoRefresh() {
 // Manual refresh function
 function refreshDashboard() {
     console.log('🔄 Manually refreshing dashboard...');
+    
+    // Force reset loading state to allow refresh
+    isLoading = false;
+    
+    // Clear any existing loading overlays
+    const existingOverlay = document.querySelector('.loading-overlay');
+    if (existingOverlay) {
+        existingOverlay.remove();
+    }
+    
+    // Reload dashboard
     loadDashboard();
 }
 
