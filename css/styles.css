@@ -557,11 +557,11 @@ button {
 
 .auth-container {
     background: var(--surface);
-    padding: 2.5rem;
+    padding: 2rem;
     border-radius: 16px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     width: 100%;
-    max-width: 360px;
+    max-width: 340px;
     position: relative;
     z-index: 1;
     animation: fadeInUp 0.6s ease-out;
@@ -579,23 +579,53 @@ button {
 }
 
 .register-container {
-    max-width: 620px;
+    max-width: 580px;
+}
+
+@media (max-width: 768px) {
+    .auth-container {
+        max-width: 100%;
+        padding: 1.5rem;
+    }
+    
+    .register-container {
+        max-width: 100%;
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-container {
+        padding: 1.25rem;
+    }
+    
+    .register-container {
+        padding: 1.25rem;
+    }
+    
+    .auth-header h1 {
+        font-size: 1.75rem;
+    }
+    
+    .auth-header h2 {
+        font-size: 1.25rem;
+    }
 }
 
 .auth-header {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1.75rem;
 }
 
 .auth-header h1 {
     color: var(--primary-color);
     margin-bottom: 0.5rem;
-    font-size: 2rem;
+    font-size: 1.75rem;
     font-weight: 700;
 }
 
 .auth-header h2 {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 600;
     color: var(--text-primary);
     margin-bottom: 0.5rem;
@@ -603,17 +633,17 @@ button {
 
 .auth-header p {
     color: var(--text-secondary);
-    font-size: 0.9375rem;
+    font-size: 0.875rem;
 }
 
 .auth-footer {
     text-align: center;
-    margin-top: 1.5rem;
+    margin-top: 1.25rem;
 }
 
 .auth-footer p {
     color: var(--text-secondary);
-    font-size: 0.9375rem;
+    font-size: 0.875rem;
     margin-bottom: 0.75rem;
 }
 
@@ -628,7 +658,7 @@ button {
     color: var(--text-secondary);
     padding: 0.5rem 1rem;
     cursor: pointer;
-    font-size: 0.9375rem;
+    font-size: 0.875rem;
     transition: color 0.2s;
 }
 
@@ -643,13 +673,13 @@ button {
 }
 
 .auth-form .form-group {
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
 }
 
 .auth-form .form-group label {
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     font-weight: 600;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
     display: block;
     color: var(--text-primary);
 }
@@ -658,11 +688,11 @@ button {
 .auth-form .form-group select {
     width: 100% !important;
     max-width: 100% !important;
-    padding: 0.875rem 1rem !important;
-    font-size: 0.9375rem;
+    padding: 0.75rem 0.875rem !important;
+    font-size: 0.875rem;
     box-sizing: border-box;
     border: 2px solid var(--border-color);
-    border-radius: 12px;
+    border-radius: 10px;
     transition: all 0.3s ease;
     background: var(--surface);
 }
@@ -678,8 +708,8 @@ button {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
-    font-size: 0.875rem;
+    margin-bottom: 1.25rem;
+    font-size: 0.8125rem;
 }
 
 .auth-form .form-row {
@@ -688,12 +718,19 @@ button {
     gap: 1rem;
 }
 
+@media (max-width: 480px) {
+    .auth-form .form-row {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+}
+
 .auth-form .btn-full {
     width: 100%;
-    padding: 1rem;
-    font-size: 1rem;
+    padding: 0.875rem;
+    font-size: 0.9375rem;
     font-weight: 600;
-    border-radius: 12px;
+    border-radius: 10px;
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
     transition: all 0.3s ease;
 }
