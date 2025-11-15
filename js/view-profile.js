@@ -290,9 +290,13 @@ function displayProfile(profile) {
                 </div>
                 ` : ''}
 
-                ${(currentUser.role === 'student' && profile.role === 'sponsor') || (currentUser.role === 'sponsor' && profile.role === 'student') ? `
-                <div class="profile-section" style="text-align: center; padding-top: 1rem;">
-                    <button onclick="sendMessage('${profile._id}')" class="btn-primary">
+                ${((currentUser.role === 'student' && profile.role === 'sponsor') || 
+                   (currentUser.role === 'sponsor' && profile.role === 'student')) ? `
+                <div class="profile-section" style="text-align: center; padding-top: 1.5rem; border-top: 2px solid var(--border-color);">
+                    <button onclick="sendMessage('${profile._id}')" class="btn-primary" style="padding: 0.875rem 2rem; font-size: 1rem;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 0.5rem;">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
                         Send Message
                     </button>
                 </div>
@@ -304,7 +308,8 @@ function displayProfile(profile) {
 
 // Send message to user
 function sendMessage(userId) {
-    window.location.href = `messages.html?user=${userId}`;
+    // Redirect to messages page with recipient parameter
+    window.location.href = `messages.html?recipient=${userId}`;
 }
 
 // Initialize
