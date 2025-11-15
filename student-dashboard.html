@@ -73,37 +73,6 @@
             </div>
         </div>
 
-        <!-- Deadline Tracker -->
-        <div class="dashboard-section deadline-section">
-            <div class="section-header-deadline">
-                <div class="deadline-title-wrapper">
-                    <svg class="deadline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <div>
-                        <h2>Upcoming Deadlines</h2>
-                        <p class="section-description">Stay on track with your applications</p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="deadlinesList" class="deadlines-list">
-                <!-- Loading state -->
-                <div class="deadline-loading">
-                    <div class="loading-spinner"></div>
-                    <p>Loading deadlines...</p>
-                </div>
-            </div>
-
-            <div id="deadlinesEmpty" class="deadlines-empty" style="display: none;">
-                <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <h3>All Caught Up!</h3>
-                <p>No upcoming deadlines in the next 30 days</p>
-            </div>
-        </div>
-
         <div class="dashboard-stats">
             <div class="stat-card">
                 <div class="stat-icon-wrapper">
@@ -350,6 +319,37 @@
                 <h3>No Applications Yet</h3>
                 <p>You haven't applied to any scholarships yet. Browse available scholarships and start your journey!</p>
                 <button onclick="window.location.href='student-home.html'" class="btn-primary">Browse Scholarships</button>
+            </div>
+        </div>
+
+        <!-- Deadline Tracker -->
+        <div class="dashboard-section deadline-section">
+            <div class="section-header-deadline">
+                <div class="deadline-title-wrapper">
+                    <svg class="deadline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <div>
+                        <h2>Upcoming Deadlines</h2>
+                        <p class="section-description">Stay on track with your applications</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="deadlinesList" class="deadlines-list">
+                <!-- Loading state -->
+                <div class="deadline-loading">
+                    <div class="loading-spinner"></div>
+                    <p>Loading deadlines...</p>
+                </div>
+            </div>
+
+            <div id="deadlinesEmpty" class="deadlines-empty" style="display: none;">
+                <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h3>All Caught Up!</h3>
+                <p>No upcoming deadlines in the next 30 days</p>
             </div>
         </div>
     </div>
