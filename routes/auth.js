@@ -165,8 +165,7 @@ router.post('/login', [
             }
         }
 
-        // NOTE: isActive check removed - all accounts are active by default
-        // No automatic disabling exists in this system
+        // All accounts are active by default - no automatic disabling
 
         // Generate token
         const token = generateToken(user._id);

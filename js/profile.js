@@ -270,7 +270,6 @@ async function loadProfile() {
             
             // Then populate sponsor fields
             if (profile.sponsorInfo) {
-                console.log('Saved institution:', profile.sponsorInfo.website);
                 document.getElementById('sponsorName').value = profile.sponsorInfo.organization || '';
                 document.getElementById('aboutDescription').value = profile.sponsorInfo.description || '';
                 // Set affiliated institution after dropdown is populated

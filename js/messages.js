@@ -180,7 +180,7 @@ async function openConversation(conversationId) {
             // Only poll if user isn't typing
             const messageInput = document.getElementById('messageInput');
             if (document.activeElement !== messageInput) {
-                loadMessages(conversationId, false); // Don't auto-scroll on poll
+                loadMessages(conversationId, false); // Disable auto-scroll on poll
             }
         }, 10000);
         
@@ -424,7 +424,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     userId = currentConversation.participants.find(id => id !== currentUser._id);
                 }
                 
-                // Don't allow viewing Gemini Assistant profile
+                // Block viewing Gemini Assistant profile
                 if (userId === 'gemini-ai') {
                     return;
                 }

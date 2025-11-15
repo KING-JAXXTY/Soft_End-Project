@@ -256,7 +256,7 @@ router.put('/:id', protect, authorize('sponsor'), async (req, res) => {
             });
         }
         
-        // Make sure sponsor owns scholarship
+        // Verify sponsor ownership
         if (scholarship.sponsor.toString() !== req.user._id.toString()) {
             return res.status(403).json({
                 success: false,

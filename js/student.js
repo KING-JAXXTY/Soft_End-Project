@@ -142,12 +142,8 @@ function filterScholarships() {
     const region = document.getElementById('regionFilter').value;
     const type = document.getElementById('typeFilter').value;
     
-    console.log('=== FILTER DEBUG ===');
-    console.log('Search Term:', searchTerm);
-    console.log('Region:', region);
-    console.log('Type:', type);
-    console.log('==================');
-    
+    // Filter scholarships based on criteria
+
     loadScholarships({ search: searchTerm, region, type });
 }
 

@@ -504,12 +504,8 @@ async function submitAIInfo() {
             return;
         }
         
-        console.log('🤖 Generating AI recommendations with temporary profile...');
-        console.log('Temp Profile:', tempProfile);
-        
-        // Get AI recommendations
+        // Generate AI recommendations with profile data
         const result = await GeminiAPI.recommendScholarships(tempProfile, scholarships);
-        console.log('✅ AI Recommendations:', result);
         
         // Display recommendations
         displayRecommendations(result, container);

@@ -10,7 +10,7 @@ exports.protect = async (req, res, next) => {
         token = req.headers.authorization.split(' ')[1];
     }
 
-    // Make sure token exists
+    // Verify token exists
     if (!token) {
         return res.status(401).json({
             success: false,
