@@ -533,11 +533,11 @@ button {
 
 .auth-container {
     background: var(--surface);
-    padding: 2rem;
+    padding: 2.5rem;
     border-radius: 1rem;
     box-shadow: var(--shadow-lg);
     width: 100%;
-    max-width: 450px;
+    max-width: 420px;
 }
 
 .register-container {
@@ -557,6 +557,34 @@ button {
 .auth-footer {
     text-align: center;
     margin-top: 1.5rem;
+}
+
+/* Auth Form Specific Styles */
+.auth-form {
+    width: 100%;
+}
+
+.auth-form .form-group {
+    margin-bottom: 1.25rem;
+}
+
+.auth-form .form-group label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.auth-form .form-group input {
+    padding: 0.875rem 1rem;
+    font-size: 0.9375rem;
+}
+
+.auth-form .form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
 }
 
 /* Forms */
