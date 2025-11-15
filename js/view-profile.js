@@ -81,6 +81,7 @@ async function loadUserProfile() {
             lastName: user.lastName || profile.lastName,
             email: user.email || profile.email,
             role: user.role || profile.role,
+            avatar: user.avatar || profile.avatar,
             bio: profile.bio,
             phone: profile.phone,
             region: profile.region,
@@ -122,12 +123,17 @@ function displayProfile(profile) {
         roleBadge = '<span class="badge badge-danger">Admin</span>';
     }
     
+    // Get avatar URL
+    const avatarUrl = (typeof getAvatarUrl === 'function' && profile.avatar) 
+        ? getAvatarUrl(profile.avatar) 
+        : '';
+    
     // Build profile HTML
     container.innerHTML = `
         <div class="card">
             <div class="card-header" style="text-align: center; padding: 2rem;">
-                <div class="profile-avatar-large" style="width: 120px; height: 120px; margin: 0 auto 1rem;">
-                    ${profile.firstName.charAt(0)}${profile.lastName.charAt(0)}
+                <div class="profile-avatar-large" style="width: 120px; height: 120px; margin: 0 auto 1rem; ${avatarUrl ? `background-image: url('${avatarUrl}'); background-size: cover; background-position: center;` : ''}">
+                    ${!avatarUrl ? `${profile.firstName.charAt(0)}${profile.lastName.charAt(0)}` : ''}
                 </div>
                 <h2 style="margin: 0.5rem 0;">${profile.firstName} ${profile.lastName}</h2>
                 ${roleBadge}
