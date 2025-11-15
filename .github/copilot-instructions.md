@@ -3,23 +3,24 @@
 ## General Coding Rules
 
 ### Code Style
-- Do NOT use emojis in code, comments, or button text
-- Use clear, descriptive variable and function names
-- Follow consistent indentation (2 or 4 spaces)
-- Add comments for complex logic
-- Do not use cringe wording or slang in code comments or UI text
-- Use consistent ui design patterns
-- Check for any potential duplications before adding new code
-- Always handle errors gracefully
-- If you think that its okay to commit changes, you can go ahead
-- Remove any emojis you see in the code or comments 
-- dont use cartonist ui design patterns
-- can we take inspiration to the apple and huawei ui design patterns, without us copying them directly
-- always prioritize user experience and accessibility
-- Always use media queries for responsive design with proper breakpoints and test on multiple device sizes and orientations
-- make sure we follow the shcolarship platform theme and color scheme and avoid using colors that clash with the overall design and branding of the platform
-- Dont ever use vibecoding ui design patterns
-- when changing something that already exists, make sure to check and read the whole codebase for any references to the changed part to avoid breaking functionality (TO AVOID THE SYSTEM NOT FETCHING THE RIGHT DATA)
+- Do NOT use emojis in code, comments, or button text.
+- Use clear, descriptive variable and function names.
+- Follow consistent indentation (2 or 4 spaces).
+- Add comments for complex logic.
+- Do not use cringe wording or slang in code comments or UI text.
+- Use consistent ui design patterns.
+- Check for any potential duplications before adding new code.
+- Always handle errors gracefully.
+- If you think that its okay to commit changes, you can go ahead.
+- Remove any emojis you see in the code or comments .
+- dont use cartonist ui design patterns.
+- can we take inspiration to the apple and huawei ui design patterns, without us copying them directly.
+- always prioritize user experience and accessibility.
+- Always use media queries for responsive design with proper breakpoints and test on multiple device sizes and orientations.
+- make sure we follow the shcolarship platform theme and color scheme and avoid using colors that clash with the overall design and branding of the platform.
+- Dont ever use vibecoding ui design patterns.
+- when changing something that already exists, make sure to check and read the whole codebase for any references to the changed part to avoid breaking functionality (TO AVOID THE SYSTEM NOT FETCHING THE RIGHT DATA).
+- WHEN EDITING CSS, CHECK THE actual height constraints.
 
 ### Project Structure
 - Frontend: HTML, CSS, JavaScript (Vanilla JS, no frameworks)
