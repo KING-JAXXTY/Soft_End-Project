@@ -22,25 +22,51 @@
     </nav>
 
     <div class="container">
-        <div class="page-header">
-            <h1>Community Forum</h1>
-            <p>Connect with other students and sponsors</p>
-            <div style="display: flex; gap: 1rem; justify-content: center;">
-                <button onclick="showNewPostModal()" class="btn-primary">New Post</button>
-                <button onclick="showMyPosts()" class="btn-secondary">Manage My Posts</button>
+        <div class="forum-page-header">
+            <div class="forum-title-section">
+                <h1>Community Forum</h1>
+                <p>Connect, share, and discuss scholarship opportunities</p>
+            </div>
+            <div class="forum-actions">
+                <button onclick="showNewPostModal()" class="btn-primary">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 0.5rem;">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    New Post
+                </button>
+                <button onclick="showMyPosts()" class="btn-secondary">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 0.5rem;">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    My Posts
+                </button>
             </div>
         </div>
 
-        <div class="search-section">
-            <input type="text" id="searchInput" placeholder="Search forum posts..." onkeyup="searchPosts()">
+        <div class="forum-search-section">
+            <div class="search-input-wrapper">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <input type="text" id="searchInput" placeholder="Search discussions, topics, or keywords..." onkeyup="searchPosts()">
+            </div>
         </div>
 
         <div id="forumPosts" class="forum-posts-list">
             <!-- Forum posts will be loaded here -->
         </div>
 
-        <div id="emptyState" class="empty-state" style="display: none;">
-            <p>No posts yet. Be the first to start a discussion!</p>
+        <div id="emptyState" class="forum-empty-state" style="display: none;">
+            <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="60" cy="60" r="55" stroke="#e2e8f0" stroke-width="4"/>
+                <path d="M40 50h40M40 65h30M40 80h35" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/>
+            </svg>
+            <h3>No posts yet</h3>
+            <p>Be the first to start a discussion!</p>
+            <button onclick="showNewPostModal()" class="btn-primary" style="margin-top: 1rem;">Create First Post</button>
         </div>
     </div>
 
