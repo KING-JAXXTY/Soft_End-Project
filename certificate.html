@@ -29,12 +29,20 @@
             z-index: 1000;
         }
         
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+        
         @media print {
             body {
                 background: white;
                 padding: 0;
             }
-            .print-button {
+            .print-button,
+            .back-button {
                 display: none;
             }
             @page {
@@ -45,6 +53,7 @@
     </style>
 </head>
 <body>
+    <button onclick="window.history.back()" class="btn-secondary back-button">Back</button>
     <button onclick="window.print()" class="btn-primary print-button">Print Certificate</button>
     
     <div id="certificateContainer">
