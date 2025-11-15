@@ -136,7 +136,9 @@ function displayProfile(profile) {
                     ${!avatarUrl ? `${profile.firstName.charAt(0)}${profile.lastName.charAt(0)}` : ''}
                 </div>
                 <h2 style="margin: 0.5rem 0;">${profile.firstName} ${profile.lastName}</h2>
-                ${roleBadge}
+                <div style="display: flex; justify-content: center; margin: 0.5rem 0;">
+                    ${roleBadge}
+                </div>
                 <p style="color: var(--text-secondary); margin-top: 0.5rem;">${profile.email}</p>
             </div>
 
