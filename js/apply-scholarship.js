@@ -135,6 +135,9 @@ Example format:
             
             // Insert before the checklist
             checklistContainer.parentNode.insertBefore(aiRequirements, checklistContainer);
+            
+            // Highlight matching documents in the checklist
+            highlightRequiredDocuments(documentList);
         } else {
             // Fallback message if AI couldn't determine requirements
             const fallbackMsg = document.createElement('div');
@@ -154,6 +157,55 @@ Example format:
         const analyzeIndicator = document.querySelector('.ai-analyzing');
         if (analyzeIndicator) analyzeIndicator.remove();
     }
+}
+
+// Highlight required documents in the checklist
+function highlightRequiredDocuments(documentList) {
+    // Mapping of keywords to document IDs
+    const keywordMapping = {
+        'transcript': 'doc-transcript',
+        'records': 'doc-transcript',
+        'grades': 'doc-transcript',
+        'report card': 'doc-transcript',
+        'id': 'doc-id',
+        'identification': 'doc-id',
+        'student id': 'doc-id',
+        'government id': 'doc-id',
+        'certificate': 'doc-certifications',
+        'award': 'doc-certifications',
+        'achievement': 'doc-certifications',
+        'recommendation': 'doc-recommendation',
+        'reference': 'doc-recommendation',
+        'letter': 'doc-recommendation',
+        'financial': 'doc-financial',
+        'income': 'doc-financial',
+        'indigency': 'doc-financial',
+        'need': 'doc-financial',
+        'tax': 'doc-financial'
+    };
+    
+    const highlightedDocs = new Set();
+    
+    // Check each AI-generated document against keywords
+    documentList.forEach(docText => {
+        const lowerDocText = docText.toLowerCase();
+        
+        for (const [keyword, docId] of Object.entries(keywordMapping)) {
+            if (lowerDocText.includes(keyword) && !highlightedDocs.has(docId)) {
+                highlightedDocs.add(docId);
+                
+                // Highlight the checklist item
+                const checkbox = document.getElementById(docId);
+                if (checkbox) {
+                    const label = checkbox.closest('.checklist-item');
+                    const span = label.querySelector('.doc-label');
+                    if (span) {
+                        span.classList.add('required-doc');
+                    }
+                }
+            }
+        }
+    });
 }
 
 // Go back to previous page

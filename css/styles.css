@@ -828,6 +828,15 @@ button {
     cursor: pointer;
 }
 
+.checklist-item .doc-label {
+    transition: color 0.3s ease;
+}
+
+.checklist-item .doc-label.required-doc {
+    color: #ea580c;
+    font-weight: 600;
+}
+
 /* AI Document Analysis Indicators */
 .ai-analyzing {
     display: flex;
