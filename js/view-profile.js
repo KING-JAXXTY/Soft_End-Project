@@ -84,9 +84,11 @@ async function loadUserProfile() {
             bio: profile.bio,
             phone: profile.phone,
             region: profile.region,
+            province: profile.province,
             address: profile.address || profile.municipality,
             studentInfo: profile.studentInfo,
-            sponsorInfo: profile.sponsorInfo
+            sponsorInfo: profile.sponsorInfo,
+            socialLinks: profile.socialLinks
         };
         
         displayProfile(profileData);
@@ -140,6 +142,7 @@ function displayProfile(profile) {
                 </div>
                 ` : ''}
 
+                ${profile.phone || profile.region || profile.address ? `
                 <div class="profile-section">
                     <h3>Contact Information</h3>
                     <div class="info-grid">
@@ -155,6 +158,12 @@ function displayProfile(profile) {
                             <span>${profile.region}</span>
                         </div>
                         ` : ''}
+                        ${profile.province ? `
+                        <div class="info-item">
+                            <span class="info-label">City/Municipality:</span>
+                            <span>${profile.province}</span>
+                        </div>
+                        ` : ''}
                         ${profile.address ? `
                         <div class="info-item">
                             <span class="info-label">Address:</span>
@@ -163,33 +172,46 @@ function displayProfile(profile) {
                         ` : ''}
                     </div>
                 </div>
+                ` : ''}
 
                 ${profile.role === 'student' && profile.studentInfo ? `
                 <div class="profile-section">
                     <h3>Student Information</h3>
                     <div class="info-grid">
-                        ${profile.studentInfo.school ? `
+                        ${profile.studentInfo.institution ? `
                         <div class="info-item">
-                            <span class="info-label">School:</span>
-                            <span>${profile.studentInfo.school}</span>
+                            <span class="info-label">Institution:</span>
+                            <span>${profile.studentInfo.institution}</span>
                         </div>
                         ` : ''}
-                        ${profile.studentInfo.course ? `
+                        ${profile.studentInfo.region ? `
                         <div class="info-item">
-                            <span class="info-label">Course:</span>
-                            <span>${profile.studentInfo.course}</span>
+                            <span class="info-label">Institution Region:</span>
+                            <span>${profile.studentInfo.region}</span>
                         </div>
                         ` : ''}
-                        ${profile.studentInfo.yearLevel ? `
+                        ${profile.studentInfo.gradeLevel ? `
                         <div class="info-item">
                             <span class="info-label">Year Level:</span>
-                            <span>${profile.studentInfo.yearLevel}</span>
+                            <span>${profile.studentInfo.gradeLevel}</span>
+                        </div>
+                        ` : ''}
+                        ${profile.studentInfo.major ? `
+                        <div class="info-item">
+                            <span class="info-label">Course/Program:</span>
+                            <span>${profile.studentInfo.major}</span>
                         </div>
                         ` : ''}
                         ${profile.studentInfo.gpa ? `
                         <div class="info-item">
                             <span class="info-label">GPA:</span>
                             <span>${profile.studentInfo.gpa}</span>
+                        </div>
+                        ` : ''}
+                        ${profile.studentInfo.graduationYear ? `
+                        <div class="info-item">
+                            <span class="info-label">Expected Graduation:</span>
+                            <span>${profile.studentInfo.graduationYear}</span>
                         </div>
                         ` : ''}
                     </div>
@@ -206,16 +228,54 @@ function displayProfile(profile) {
                             <span>${profile.sponsorInfo.organization}</span>
                         </div>
                         ` : ''}
-                        ${profile.sponsorInfo.position ? `
-                        <div class="info-item">
-                            <span class="info-label">Position:</span>
-                            <span>${profile.sponsorInfo.position}</span>
-                        </div>
-                        ` : ''}
                         ${profile.sponsorInfo.website ? `
                         <div class="info-item">
-                            <span class="info-label">Website:</span>
-                            <span><a href="${profile.sponsorInfo.website}" target="_blank">${profile.sponsorInfo.website}</a></span>
+                            <span class="info-label">Affiliated Institution:</span>
+                            <span>${profile.sponsorInfo.website}</span>
+                        </div>
+                        ` : ''}
+                        ${profile.sponsorInfo.contactEmail ? `
+                        <div class="info-item">
+                            <span class="info-label">Contact Email:</span>
+                            <span><a href="mailto:${profile.sponsorInfo.contactEmail}">${profile.sponsorInfo.contactEmail}</a></span>
+                        </div>
+                        ` : ''}
+                        ${profile.sponsorInfo.description ? `
+                        <div class="info-item" style="grid-column: 1 / -1;">
+                            <span class="info-label">About Organization:</span>
+                            <span>${profile.sponsorInfo.description}</span>
+                        </div>
+                        ` : ''}
+                        ${profile.sponsorInfo.verified ? `
+                        <div class="info-item">
+                            <span class="info-label">Verification Status:</span>
+                            <span><span class="badge badge-success">Verified</span></span>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+                ` : ''}
+
+                ${profile.socialLinks && (profile.socialLinks.facebook || profile.socialLinks.twitter || profile.socialLinks.linkedin) ? `
+                <div class="profile-section">
+                    <h3>Social Links</h3>
+                    <div class="info-grid">
+                        ${profile.socialLinks.facebook ? `
+                        <div class="info-item">
+                            <span class="info-label">Facebook:</span>
+                            <span><a href="${profile.socialLinks.facebook}" target="_blank">View Profile</a></span>
+                        </div>
+                        ` : ''}
+                        ${profile.socialLinks.twitter ? `
+                        <div class="info-item">
+                            <span class="info-label">Twitter:</span>
+                            <span><a href="${profile.socialLinks.twitter}" target="_blank">View Profile</a></span>
+                        </div>
+                        ` : ''}
+                        ${profile.socialLinks.linkedin ? `
+                        <div class="info-item">
+                            <span class="info-label">LinkedIn:</span>
+                            <span><a href="${profile.socialLinks.linkedin}" target="_blank">View Profile</a></span>
                         </div>
                         ` : ''}
                     </div>
