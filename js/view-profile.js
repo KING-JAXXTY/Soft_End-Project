@@ -70,8 +70,26 @@ async function loadUserProfile() {
             return;
         }
         
-        const profile = await API.getUserProfile(userId);
-        displayProfile(profile);
+        const response = await API.getUserProfile(userId);
+        const profile = response.profile || response;
+        
+        // Extract user data if nested
+        const user = profile.user || {};
+        const profileData = {
+            _id: user._id || profile._id || userId,
+            firstName: user.firstName || profile.firstName,
+            lastName: user.lastName || profile.lastName,
+            email: user.email || profile.email,
+            role: user.role || profile.role,
+            bio: profile.bio,
+            phone: profile.phone,
+            region: profile.region,
+            address: profile.address || profile.municipality,
+            studentInfo: profile.studentInfo,
+            sponsorInfo: profile.sponsorInfo
+        };
+        
+        displayProfile(profileData);
         
     } catch (error) {
         console.error('Error loading profile:', error);

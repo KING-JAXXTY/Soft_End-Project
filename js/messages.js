@@ -157,7 +157,11 @@ async function openConversation(conversationId) {
             aiAvatar.style.display = 'none';
         }
         
-        document.getElementById('chatUserName').textContent = `${currentRecipient.firstName} ${currentRecipient.lastName}`;
+        const chatUserNameEl = document.getElementById('chatUserName');
+        chatUserNameEl.textContent = `${currentRecipient.firstName} ${currentRecipient.lastName}`;
+        chatUserNameEl.style.cursor = 'pointer';
+        chatUserNameEl.style.textDecoration = 'underline';
+        
         document.getElementById('chatUserRole').textContent = currentRecipient.role;
         
         console.log('💬 Chat header set');
@@ -406,7 +410,7 @@ document.addEventListener('DOMContentLoaded', () => {
             backButton.addEventListener('click', closeMobileChat);
         }
 
-        // Make chat user name clickable to view profile
+        // Make chat user name clickable to view profile (except for Gemini Assistant)
         const chatUserName = document.getElementById('chatUserName');
         if (chatUserName) {
             chatUserName.addEventListener('click', () => {
@@ -419,6 +423,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     const currentUser = API.getCurrentUser();
                     userId = currentConversation.participants.find(id => id !== currentUser._id);
                 }
+                
+                // Don't allow viewing Gemini Assistant profile
+                if (userId === 'gemini-ai') {
+                    return;
+                }
+                
                 if (userId) {
                     window.location.href = `view-profile.html?id=${userId}`;
                 } else {
@@ -473,7 +483,11 @@ function openAIChat() {
     }
     
     // Update chat header with correct IDs
-    document.getElementById('chatUserName').textContent = 'Gemini Assistant';
+    const chatUserNameEl = document.getElementById('chatUserName');
+    chatUserNameEl.textContent = 'Gemini Assistant';
+    chatUserNameEl.style.cursor = 'default';
+    chatUserNameEl.style.textDecoration = 'none';
+    
     document.getElementById('chatUserRole').textContent = 'AI Scholarship Advisor';
     
     const avatarImg = document.getElementById('chatUserAvatar');
