@@ -306,6 +306,30 @@ router.put('/:id/suspend', protect, authorize('admin'), async (req, res) => {
 
         await user.save();
 
+        // If the suspended user is a sponsor, delete all their scholarships
+        let deletedScholarshipsCount = 0;
+        let deletedApplicationsCount = 0;
+        if (user.role === 'sponsor') {
+            const Scholarship = require('../models/Scholarship');
+            const Application = require('../models/Application');
+            
+            // Find all scholarships created by this sponsor
+            const scholarships = await Scholarship.find({ createdBy: user._id });
+            const scholarshipIds = scholarships.map(s => s._id);
+            
+            // Delete all applications for these scholarships
+            if (scholarshipIds.length > 0) {
+                const applicationsResult = await Application.deleteMany({ 
+                    scholarship: { $in: scholarshipIds } 
+                });
+                deletedApplicationsCount = applicationsResult.deletedCount;
+            }
+            
+            // Delete all scholarships
+            const scholarshipsResult = await Scholarship.deleteMany({ createdBy: user._id });
+            deletedScholarshipsCount = scholarshipsResult.deletedCount;
+        }
+
         res.json({
             success: true,
             message: isPermanent ? 'User permanently suspended' : `User suspended for ${duration} days`,
@@ -317,7 +341,11 @@ router.put('/:id/suspend', protect, authorize('admin'), async (req, res) => {
                 suspendedAt: user.suspendedAt,
                 suspendedUntil: user.suspendedUntil,
                 isPermanentSuspension: user.isPermanentSuspension
-            }
+            },
+            ...(user.role === 'sponsor' && {
+                scholarshipsDeleted: deletedScholarshipsCount,
+                applicationsDeleted: deletedApplicationsCount
+            })
         });
     } catch (error) {
         console.error('Suspension error:', error);

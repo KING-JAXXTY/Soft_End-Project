@@ -529,7 +529,7 @@ async function searchReportedUser(userId) {
                     ` : ''}
                     ${user.role !== 'admin' ? `
                         ${!userStatus.isSuspended ? `
-                            <button onclick="showSuspendModal('${user._id}', '${user.firstName} ${user.lastName}')" class="btn-danger btn-sm">
+                            <button onclick="showSuspendModal('${user._id}', '${user.firstName} ${user.lastName}', '${user.role}')" class="btn-danger btn-sm">
                                 🚫 Suspend User
                             </button>
                         ` : `
@@ -634,11 +634,18 @@ window.addEventListener('click', function(event) {
 let currentActionUserId = null;
 let currentActionUserName = null;
 
-function showSuspendModal(userId, userName) {
+function showSuspendModal(userId, userName, userRole) {
     currentActionUserId = userId;
     currentActionUserName = userName;
     document.getElementById('suspendUserName').textContent = userName;
     document.getElementById('suspendReason').value = '';
+    
+    // Show sponsor warning if applicable
+    const sponsorWarning = document.getElementById('sponsorSuspendWarning');
+    if (sponsorWarning) {
+        sponsorWarning.style.display = userRole === 'sponsor' ? 'block' : 'none';
+    }
+    
     document.getElementById('suspendModal').style.display = 'flex';
 }
 
@@ -663,12 +670,17 @@ async function confirmSuspend(event) {
     const duration = isPermanent ? null : parseInt(durationValue);
     
     try {
-        await API.suspendUser(currentActionUserId, reason, duration, isPermanent);
+        const response = await API.suspendUser(currentActionUserId, reason, duration, isPermanent);
         
         if (isPermanent) {
             notify.success(`${currentActionUserName} has been permanently suspended`);
         } else {
             notify.success(`${currentActionUserName} has been suspended for ${duration} day(s)`);
+        }
+        
+        // Show additional info if scholarships were deleted
+        if (response.scholarshipsDeleted > 0) {
+            notify.info(`${response.scholarshipsDeleted} scholarship(s) and ${response.applicationsDeleted} application(s) were deleted`);
         }
         
         closeSuspendModal();
