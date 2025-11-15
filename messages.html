@@ -29,15 +29,19 @@
     </nav>
 
     <div class="container">
-        <div class="page-header">
-            <!-- Removed Messages header and chat description as requested -->
+        <div class="messages-page-header">
+            <div class="messages-title-section">
+                <h1>Messages</h1>
+                <p>Connect with students, sponsors, and administrators</p>
+            </div>
         </div>
 
         <div class="messages-container">
             <!-- Conversations List -->
             <div class="conversations-panel">
                 <div class="conversations-header">
-                    <h3>Conversations</h3>
+                    <h3>Your Conversations</h3>
+                    <p class="conversations-subtitle">Stay connected with the community</p>
                 </div>
                 <div id="conversationsList" class="conversations-list">
                     <p class="loading">Loading conversations...</p>
@@ -48,8 +52,16 @@
             <div class="chat-panel">
                 <div id="chatPlaceholder" class="chat-placeholder">
                     <div class="placeholder-content">
-                        <h2>💬</h2>
+                        <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="60" cy="60" r="55" stroke="#e2e8f0" stroke-width="4"/>
+                            <path d="M40 50C40 44.4772 44.4772 40 50 40H70C75.5228 40 80 44.4772 80 50V65C80 70.5228 75.5228 75 70 75H55L40 85V50Z" stroke="#2563eb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="52" cy="57" r="3" fill="#2563eb"/>
+                            <circle cx="60" cy="57" r="3" fill="#2563eb"/>
+                            <circle cx="68" cy="57" r="3" fill="#2563eb"/>
+                        </svg>
+                        <h3>Welcome to Messages</h3>
                         <p>Select a conversation to start messaging</p>
+                        <p class="placeholder-hint">Connect with students, sponsors, and get AI assistance</p>
                     </div>
                 </div>
 
@@ -76,14 +88,19 @@
                     <!-- Message Input -->
                     <div class="message-input-container">
                         <form id="messageForm" class="message-form">
-                            <!-- File attachment removed -->
-                            <input 
-                                type="text" 
-                                id="messageInput" 
-                                placeholder="Type a message..." 
-                                autocomplete="off"
-                            >
-                            <button type="submit" class="btn-primary">Send</button>
+                            <div class="input-wrapper">
+                                <input 
+                                    type="text" 
+                                    id="messageInput" 
+                                    placeholder="Type your message..." 
+                                    autocomplete="off"
+                                >
+                                <button type="submit" class="btn-send" title="Send message">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M2 10L18 2L10 18L8 11L2 10Z" fill="currentColor"/>
+                                    </svg>
+                                </button>
+                            </div>
                         </form>
                         <div id="attachmentPreview" class="attachment-preview" style="display: none;"></div>
                     </div>
