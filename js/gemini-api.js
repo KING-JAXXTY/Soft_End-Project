@@ -258,6 +258,46 @@ Important: Return ONLY valid JSON. No markdown formatting, no code blocks, no ex
                 generalAdvice: `Error: ${error.message}. Please try again.`
             };
         }
+    },
+
+    // Generic text generation for any prompt
+    async generateText(prompt) {
+        // Try both API keys in round-robin fashion
+        for (let i = 0; i < GEMINI_API_KEYS.length; i++) {
+            const apiKey = getNextApiKey();
+            try {
+                const response = await fetch(`${GEMINI_API_URL}?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{ text: prompt }]
+                        }]
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Gemini API Error Response:', errorText);
+                    continue; // Try next key
+                }
+                
+                const json = await response.json();
+                const text = json.candidates?.[0]?.content?.parts?.[0]?.text || '';
+                return text;
+                
+            } catch (err) {
+                console.error(`API key ${i + 1} error:`, err);
+                if (i === GEMINI_API_KEYS.length - 1) {
+                    throw err; // Throw on last attempt
+                }
+                continue; // Try next key
+            }
+        }
+        
+        throw new Error('All API keys failed');
     }
 };
 

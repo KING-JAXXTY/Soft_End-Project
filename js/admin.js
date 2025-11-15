@@ -862,7 +862,7 @@ Report Details:
 
 Provide your analysis in a clear, professional format. Be concise and actionable.`;
 
-        const analysis = await API.getGeminiResponse(prompt);
+        const analysis = await GeminiAPI.generateText(prompt);
         
         aiContent.innerHTML = `
             <div style="background: rgba(255,255,255,0.1); border-radius: 8px; padding: 1rem; white-space: pre-wrap; line-height: 1.6;">
