@@ -169,6 +169,7 @@ router.get('/student/my-applications', protect, authorize('student'), async (req
     try {
         const applications = await Application.find({ student: req.user._id })
             .populate('scholarship', 'title amount deadline sponsor')
+            .populate('reviewedBy', 'firstName lastName uniqueId')
             .populate({
                 path: 'scholarship',
                 populate: {
@@ -205,6 +206,7 @@ router.get('/sponsor/received', protect, authorize('sponsor'), async (req, res) 
         const applications = await Application.find({ scholarship: { $in: scholarshipIds } })
             .populate('scholarship', 'title amount deadline')
             .populate('student', 'firstName lastName email uniqueId avatar')
+            .populate('reviewedBy', 'firstName lastName uniqueId')
             .sort({ appliedAt: -1 });
         
         res.json({
@@ -236,6 +238,7 @@ router.get('/:id/full-details', protect, async (req, res) => {
 
         const application = await Application.findById(req.params.id)
             .populate('student', 'firstName lastName email uniqueId avatar')
+            .populate('reviewedBy', 'firstName lastName uniqueId')
             .populate({
                 path: 'scholarship',
                 populate: {
@@ -357,7 +360,8 @@ router.get('/:id', protect, async (req, res) => {
         }
         const application = await Application.findById(req.params.id)
             .populate('scholarship', 'title amount deadline sponsor')
-            .populate('student', 'firstName lastName email uniqueId avatar');
+            .populate('student', 'firstName lastName email uniqueId avatar')
+            .populate('reviewedBy', 'firstName lastName uniqueId');
         if (!application) {
             return res.status(404).json({
                 success: false,
