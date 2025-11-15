@@ -56,7 +56,7 @@ router.post('/conversation', protect, async (req, res) => {
         // Check if conversation already exists
         let conversation = await Conversation.findOne({
             participants: { $all: [req.user._id, recipientId] }
-        }).populate('participants', 'firstName lastName email avatar role');
+        }).populate('participants', 'firstName lastName email avatar role uniqueId');
         
         console.log('   Existing conversation:', conversation ? 'Found' : 'Not found');
         
@@ -73,7 +73,7 @@ router.post('/conversation', protect, async (req, res) => {
             console.log('   ✅ Created new conversation:', conversation._id);
             
             conversation = await Conversation.findById(conversation._id)
-                .populate('participants', 'firstName lastName email avatar role');
+                .populate('participants', 'firstName lastName email avatar role uniqueId');
         }
         
         res.json({
@@ -97,7 +97,7 @@ router.get('/conversations', protect, async (req, res) => {
         const conversations = await Conversation.find({
             participants: req.user._id
         })
-        .populate('participants', 'firstName lastName email avatar role')
+        .populate('participants', 'firstName lastName email avatar role uniqueId')
         .populate('lastMessage')
         .sort({ lastMessageAt: -1 });
         
@@ -141,7 +141,7 @@ router.get('/:conversationId', protect, async (req, res) => {
         
         // Get messages
         const messages = await Message.find({ conversation: conversationId })
-            .populate('sender', 'firstName lastName avatar')
+            .populate('sender', 'firstName lastName avatar uniqueId')
             .sort({ createdAt: 1 });
         
         console.log('   📬 Messages found:', messages.length);
@@ -247,7 +247,7 @@ router.post('/', protect, upload.single('attachment'), async (req, res) => {
         
         // Populate sender info
         const populatedMessage = await Message.findById(message._id)
-            .populate('sender', 'firstName lastName avatar');
+            .populate('sender', 'firstName lastName avatar uniqueId');
         
         console.log('   📨 Populated message:', populatedMessage);
         

@@ -41,12 +41,12 @@ const upload = multer({
 // @access  Private
 router.get('/', protect, async (req, res) => {
     try {
-        let profile = await Profile.findOne({ user: req.user._id }).populate('user', 'email firstName lastName role avatar');
+        let profile = await Profile.findOne({ user: req.user._id }).populate('user', 'email firstName lastName role avatar uniqueId');
         
         // Create profile if it doesn't exist
         if (!profile) {
             profile = await Profile.create({ user: req.user._id });
-            profile = await Profile.findById(profile._id).populate('user', 'email firstName lastName role avatar');
+            profile = await Profile.findById(profile._id).populate('user', 'email firstName lastName role avatar uniqueId');
         }
         
         res.json({
@@ -67,7 +67,7 @@ router.get('/', protect, async (req, res) => {
 // @access  Private
 router.get('/:userId', protect, async (req, res) => {
     try {
-        let profile = await Profile.findOne({ user: req.params.userId }).populate('user', 'email firstName lastName role avatar');
+        let profile = await Profile.findOne({ user: req.params.userId }).populate('user', 'email firstName lastName role avatar uniqueId');
         
         if (!profile) {
             return res.status(404).json({

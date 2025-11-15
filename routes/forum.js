@@ -16,8 +16,8 @@ router.get('/posts', protect, async (req, res) => {
         }
         
         const posts = await ForumPost.find(query)
-            .populate('author', 'firstName lastName role avatar')
-            .populate('comments.author', 'firstName lastName role avatar')
+            .populate('author', 'firstName lastName role avatar uniqueId')
+            .populate('comments.author', 'firstName lastName role avatar uniqueId')
             .sort({ isPinned: -1, createdAt: -1 });
         
         res.json({
@@ -40,8 +40,8 @@ router.get('/posts', protect, async (req, res) => {
 router.get('/posts/:id', protect, async (req, res) => {
     try {
         const post = await ForumPost.findById(req.params.id)
-            .populate('author', 'firstName lastName role avatar')
-            .populate('comments.author', 'firstName lastName role avatar');
+            .populate('author', 'firstName lastName role avatar uniqueId')
+            .populate('comments.author', 'firstName lastName role avatar uniqueId');
         
         if (!post) {
             return res.status(404).json({
@@ -89,7 +89,7 @@ router.post('/posts', protect, async (req, res) => {
         });
         
         const populatedPost = await ForumPost.findById(post._id)
-            .populate('author', 'firstName lastName role avatar');
+            .populate('author', 'firstName lastName role avatar uniqueId');
         
         res.status(201).json({
             success: true,
@@ -135,8 +135,8 @@ router.post('/posts/:id/comments', protect, async (req, res) => {
         await post.save();
         
         const updatedPost = await ForumPost.findById(post._id)
-            .populate('author', 'firstName lastName role')
-            .populate('comments.author', 'firstName lastName role');
+            .populate('author', 'firstName lastName role avatar uniqueId')
+            .populate('comments.author', 'firstName lastName role avatar uniqueId');
         
         res.status(201).json({
             success: true,

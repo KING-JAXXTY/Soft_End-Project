@@ -97,7 +97,7 @@ UserSchema.index({ role: 1, isActive: 1 });
 
 // Generate unique ID before saving new users
 UserSchema.pre('save', async function(next) {
-    // Generate uniqueId if not exists
+    // Generate uniqueId if not exists (for new users only)
     if (this.isNew && !this.uniqueId) {
         let unique = false;
         while (!unique) {
