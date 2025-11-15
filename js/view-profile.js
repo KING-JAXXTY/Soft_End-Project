@@ -30,7 +30,6 @@ function checkAuth() {
     } else if (currentUser.role === 'admin') {
         navLinks.innerHTML = `
             <a href="admin-dashboard.html">Dashboard</a>
-            <a href="messages.html">Messages</a>
             <a href="forum.html">Community Forum</a>
             <a href="profile.html">Profile</a>
         `;
