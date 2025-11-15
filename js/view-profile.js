@@ -139,6 +139,9 @@ function displayProfile(profile) {
                     ${roleBadge}
                 </div>
                 <p style="color: var(--text-secondary); margin-top: 0.5rem;">${profile.email}</p>
+                <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.5rem; font-family: 'Courier New', monospace;">
+                    <strong>User ID:</strong> ${profile.uniqueId || 'Not assigned'}
+                </p>
             </div>
 
             <div class="card-body">

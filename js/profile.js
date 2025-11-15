@@ -172,6 +172,12 @@ async function loadProfile() {
             profileRoleBadge.textContent = profileUser.role.charAt(0).toUpperCase() + profileUser.role.slice(1);
         }
         
+        // Display User ID
+        const userIdValue = document.getElementById('userIdValue');
+        if (userIdValue) {
+            userIdValue.textContent = profileUser.uniqueId || 'Not assigned';
+        }
+        
         // Hide email for admin users
         if (profileUser.role === 'admin') {
             document.getElementById('profileEmail').style.display = 'none';

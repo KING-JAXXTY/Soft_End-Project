@@ -640,6 +640,55 @@ const API = {
     async getRecentActivity() {
         const data = await apiCall('/activity/recent', { method: 'GET' });
         return data.activities || [];
+    },
+
+    // ==================== REPORTS ====================
+    
+    async submitReport(reportData) {
+        const data = await apiCall('/reports', {
+            method: 'POST',
+            body: JSON.stringify(reportData)
+        });
+        return data;
+    },
+
+    async getAllReports(filters = {}) {
+        let query = '';
+        if (filters.status) query += `?status=${filters.status}`;
+        if (filters.reportType) query += query ? `&reportType=${filters.reportType}` : `?reportType=${filters.reportType}`;
+        
+        const data = await apiCall(`/reports${query}`, { method: 'GET' });
+        return data;
+    },
+
+    async getReport(id) {
+        const data = await apiCall(`/reports/${id}`, { method: 'GET' });
+        return data.report;
+    },
+
+    async updateReportStatus(id, statusData) {
+        const data = await apiCall(`/reports/${id}/status`, {
+            method: 'PUT',
+            body: JSON.stringify(statusData)
+        });
+        return data;
+    },
+
+    async searchUserById(userId) {
+        const data = await apiCall(`/reports/search?userId=${userId}`, { method: 'GET' });
+        return data;
+    },
+
+    async getReportsStats() {
+        const data = await apiCall('/reports/stats/summary', { method: 'GET' });
+        return data.stats;
+    },
+
+    async migrateUserIds() {
+        const data = await apiCall('/users/migrate-unique-ids', {
+            method: 'POST'
+        });
+        return data;
     }
 };
 

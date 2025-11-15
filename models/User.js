@@ -1,7 +1,22 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
+// Function to generate unique user ID
+function generateUniqueId() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let id = 'TA-';
+    for (let i = 0; i < 8; i++) {
+        id += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return id;
+}
+
 const UserSchema = new mongoose.Schema({
+    uniqueId: {
+        type: String,
+        unique: true,
+        sparse: true // Allow null temporarily for migration
+    },
     email: {
         type: String,
         required: [true, 'Please provide an email'],
@@ -46,14 +61,29 @@ const UserSchema = new mongoose.Schema({
 // Add indexes for faster queries
 UserSchema.index({ email: 1 });
 UserSchema.index({ role: 1, isActive: 1 });
+UserSchema.index({ uniqueId: 1 });
 
-// Hash password before saving
+// Generate unique ID before saving new users
 UserSchema.pre('save', async function(next) {
+    // Generate uniqueId if not exists
+    if (this.isNew && !this.uniqueId) {
+        let unique = false;
+        while (!unique) {
+            this.uniqueId = generateUniqueId();
+            const existing = await mongoose.model('User').findOne({ uniqueId: this.uniqueId });
+            if (!existing) {
+                unique = true;
+            }
+        }
+    }
+    
+    // Hash password if modified
     if (!this.isModified('password')) {
-        next();
+        return next();
     }
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
+    next();
 });
 
 // Method to compare passwords

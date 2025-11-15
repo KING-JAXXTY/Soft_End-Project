@@ -83,6 +83,7 @@ app.use('/api/profile', require('./routes/profile'));
 app.use('/api/forum', require('./routes/forum'));
 app.use('/api/messages', require('./routes/messages'));
 app.use('/api/gemini', require('./routes/gemini'));
+app.use('/api/reports', require('./routes/reports'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {

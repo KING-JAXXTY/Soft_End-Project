@@ -200,4 +200,54 @@ router.get('/statistics', protect, authorize('admin'), async (req, res) => {
     }
 });
 
+// @route   POST /api/users/migrate-unique-ids
+// @desc    Generate unique IDs for all existing users
+// @access  Private (Admin)
+router.post('/migrate-unique-ids', protect, authorize('admin'), async (req, res) => {
+    try {
+        // Function to generate unique ID
+        function generateUniqueId() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let id = 'TA-';
+            for (let i = 0; i < 8; i++) {
+                id += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return id;
+        }
+
+        // Find users without uniqueId
+        const usersWithoutId = await User.find({ uniqueId: { $exists: false } }).select('+password');
+        
+        let updated = 0;
+        for (const user of usersWithoutId) {
+            let unique = false;
+            let uniqueId;
+            
+            while (!unique) {
+                uniqueId = generateUniqueId();
+                const existing = await User.findOne({ uniqueId });
+                if (!existing) {
+                    unique = true;
+                }
+            }
+            
+            user.uniqueId = uniqueId;
+            await user.save({ validateBeforeSave: false });
+            updated++;
+        }
+
+        res.json({
+            success: true,
+            message: `Successfully generated unique IDs for ${updated} users`,
+            updated
+        });
+    } catch (error) {
+        console.error('Migration error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error migrating user IDs'
+        });
+    }
+});
+
 module.exports = router;
