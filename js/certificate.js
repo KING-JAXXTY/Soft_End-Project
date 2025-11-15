@@ -20,8 +20,8 @@ async function generateCertificate(application, scholarship, student) {
         certificateContainer.className = 'certificate-container';
         certificateContainer.style.cssText = `
             width: 100%;
-            max-width: 800px;
-            min-height: 420px;
+            max-width: 700px;
+            min-height: 450px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 20px;
             border-radius: 12px;

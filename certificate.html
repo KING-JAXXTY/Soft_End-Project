@@ -106,23 +106,21 @@
                 }
                 
                 const opt = {
-                    margin: [0.5, 0.5, 0.5, 0.5],
+                    margin: [10, 10, 10, 10],
                     filename: 'scholarship-certificate.pdf',
-                    image: { type: 'jpeg', quality: 0.98 },
+                    image: { type: 'jpeg', quality: 0.95 },
                     html2canvas: { 
-                        scale: 2,
+                        scale: 1.5,
                         useCORS: true,
                         logging: false,
-                        letterRendering: true,
-                        windowWidth: 800
+                        letterRendering: true
                     },
                     jsPDF: { 
-                        unit: 'cm', 
+                        unit: 'mm', 
                         format: 'a4', 
-                        orientation: 'landscape',
-                        compress: true
+                        orientation: 'landscape'
                     },
-                    pagebreak: { mode: 'avoid-all' }
+                    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
                 };
                 
                 await html2pdf().set(opt).from(certificate).save();
