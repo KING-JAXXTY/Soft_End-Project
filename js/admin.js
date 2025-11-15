@@ -60,7 +60,7 @@ async function loadDashboard() {
         displayScholarships(scholarships);
         loadReports();
         
-        // Load activity log independently (don't let it block other data)
+        // Activity log loaded asynchronously to prevent blocking dashboard load
         loadActivityLog().catch(err => {
             console.error('Activity log error:', err);
             // Activity log failure shouldn't affect dashboard

@@ -94,13 +94,13 @@ async function loadAffiliatedInstitution() {
         if (response.success && response.data) {
             const profile = response.data;
             
-            // Set region if available (but don't override if editing)
+            // Initialize region field from user profile if not in edit mode
             if (profile.region && !isEditMode) {
                 document.getElementById('scholarshipRegion').value = profile.region;
                 updateInstitutionsDropdown(profile.region);
             }
             
-            // Set affiliated institution if available (but don't override if editing)
+            // Initialize affiliated institution from sponsor profile if available
             if (profile.sponsorInfo && profile.sponsorInfo.website && !isEditMode) {
                 const affiliatedInstitution = profile.sponsorInfo.website;
                 
