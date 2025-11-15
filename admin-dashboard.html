@@ -29,40 +29,91 @@
         </div>
 
         <div class="dashboard-stats">
-            <div class="stat-card">
-                <h3 id="totalUsers">0</h3>
-                <p>Total Users</p>
+            <div class="stat-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <h3 id="totalUsers" style="color: white; margin: 0; font-size: 2.5rem;">0</h3>
+                <p style="color: rgba(255,255,255,0.9); margin: 0.5rem 0 0 0;">Total Users</p>
             </div>
-            <div class="stat-card">
-                <h3 id="totalStudents">0</h3>
-                <p>Students</p>
+            <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                <h3 id="totalStudents" style="color: white; margin: 0; font-size: 2.5rem;">0</h3>
+                <p style="color: rgba(255,255,255,0.9); margin: 0.5rem 0 0 0;">Students</p>
             </div>
-            <div class="stat-card">
-                <h3 id="totalSponsors">0</h3>
-                <p>Sponsors</p>
+            <div class="stat-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                <h3 id="totalSponsors" style="color: white; margin: 0; font-size: 2.5rem;">0</h3>
+                <p style="color: rgba(255,255,255,0.9); margin: 0.5rem 0 0 0;">Sponsors</p>
             </div>
-            <div class="stat-card">
-                <h3 id="totalScholarships">0</h3>
-                <p>Active Scholarships</p>
+            <div class="stat-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                <h3 id="totalScholarships" style="color: white; margin: 0; font-size: 2.5rem;">0</h3>
+                <p style="color: rgba(255,255,255,0.9); margin: 0.5rem 0 0 0;">Scholarships</p>
             </div>
-            <div class="stat-card">
-                <h3 id="totalApplications">0</h3>
-                <p>Total Applications</p>
+            <div class="stat-card" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                <h3 id="totalApplications" style="color: white; margin: 0; font-size: 2.5rem;">0</h3>
+                <p style="color: rgba(255,255,255,0.9); margin: 0.5rem 0 0 0;">Applications</p>
             </div>
-            <div class="stat-card warning">
-                <h3 id="pendingApplications">0</h3>
-                <p>Pending Applications</p>
+            <div class="stat-card" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);">
+                <h3 id="pendingApplications" style="color: white; margin: 0; font-size: 2.5rem;">0</h3>
+                <p style="color: rgba(255,255,255,0.9); margin: 0.5rem 0 0 0;">Pending</p>
             </div>
-            <div class="stat-card" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
-                <h3 id="totalReports" style="color: white;">0</h3>
-                <p style="color: rgba(255,255,255,0.9);">Reports</p>
+            <div class="stat-card" style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);">
+                <h3 id="totalReports" style="color: white; margin: 0; font-size: 2.5rem;">0</h3>
+                <p style="color: rgba(255,255,255,0.9); margin: 0.5rem 0 0 0;">Reports</p>
             </div>
         </div>
 
-        <div class="section">
-            <div class="section-header">
-                <h2>User Management</h2>
-                <select id="roleFilter" onchange="filterUsers()">
+        <!-- Reports Management Section (Priority) -->
+        <div class="modern-section">
+            <div class="section-header-modern">
+                <div class="section-title-group">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                    </svg>
+                    <h2>Reports Management</h2>
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                    <select id="reportStatusFilter" onchange="filterReports()" class="modern-select">
+                        <option value="">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="under_review">Under Review</option>
+                        <option value="resolved">Resolved</option>
+                        <option value="dismissed">Dismissed</option>
+                    </select>
+                    <select id="reportTypeFilter" onchange="filterReports()" class="modern-select">
+                        <option value="">All Types</option>
+                        <option value="user">User Reports</option>
+                        <option value="scholarship">Scholarship Reports</option>
+                        <option value="post">Post Reports</option>
+                    </select>
+                </div>
+            </div>
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Report ID</th>
+                            <th>Type</th>
+                            <th>Subject</th>
+                            <th>Reporter</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reportsTableBody">
+                        <!-- Reports will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- User Management Section -->
+        <div class="modern-section">
+            <div class="section-header-modern">
+                <div class="section-title-group">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                    </svg>
+                    <h2>User Management</h2>
+                </div>
+                <select id="roleFilter" onchange="filterUsers()" class="modern-select">
                     <option value="">All Roles</option>
                     <option value="student">Students</option>
                     <option value="sponsor">Sponsors</option>
@@ -88,10 +139,16 @@
             </div>
         </div>
 
-        <div class="section">
-            <div class="section-header">
-                <h2>Scholarship Management</h2>
-                <select id="scholarshipStatusFilter" onchange="filterScholarships()">
+        <!-- Scholarship Management Section -->
+        <div class="modern-section">
+            <div class="section-header-modern">
+                <div class="section-title-group">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
+                    </svg>
+                    <h2>Scholarship Management</h2>
+                </div>
+                <select id="scholarshipStatusFilter" onchange="filterScholarships()" class="modern-select">
                     <option value="">All Status</option>
                     <option value="active">Active</option>
                     <option value="inactive">Inactive</option>
@@ -118,55 +175,16 @@
             </div>
         </div>
 
-        <div class="section">
-            <div class="section-header">
-                <h2>Reports Management</h2>
-                <div style="display: flex; gap: 0.5rem;">
-                    <select id="reportStatusFilter" onchange="filterReports()" class="form-control" style="width: auto;">
-                        <option value="">All Status</option>
-                        <option value="Pending">Pending</option>
-                        <option value="Reviewing">Reviewing</option>
-                        <option value="Resolved">Resolved</option>
-                        <option value="Closed">Closed</option>
-                    </select>
-                    <select id="reportTypeFilter" onchange="filterReports()" class="form-control" style="width: auto;">
-                        <option value="">All Types</option>
-                        <option value="Technical Issue">Technical Issue</option>
-                        <option value="Scholarship Issue">Scholarship Issue</option>
-                        <option value="User Complaint">User Complaint</option>
-                        <option value="Payment Issue">Payment Issue</option>
-                        <option value="Feature Request">Feature Request</option>
-                        <option value="Other">Other</option>
-                    </select>
+        <!-- System Activity Section -->
+        <div class="modern-section">
+            <div class="section-header-modern">
+                <div class="section-title-group">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                    </svg>
+                    <h2>System Activity</h2>
                 </div>
             </div>
-            <div class="table-container">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Type</th>
-                            <th>Subject</th>
-                            <th>Reporter</th>
-                            <th>Status</th>
-                            <th>Date</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="reportsTableBody">
-                        <tr>
-                            <td colspan="7" style="text-align: center; padding: 2rem;">
-                                <div class="loading-spinner"></div>
-                                <p style="margin-top: 1rem; color: var(--text-secondary);">Loading reports...</p>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>System Activity</h2>
             <div id="activityLog" class="activity-log">
                 <!-- Activity logs will be loaded here -->
             </div>
