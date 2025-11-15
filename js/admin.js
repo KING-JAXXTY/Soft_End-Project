@@ -433,11 +433,10 @@ async function searchReportedUser(userId) {
     container.innerHTML = '<p style="color: var(--text-secondary);">Searching...</p>';
     
     try {
-        // Get user info, their report count, and suspension status
-        const [userResponse, reportsResponse, statusResponse] = await Promise.all([
+        // First get user info and their report count
+        const [userResponse, reportsResponse] = await Promise.all([
             API.searchUserById(userId),
-            API.getUserReports(userId),
-            API.getUserStatus(userResponse?.user?._id).catch(() => null)
+            API.getUserReports(userId)
         ]);
         
         const user = userResponse.user;
