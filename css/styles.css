@@ -557,11 +557,11 @@ button {
 
 .auth-container {
     background: var(--surface);
-    padding: 1.75rem 1rem;
+    padding: 1.5rem 1.25rem;
     border-radius: 16px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     width: 100%;
-    max-width: 260px;
+    max-width: 320px;
     position: relative;
     z-index: 1;
     animation: fadeInUp 0.6s ease-out;
@@ -677,30 +677,24 @@ button {
 }
 
 .auth-form .form-group label {
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     font-weight: 600;
-    margin-bottom: 0.35rem;
+    margin-bottom: 0.4rem;
     display: block;
     color: var(--text-primary);
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: left;
 }
 
 .auth-form .form-group input,
 .auth-form .form-group select {
-    width: 90% !important;
-    max-width: 90% !important;
-    padding: 0.65rem 0.75rem !important;
-    font-size: 0.8125rem;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0.7rem 0.85rem !important;
+    font-size: 0.875rem;
     box-sizing: border-box;
     border: 2px solid var(--border-color);
     border-radius: 10px;
     transition: all 0.3s ease;
     background: var(--surface);
-    margin: 0 auto;
-    display: block;
 }
 
 .auth-form .form-group input:focus,
@@ -715,10 +709,7 @@ button {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
-    font-size: 0.75rem;
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
+    font-size: 0.8125rem;
 }
 
 .auth-form .form-row {
@@ -735,15 +726,13 @@ button {
 }
 
 .auth-form .btn-full {
-    width: 90%;
-    padding: 0.75rem;
-    font-size: 0.875rem;
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 0.9375rem;
     font-weight: 600;
     border-radius: 10px;
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
     transition: all 0.3s ease;
-    margin: 0 auto;
-    display: block;
 }
 
 .auth-form .btn-full:hover {
@@ -755,27 +744,21 @@ button {
 .error-message {
     background: #fee;
     color: #c33;
-    padding: 0.65rem 0.75rem;
+    padding: 0.7rem 0.85rem;
     border-radius: 8px;
     margin-bottom: 0.875rem;
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
     border-left: 4px solid #c33;
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .success-message {
     background: #efe;
     color: #3c3;
-    padding: 0.65rem 0.75rem;
+    padding: 0.7rem 0.85rem;
     border-radius: 8px;
     margin-bottom: 0.875rem;
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
     border-left: 4px solid #3c3;
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 /* Avatar Selection in Register */
