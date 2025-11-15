@@ -1346,9 +1346,17 @@ button {
     border-bottom: 2px solid var(--border-color);
 }
 
+.forum-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
 .forum-title-section {
-    text-align: center;
-    margin-bottom: 1.5rem;
+    flex: 1;
+    min-width: 250px;
 }
 
 .forum-title-section h1 {
@@ -1366,7 +1374,6 @@ button {
 .forum-actions {
     display: flex;
     gap: 1rem;
-    justify-content: center;
     flex-wrap: wrap;
 }
 
@@ -2141,6 +2148,23 @@ a[href^="mailto"] {
     
     .page-header p {
         margin: 0;
+    }
+
+    /* Forum responsive */
+    .forum-header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .forum-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .forum-actions button {
+        flex: 1;
+        min-width: 120px;
     }
     
     .page-actions {
