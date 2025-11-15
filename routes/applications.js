@@ -38,16 +38,16 @@ const upload = multer({
 // @route   POST /api/applications
 // @desc    Submit scholarship application
 // @access  Private (Student)
-router.post('/', protect, authorize('student'), upload.array('documents', 5), async (req, res) => {
+router.post('/', protect, authorize('student'), async (req, res) => {
     try {
         console.log('📥 Received application request');
         console.log('📦 Request body:', req.body);
-        console.log('📄 Files:', req.files?.length || 0);
         
-        const { scholarshipId, coverLetter } = req.body;
+        const { scholarshipId, coverLetter, documentsLink, additionalInfo } = req.body;
         
         console.log('🎯 Scholarship ID:', scholarshipId);
         console.log('✍️ Cover Letter:', coverLetter?.substring(0, 50) + '...');
+        console.log('🔗 Documents Link:', documentsLink);
         
         if (!scholarshipId) {
             return res.status(400).json({
@@ -60,6 +60,21 @@ router.post('/', protect, authorize('student'), upload.array('documents', 5), as
             return res.status(400).json({
                 success: false,
                 message: 'Cover letter is required'
+            });
+        }
+        
+        if (!documentsLink) {
+            return res.status(400).json({
+                success: false,
+                message: 'Google Drive link to documents is required'
+            });
+        }
+        
+        // Validate Google Drive link format
+        if (!documentsLink.includes('drive.google.com')) {
+            return res.status(400).json({
+                success: false,
+                message: 'Please provide a valid Google Drive link'
             });
         }
         
@@ -115,21 +130,13 @@ router.post('/', protect, authorize('student'), upload.array('documents', 5), as
         
         console.log('✅ No existing application found');
         
-        // Process uploaded files
-        const documents = req.files ? req.files.map(file => ({
-            filename: file.filename,
-            path: `/uploads/applications/${file.filename}`,
-            uploadDate: new Date()
-        })) : [];
-        
-        console.log('📎 Processed documents:', documents.length);
-        
-        // Create application
+        // Create application with Google Drive link
         const application = await Application.create({
             scholarship: scholarshipId,
             student: req.user._id,
             coverLetter,
-            documents
+            documentsLink,
+            additionalInfo: additionalInfo || ''
         });
         
         console.log('✅ Application created:', application._id);

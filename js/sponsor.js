@@ -225,24 +225,28 @@ function reviewApplication(applicationId) {
             <h3>Application Date</h3>
             <p>${appliedDate}</p>
             
-            ${application.documents && application.documents.length > 0 ? `
+            ${application.documentsLink ? `
                 <h3>Submitted Documents</h3>
-                <div class="documents-list">
-                    ${application.documents.map(doc => {
-                        const isPDF = doc.filename?.toLowerCase().endsWith('.pdf');
-                        const isImage = /\.(jpg|jpeg|png)$/i.test(doc.filename || '');
-                        return `
-                            <div class="document-item">
-                                ${isPDF ? '📄' : isImage ? '🖼️' : '📎'} 
-                                <a href="${doc.path}" target="_blank" rel="noopener noreferrer">
-                                    ${doc.filename || 'Document'}
-                                </a>
-                                <small>(${new Date(doc.uploadDate).toLocaleDateString()})</small>
-                            </div>
-                        `;
-                    }).join('')}
+                <div class="documents-link-container" style="background: var(--background); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                    <p style="margin-bottom: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">
+                        View all documents via Google Drive:
+                    </p>
+                    <a href="${application.documentsLink}" target="_blank" rel="noopener noreferrer" 
+                       class="btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                        Open Documents
+                    </a>
                 </div>
-            ` : '<p><em>No documents uploaded</em></p>'}
+            ` : '<p><em>No documents link provided</em></p>'}
+            
+            ${application.additionalInfo ? `
+                <h3>Additional Information</h3>
+                <p style="white-space: pre-wrap;">${application.additionalInfo}</p>
+            ` : ''}
             
             ${application.reviewNotes ? `
                 <h3>Review Notes</h3>

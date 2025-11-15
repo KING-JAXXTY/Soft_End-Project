@@ -54,8 +54,8 @@ async function submitApplication(event) {
     
     const scholarshipId = getScholarshipId();
     const coverLetter = document.getElementById('coverLetter').value.trim();
-    const documentsInput = document.getElementById('documents');
-    const documents = documentsInput.files;
+    const documentsLink = document.getElementById('documentsLink').value.trim();
+    const additionalInfo = document.getElementById('additionalInfo').value.trim();
     
     if (!scholarshipId) {
         notify.error('Scholarship ID not found');
@@ -64,6 +64,17 @@ async function submitApplication(event) {
     
     if (!coverLetter) {
         notify.error('Please write a cover letter');
+        return;
+    }
+    
+    if (!documentsLink) {
+        notify.error('Please provide a Google Drive link to your documents');
+        return;
+    }
+    
+    // Validate Google Drive link format
+    if (!documentsLink.includes('drive.google.com')) {
+        notify.error('Please provide a valid Google Drive link');
         return;
     }
     
@@ -77,7 +88,8 @@ async function submitApplication(event) {
         const applicationData = {
             scholarshipId: scholarshipId,
             coverLetter: coverLetter,
-            documents: documents
+            documentsLink: documentsLink,
+            additionalInfo: additionalInfo || ''
         };
         
         await API.applyForScholarship(applicationData);

@@ -295,27 +295,19 @@ const API = {
         console.log('📝 Applying with data:', applicationData);
         console.log('🎯 Scholarship ID:', applicationData.scholarshipId);
         
-        const formData = new FormData();
-        
-        formData.append('scholarshipId', applicationData.scholarshipId);
-        formData.append('coverLetter', applicationData.coverLetter);
-        
-        // Append files
-        if (applicationData.documents && applicationData.documents.length > 0) {
-            for (let i = 0; i < applicationData.documents.length; i++) {
-                formData.append('documents', applicationData.documents[i]);
-            }
-        }
-        
-        console.log('📤 Sending FormData with scholarshipId:', formData.get('scholarshipId'));
-        
         const token = getAuthToken();
         const response = await fetch(`${API_BASE_URL}/applications`, {
             method: 'POST',
             headers: {
+                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: formData
+            body: JSON.stringify({
+                scholarshipId: applicationData.scholarshipId,
+                coverLetter: applicationData.coverLetter,
+                documentsLink: applicationData.documentsLink,
+                additionalInfo: applicationData.additionalInfo || ''
+            })
         });
 
         const data = await response.json();

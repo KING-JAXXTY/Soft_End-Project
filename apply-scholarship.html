@@ -40,8 +40,62 @@
 
             <div class="card-body">
                 <form id="applicationForm" onsubmit="submitApplication(event)">
+                    <!-- Google Drive Instructions -->
+                    <div class="gdrive-instructions">
+                        <div class="instruction-header">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <h3>How to Submit Your Documents</h3>
+                        </div>
+                        <ol class="instruction-steps">
+                            <li>Upload all required documents to <strong>Google Drive</strong></li>
+                            <li>Set sharing permissions to <strong>"Anyone with the link can view"</strong></li>
+                            <li>Copy the shareable link and paste it below</li>
+                            <li>Ensure all documents are clearly labeled (e.g., "Transcript.pdf", "ID.jpg")</li>
+                        </ol>
+                        <div class="instruction-tip">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                            </svg>
+                            <span>Tip: Organize all documents in a single Google Drive folder for easier sharing</span>
+                        </div>
+                    </div>
+
+                    <!-- Required Documents Checklist -->
+                    <div class="documents-checklist">
+                        <h3>Required Documents Checklist</h3>
+                        <p class="checklist-subtitle">Please ensure you have uploaded the following to your Google Drive:</p>
+                        <div class="checklist-items">
+                            <label class="checklist-item">
+                                <input type="checkbox" id="doc-transcript">
+                                <span>Transcript of Records / Report Card</span>
+                            </label>
+                            <label class="checklist-item">
+                                <input type="checkbox" id="doc-id">
+                                <span>Valid ID (Student ID, Government ID)</span>
+                            </label>
+                            <label class="checklist-item">
+                                <input type="checkbox" id="doc-certifications">
+                                <span>Certificates & Awards (if applicable)</span>
+                            </label>
+                            <label class="checklist-item">
+                                <input type="checkbox" id="doc-recommendation">
+                                <span>Recommendation Letter (if required)</span>
+                            </label>
+                            <label class="checklist-item">
+                                <input type="checkbox" id="doc-financial">
+                                <span>Proof of Financial Need (if required)</span>
+                            </label>
+                            <label class="checklist-item">
+                                <input type="checkbox" id="doc-other">
+                                <span>Other Supporting Documents</span>
+                            </label>
+                        </div>
+                    </div>
+
                     <div class="form-group">
-                        <label for="coverLetter">Cover Letter <span style="color: red;">*</span></label>
+                        <label for="coverLetter">Cover Letter / Personal Statement <span style="color: red;">*</span></label>
                         <textarea 
                             id="coverLetter" 
                             rows="10" 
@@ -52,14 +106,27 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="documents">Supporting Documents</label>
+                        <label for="documentsLink">Google Drive Link to Documents <span style="color: red;">*</span></label>
                         <input 
-                            type="file" 
-                            id="documents" 
-                            multiple 
-                            accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                            type="url" 
+                            id="documentsLink" 
+                            required
+                            placeholder="https://drive.google.com/..."
                         >
-                        <small>Upload your transcripts, certificates, ID, recommendation letters, or any other relevant documents. Accepted formats: PDF, DOC, DOCX, JPG, PNG</small>
+                        <small>
+                            <strong>Important:</strong> Paste the Google Drive link containing all your required documents. 
+                            Make sure the link is set to "Anyone with the link can view" so the sponsor can access your files.
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="additionalInfo">Additional Information (Optional)</label>
+                        <textarea 
+                            id="additionalInfo" 
+                            rows="5" 
+                            placeholder="Any additional information you'd like to share..."
+                        ></textarea>
+                        <small>Include any other relevant information that supports your application.</small>
                     </div>
 
                     <div class="form-group" style="margin-top: 2rem;">

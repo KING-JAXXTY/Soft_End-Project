@@ -697,6 +697,120 @@ button {
     font-size: 0.875rem;
 }
 
+/* Google Drive Instructions */
+.gdrive-instructions {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border: 1px solid #bae6fd;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.instructions-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.instructions-header svg {
+    flex-shrink: 0;
+}
+
+.instructions-header h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.instruction-steps {
+    margin: 1rem 0 1.25rem 0;
+    padding-left: 1.5rem;
+}
+
+.instruction-steps li {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+}
+
+.instruction-steps li strong {
+    color: var(--text-primary);
+}
+
+.instruction-tip {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.625rem;
+    background: rgba(255, 255, 255, 0.7);
+    border-left: 3px solid var(--primary-color);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin-top: 1rem;
+}
+
+.instruction-tip svg {
+    flex-shrink: 0;
+    margin-top: 0.125rem;
+}
+
+.instruction-tip p {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* Documents Checklist */
+.documents-checklist {
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.documents-checklist h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 1rem 0;
+}
+
+.checklist-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.checklist-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.checklist-item input[type="checkbox"]:checked {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.checklist-item label {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    margin: 0;
+    cursor: pointer;
+}
+
 /* Container */
 .container {
     max-width: 1200px;

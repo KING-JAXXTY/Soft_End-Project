@@ -20,6 +20,14 @@ const ApplicationSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please provide a cover letter']
     },
+    documentsLink: {
+        type: String,
+        required: [true, 'Please provide a Google Drive link to your documents']
+    },
+    additionalInfo: {
+        type: String,
+        default: ''
+    },
     documents: [{
         filename: String,
         path: String,
