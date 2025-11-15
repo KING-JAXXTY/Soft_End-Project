@@ -1006,14 +1006,17 @@ button {
     position: relative;
     overflow: hidden;
     border-radius: 16px;
-    background: white;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
     min-height: 220px;
+    display: flex;
+    align-items: center;
 }
 
 .carousel-slides {
     position: relative;
     width: 100%;
     height: 100%;
+    min-height: 220px;
 }
 
 .carousel-slide {
@@ -1025,6 +1028,8 @@ button {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
     pointer-events: none;
+    display: flex;
+    align-items: center;
 }
 
 .carousel-slide.active {
@@ -1034,7 +1039,7 @@ button {
 
 .carousel-content {
     padding: 2rem 3rem;
-    height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
