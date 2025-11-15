@@ -228,6 +228,28 @@
         </div>
     </div>
 
+    <!-- My Reports Section (before Report Issue Modal) -->
+    <div class="dashboard-section" style="margin-top: 2rem;">
+        <div class="section-header">
+            <div>
+                <h2>My Reports</h2>
+                <p class="section-description">Track the status of your submitted reports</p>
+            </div>
+        </div>
+
+        <div id="myReportsList" class="applications-list" style="margin-top: 1rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem;">
+            <!-- Reports will be loaded here -->
+        </div>
+
+        <div id="myReportsEmpty" class="empty-state" style="display: none; text-align: center; padding: 3rem 1rem;">
+            <svg style="width: 64px; height: 64px; margin: 0 auto 1rem; color: var(--text-secondary);" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <h3>No Reports Submitted</h3>
+            <p>You haven't submitted any reports yet.</p>
+        </div>
+    </div>
+
     <!-- Report Issue Modal -->
     <div id="reportModal" class="modal" style="display: none;">
         <div class="modal-content" style="max-width: 600px;">

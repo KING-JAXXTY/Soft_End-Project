@@ -46,6 +46,30 @@ router.post('/', protect, authorize('student', 'sponsor'), async (req, res) => {
     }
 });
 
+// @route   GET /api/reports/my-reports
+// @desc    Get current user's submitted reports
+// @access  Private (Student/Sponsor)
+router.get('/my-reports', protect, authorize('student', 'sponsor'), async (req, res) => {
+    try {
+        const reports = await Report.find({ reporter: req.user._id })
+            .populate('resolvedBy', 'firstName lastName uniqueId')
+            .populate('relatedScholarship', 'title')
+            .sort({ createdAt: -1 });
+
+        res.json({
+            success: true,
+            count: reports.length,
+            reports
+        });
+    } catch (error) {
+        console.error('Error fetching user reports:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error fetching your reports'
+        });
+    }
+});
+
 // @route   GET /api/reports
 // @desc    Get all reports (admin only)
 // @access  Private (Admin)

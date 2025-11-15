@@ -73,9 +73,205 @@ async function loadDashboard() {
         // Load upcoming deadlines
         loadUpcomingDeadlines(applications);
         
+        // Load my reports
+        await loadMyReports();
+        
         displayApplications(applications);
     } catch (error) {
         console.error('Error loading dashboard:', error);
+    }
+}
+
+// Load user's submitted reports
+async function loadMyReports() {
+    try {
+        const response = await API.getMyReports();
+        const reports = response.reports || [];
+        displayMyReports(reports);
+    } catch (error) {
+        console.error('Error loading reports:', error);
+        document.getElementById('myReportsEmpty').style.display = 'block';
+    }
+}
+
+// Display user's reports
+function displayMyReports(reports) {
+    const container = document.getElementById('myReportsList');
+    const emptyState = document.getElementById('myReportsEmpty');
+    
+    if (reports.length === 0) {
+        container.style.display = 'none';
+        emptyState.style.display = 'block';
+        return;
+    }
+    
+    container.style.display = 'grid';
+    emptyState.style.display = 'none';
+    
+    const getStatusColor = (status) => {
+        const colors = {
+            'Pending': '#fbbf24',
+            'Reviewing': '#3b82f6',
+            'Resolved': '#10b981',
+            'Closed': '#6b7280'
+        };
+        return colors[status] || '#6b7280';
+    };
+    
+    container.innerHTML = reports.map(report => `
+        <div class="application-card" style="cursor: pointer;" onclick="viewReportDetail('${report._id}')">
+            <div class="application-header">
+                <div>
+                    <h3 style="font-size: 1.125rem; margin-bottom: 0.25rem;">${report.subject}</h3>
+                    <p style="font-size: 0.875rem; color: var(--text-secondary);">
+                        ${new Date(report.createdAt).toLocaleDateString()}
+                    </p>
+                </div>
+                <span class="badge" style="background: ${getStatusColor(report.status)};">
+                    ${report.status}
+                </span>
+            </div>
+            
+            <div style="margin-top: 1rem;">
+                <p style="font-size: 0.875rem; color: var(--text-secondary);">
+                    Type: <strong>${report.reportType}</strong>
+                </p>
+                <p style="font-size: 0.875rem; margin-top: 0.5rem; color: var(--text-secondary); 
+                   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; 
+                   overflow: hidden;">
+                    ${report.description}
+                </p>
+            </div>
+            
+            ${report.resolvedBy ? `
+                <div style="margin-top: 1rem; padding: 0.75rem; background: var(--background); 
+                     border-radius: 6px; font-size: 0.875rem;">
+                    <strong>Resolved by:</strong> ${report.resolvedBy.firstName} ${report.resolvedBy.lastName}
+                    ${report.resolvedBy.uniqueId ? `(${report.resolvedBy.uniqueId})` : ''}
+                </div>
+            ` : ''}
+        </div>
+    `).join('');
+}
+
+// View report detail in modal
+function viewReportDetail(reportId) {
+    const response = API.getMyReports();
+    response.then(data => {
+        const report = data.reports.find(r => r._id === reportId);
+        if (report) {
+            showReportDetailModal(report);
+        }
+    });
+}
+
+// Show report detail modal
+function showReportDetailModal(report) {
+    const modal = document.getElementById('reportDetailViewModal');
+    if (!modal) {
+        // Create modal if it doesn't exist
+        const modalHTML = `
+            <div id="reportDetailViewModal" class="modal" style="display: flex;">
+                <div class="modal-content" style="max-width: 600px;">
+                    <span class="close" onclick="closeReportDetailViewModal()">&times;</span>
+                    <div id="reportDetailViewContent"></div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+    }
+    
+    const getStatusColor = (status) => {
+        const colors = {
+            'Pending': '#fbbf24',
+            'Reviewing': '#3b82f6',
+            'Resolved': '#10b981',
+            'Closed': '#6b7280'
+        };
+        return colors[status] || '#6b7280';
+    };
+    
+    const content = document.getElementById('reportDetailViewContent');
+    content.innerHTML = `
+        <h2 style="margin-bottom: 1.5rem;">Report Details</h2>
+        
+        <div style="margin-bottom: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <strong>Status:</strong>
+                <span class="badge" style="background: ${getStatusColor(report.status)};">
+                    ${report.status}
+                </span>
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <strong>Type:</strong>
+                <p>${report.reportType}</p>
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <strong>Submitted:</strong>
+                <p>${new Date(report.createdAt).toLocaleDateString()} at ${new Date(report.createdAt).toLocaleTimeString()}</p>
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <strong>Subject:</strong>
+                <p>${report.subject}</p>
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <strong>Description:</strong>
+                <p style="white-space: pre-wrap; background: var(--background); padding: 1rem; border-radius: 8px;">
+                    ${report.description}
+                </p>
+            </div>
+            
+            ${report.resolvedBy ? `
+                <div style="margin-bottom: 1rem; padding: 1rem; background: var(--background); border-radius: 8px;">
+                    <strong>Handled by Admin:</strong>
+                    <p>${report.resolvedBy.firstName} ${report.resolvedBy.lastName} ${report.resolvedBy.uniqueId ? `(${report.resolvedBy.uniqueId})` : ''}</p>
+                </div>
+            ` : ''}
+            
+            ${report.status === 'Pending' ? `
+                <div style="padding: 1rem; background: #fffbeb; border: 1px solid #fbbf24; border-radius: 8px;">
+                    <strong style="color: #f59e0b;">⏳ Your report is pending review</strong>
+                    <p style="margin-top: 0.5rem; font-size: 0.875rem; color: #92400e;">
+                        An administrator will review your report soon. You'll be notified of any updates.
+                    </p>
+                </div>
+            ` : ''}
+            
+            ${report.status === 'Reviewing' ? `
+                <div style="padding: 1rem; background: #eff6ff; border: 1px solid #3b82f6; border-radius: 8px;">
+                    <strong style="color: #3b82f6;">👀 Your report is being reviewed</strong>
+                    <p style="margin-top: 0.5rem; font-size: 0.875rem; color: #1e40af;">
+                        An administrator is currently investigating your report.
+                    </p>
+                </div>
+            ` : ''}
+            
+            ${report.status === 'Resolved' ? `
+                <div style="padding: 1rem; background: #f0fdf4; border: 1px solid #10b981; border-radius: 8px;">
+                    <strong style="color: #10b981;">✓ Your report has been resolved</strong>
+                    <p style="margin-top: 0.5rem; font-size: 0.875rem; color: #065f46;">
+                        Thank you for reporting this issue. It has been addressed by our team.
+                    </p>
+                </div>
+            ` : ''}
+        </div>
+        
+        <div style="text-align: right;">
+            <button onclick="closeReportDetailViewModal()" class="btn-secondary">Close</button>
+        </div>
+    `;
+    
+    document.getElementById('reportDetailViewModal').style.display = 'flex';
+}
+
+function closeReportDetailViewModal() {
+    const modal = document.getElementById('reportDetailViewModal');
+    if (modal) {
+        modal.style.display = 'none';
     }
 }
 

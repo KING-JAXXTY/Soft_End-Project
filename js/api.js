@@ -674,6 +674,11 @@ const API = {
         return data;
     },
 
+    async getMyReports() {
+        const data = await apiCall('/reports/my-reports', { method: 'GET' });
+        return data;
+    },
+
     async searchUserById(userId) {
         const data = await apiCall(`/reports/search?userId=${userId}`, { method: 'GET' });
         return data;
