@@ -16,6 +16,7 @@ let allScholarships = [];
 let allReports = [];
 let deleteTarget = null;
 let isLoading = false;
+let currentReportId = null; // Track currently viewed report for auto-refresh
 
 // Load dashboard data
 async function loadDashboard() {
@@ -323,6 +324,7 @@ function filterReports() {
 
 async function viewReport(reportId) {
     try {
+        currentReportId = reportId; // Store for auto-refresh
         const report = await API.getReport(reportId);
         displayReportDetail(report);
         document.getElementById('reportDetailModal').style.display = 'block';
@@ -577,10 +579,13 @@ async function updateReportStatus(event, reportId) {
     try {
         await API.updateReportStatus(reportId, { status, adminNotes });
         notify.success('Report updated successfully');
-        closeReportModal();
-        loadReports();
         
-        // Refresh stats
+        // Refresh the current report detail
+        await refreshReportDetail();
+        
+        // Refresh reports list and stats
+        await loadReports();
+        
         const reportsStats = await API.getReportsStats();
         document.getElementById('totalReports').textContent = reportsStats.total || 0;
     } catch (error) {
@@ -589,8 +594,27 @@ async function updateReportStatus(event, reportId) {
     }
 }
 
+// Refresh the currently viewed report detail
+async function refreshReportDetail() {
+    if (!currentReportId) return;
+    
+    try {
+        const report = await API.getReport(currentReportId);
+        displayReportDetail(report);
+        
+        // Re-search user if there was one searched
+        const searchedUserInfo = document.getElementById('searchedUserInfo');
+        if (searchedUserInfo && searchedUserInfo.innerHTML && report.reportedUserId) {
+            await searchReportedUser(report.reportedUserId);
+        }
+    } catch (error) {
+        console.error('Error refreshing report detail:', error);
+    }
+}
+
 function closeReportModal() {
     document.getElementById('reportDetailModal').style.display = 'none';
+    currentReportId = null; // Clear current report ID
 }
 
 // Close report modal when clicking outside
@@ -647,10 +671,11 @@ async function confirmSuspend(event) {
         // Refresh the user search if we have a uniqueId to search
         const searchInput = document.getElementById('reportedUserIdInput');
         if (searchInput && searchInput.value) {
-            searchReportedUser(searchInput.value);
+            await searchReportedUser(searchInput.value);
         }
         
-        // Refresh reports
+        // Refresh report detail and reports list
+        await refreshReportDetail();
         await loadReports();
     } catch (error) {
         console.error('Suspension error:', error);
@@ -689,10 +714,11 @@ async function confirmWarn(event) {
         // Refresh the user search
         const searchInput = document.getElementById('reportedUserIdInput');
         if (searchInput && searchInput.value) {
-            searchReportedUser(searchInput.value);
+            await searchReportedUser(searchInput.value);
         }
         
-        // Refresh reports
+        // Refresh report detail and reports list
+        await refreshReportDetail();
         await loadReports();
     } catch (error) {
         console.error('Warning error:', error);
@@ -712,10 +738,11 @@ async function unsuspendUser(userId, userName) {
         // Refresh the user search
         const searchInput = document.getElementById('reportedUserIdInput');
         if (searchInput && searchInput.value) {
-            searchReportedUser(searchInput.value);
+            await searchReportedUser(searchInput.value);
         }
         
-        // Refresh reports
+        // Refresh report detail and reports list
+        await refreshReportDetail();
         await loadReports();
     } catch (error) {
         console.error('Unsuspension error:', error);
