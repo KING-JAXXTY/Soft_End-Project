@@ -24,38 +24,97 @@
     </nav>
 
     <div class="container">
-        <div class="page-header">
-            <h1>Sponsor Dashboard</h1>
-            <p>Manage your scholarship programs</p>
-            <div style="display: flex; gap: 10px;">
-                <button onclick="window.location.href='add-scholarship.html'" class="btn-primary">Add New Scholarship</button>
-                <button onclick="refreshDashboard()" class="btn-secondary">🔄 Refresh</button>
+        <div class="dashboard-page-header sponsor-header">
+            <div class="dashboard-header-content">
+                <div>
+                    <h1>Sponsor Dashboard</h1>
+                    <p class="dashboard-subtitle">Manage your scholarship programs and review applications</p>
+                </div>
+                <div class="header-actions">
+                    <button onclick="window.location.href='add-scholarship.html'" class="btn-primary btn-create">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Create Scholarship
+                    </button>
+                    <button onclick="refreshDashboard()" class="btn-secondary btn-refresh">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="23 4 23 10 17 10"></polyline>
+                            <polyline points="1 20 1 14 7 14"></polyline>
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                        </svg>
+                        Refresh
+                    </button>
+                </div>
             </div>
         </div>
 
-        <div class="dashboard-stats">
-            <div class="stat-card">
-                <h3 id="totalScholarships">0</h3>
-                <p>Total Scholarships</p>
+        <div class="dashboard-stats sponsor-stats">
+            <div class="stat-card modern-stat-card">
+                <div class="stat-icon blue">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path>
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <h3 id="totalScholarships">0</h3>
+                    <p>Total Scholarships</p>
+                </div>
             </div>
-            <div class="stat-card">
-                <h3 id="totalApplicants">0</h3>
-                <p>Total Applicants</p>
+            <div class="stat-card modern-stat-card">
+                <div class="stat-icon purple">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <h3 id="totalApplicants">0</h3>
+                    <p>Total Applicants</p>
+                </div>
             </div>
-            <div class="stat-card warning">
-                <h3 id="pendingReviews">0</h3>
-                <p>Pending Reviews</p>
+            <div class="stat-card modern-stat-card warning">
+                <div class="stat-icon orange">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <h3 id="pendingReviews">0</h3>
+                    <p>Pending Reviews</p>
+                </div>
             </div>
-            <div class="stat-card success">
-                <h3 id="approvedCount">0</h3>
-                <p>Approved</p>
+            <div class="stat-card modern-stat-card success">
+                <div class="stat-icon green">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                </div>
+                <div class="stat-content">
+                    <h3 id="approvedCount">0</h3>
+                    <p>Approved</p>
+                </div>
             </div>
         </div>
 
-        <div class="section">
-            <h2>My Scholarship Programs</h2>
-            <div id="scholarshipsList" class="table-container">
-                <table class="data-table">
+        <div class="section modern-section">
+            <div class="section-header-modern">
+                <div class="section-title-group">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="3" y1="9" x2="21" y2="9"></line>
+                        <line x1="9" y1="21" x2="9" y2="9"></line>
+                    </svg>
+                    <h2>My Scholarship Programs</h2>
+                </div>
+            </div>
+            <div id="scholarshipsList" class="table-container modern-table-container">
+                <table class="data-table modern-table">
                     <thead>
                         <tr>
                             <th>Title</th>
@@ -74,18 +133,26 @@
             </div>
         </div>
 
-        <div class="section">
-            <div class="section-header">
-                <h2>Recent Applications</h2>
-                <select id="statusFilter" onchange="filterApplications()">
+        <div class="section modern-section">
+            <div class="section-header-modern">
+                <div class="section-title-group">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <line x1="20" y1="8" x2="20" y2="14"></line>
+                        <line x1="23" y1="11" x2="17" y2="11"></line>
+                    </svg>
+                    <h2>Recent Applications</h2>
+                </div>
+                <select id="statusFilter" onchange="filterApplications()" class="modern-select">
                     <option value="">All Status</option>
                     <option value="pending">Pending</option>
                     <option value="approved">Approved</option>
                     <option value="rejected">Rejected</option>
                 </select>
             </div>
-            <div id="applicationsList" class="table-container">
-                <table class="data-table">
+            <div id="applicationsList" class="table-container modern-table-container">
+                <table class="data-table modern-table">
                     <thead>
                         <tr>
                             <th>Student Name</th>

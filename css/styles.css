@@ -2162,6 +2162,243 @@ button {
     opacity: 0.95;
 }
 
+/* Sponsor Dashboard Specific Styles */
+.sponsor-header {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.header-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.btn-create,
+.btn-refresh {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.btn-create:hover,
+.btn-refresh:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-create svg,
+.btn-refresh svg {
+    width: 18px;
+    height: 18px;
+}
+
+.sponsor-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.modern-stat-card {
+    background: var(--surface);
+    padding: 1.75rem;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.modern-stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.stat-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.stat-icon.blue {
+    background: linear-gradient(135deg, var(--primary-color), #1e40af);
+}
+
+.stat-icon.purple {
+    background: linear-gradient(135deg, #9333ea, #7c3aed);
+}
+
+.stat-icon.orange {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.stat-icon.green {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.stat-icon svg {
+    width: 28px;
+    height: 28px;
+    stroke: white;
+    stroke-width: 2.5;
+}
+
+.stat-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.stat-content h3 {
+    font-size: 2rem;
+    margin: 0 0 0.25rem 0;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.stat-content p {
+    font-size: 0.875rem;
+    margin: 0;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.modern-section {
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--border-color);
+}
+
+.section-header-modern {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border-color);
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.section-title-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.section-title-group svg {
+    width: 24px;
+    height: 24px;
+    stroke: var(--primary-color);
+    stroke-width: 2;
+    flex-shrink: 0;
+}
+
+.section-title-group h2 {
+    margin: 0;
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.modern-select {
+    padding: 0.625rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--background);
+    color: var(--text-primary);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    padding-right: 2.5rem;
+}
+
+.modern-select:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.modern-select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.modern-table-container {
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.modern-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+}
+
+.modern-table thead {
+    background: var(--background);
+}
+
+.modern-table thead th {
+    padding: 1rem 1.25rem;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-primary);
+    border-bottom: 2px solid var(--border-color);
+    white-space: nowrap;
+}
+
+.modern-table tbody td {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-secondary);
+}
+
+.modern-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.modern-table tbody tr:hover {
+    background-color: var(--background);
+}
+
+.modern-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.modern-table .btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    border-radius: 8px;
+    white-space: nowrap;
+}
+
 /* Scholarship Carousel */
 .scholarship-carousel-container {
     background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
@@ -4208,6 +4445,89 @@ a[href^="mailto"] {
         font-size: 0.9rem;
     }
 
+    /* Sponsor Dashboard Mobile */
+    .sponsor-header {
+        padding: 1.5rem;
+    }
+
+    .header-actions {
+        width: 100%;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .btn-create,
+    .btn-refresh {
+        width: 100%;
+        justify-content: center;
+        padding: 0.875rem 1.25rem;
+    }
+
+    .sponsor-stats {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .modern-stat-card {
+        padding: 1.25rem;
+        flex-direction: row;
+    }
+
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+    }
+
+    .stat-icon svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .stat-content h3 {
+        font-size: 1.75rem;
+    }
+
+    .stat-content p {
+        font-size: 0.8125rem;
+    }
+
+    .modern-section {
+        padding: 1.5rem;
+    }
+
+    .section-header-modern {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .section-title-group {
+        width: 100%;
+    }
+
+    .section-title-group h2 {
+        font-size: 1.25rem;
+    }
+
+    .modern-select {
+        width: 100%;
+    }
+
+    .modern-table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .modern-table {
+        min-width: 600px;
+    }
+
+    .modern-table thead th,
+    .modern-table tbody td {
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+    }
+
     .dashboard-stats {
         grid-template-columns: 1fr;
         gap: 1rem;
@@ -4435,6 +4755,95 @@ a[href^="mailto"] {
         text-overflow: ellipsis;
         margin-top: 1rem;
     }
+
+    /* Sponsor Dashboard Extra Small Mobile */
+    .sponsor-header {
+        padding: 1.25rem;
+    }
+
+    .sponsor-header h1 {
+        font-size: 1.35rem;
+    }
+
+    .dashboard-subtitle {
+        font-size: 0.85rem;
+    }
+
+    .btn-create,
+    .btn-refresh {
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+    }
+
+    .btn-create svg,
+    .btn-refresh svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .sponsor-stats {
+        grid-template-columns: 1fr;
+        gap: 0.875rem;
+    }
+
+    .modern-stat-card {
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .stat-icon {
+        width: 42px;
+        height: 42px;
+    }
+
+    .stat-icon svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    .stat-content h3 {
+        font-size: 1.5rem;
+    }
+
+    .stat-content p {
+        font-size: 0.75rem;
+    }
+
+    .modern-section {
+        padding: 1.25rem;
+    }
+
+    .section-title-group svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .section-title-group h2 {
+        font-size: 1.125rem;
+    }
+
+    .modern-select {
+        padding: 0.5rem 0.875rem;
+        font-size: 0.875rem;
+        padding-right: 2.25rem;
+    }
+
+    .modern-table {
+        min-width: 500px;
+        font-size: 0.8125rem;
+    }
+
+    .modern-table thead th,
+    .modern-table tbody td {
+        padding: 0.625rem 0.875rem;
+        font-size: 0.8125rem;
+    }
+
+    .modern-table .btn-sm {
+        padding: 0.375rem 0.75rem;
+        font-size: 0.8125rem;
+    }
+    
     body {
         overflow-x: hidden;
         font-size: 14px;
