@@ -359,6 +359,61 @@ function refreshDashboard() {
     loadDashboard();
 }
 
+// ==================== REPORT SYSTEM ====================
+
+function showReportModal() {
+    document.getElementById('reportModal').style.display = 'block';
+}
+
+function closeReportModal() {
+    document.getElementById('reportModal').style.display = 'none';
+    document.getElementById('reportForm').reset();
+}
+
+async function submitSponsorReport(event) {
+    event.preventDefault();
+    
+    const reportType = document.getElementById('reportType').value;
+    const subject = document.getElementById('reportSubject').value;
+    const description = document.getElementById('reportDescription').value;
+    const reportedUserId = document.getElementById('reportedUserId').value.trim();
+    
+    // Validate User ID format if provided
+    if (reportedUserId && !/^TA-[A-Z0-9]{8}$/.test(reportedUserId)) {
+        notify.error('Invalid User ID format. Format should be: TA-XXXXXXXX');
+        return;
+    }
+    
+    try {
+        const reportData = {
+            reportType,
+            subject,
+            description,
+            reportedUserId: reportedUserId || null
+        };
+        
+        const response = await API.submitReport(reportData);
+        
+        if (response.success) {
+            notify.success('Report submitted successfully. Our team will review it shortly.');
+            closeReportModal();
+        } else {
+            notify.error(response.message || 'Failed to submit report');
+        }
+    } catch (error) {
+        console.error('Error submitting report:', error);
+        notify.error('Failed to submit report. Please try again.');
+    }
+}
+
+// Close report modal when clicking outside
+window.addEventListener('click', function(event) {
+    const reportModal = document.getElementById('reportModal');
+    if (reportModal && event.target === reportModal) {
+        closeReportModal();
+    }
+});
+
 // Initialize
 window.addEventListener('DOMContentLoaded', () => {
     checkAuth();

@@ -61,7 +61,7 @@ const UserSchema = new mongoose.Schema({
 // Add indexes for faster queries
 UserSchema.index({ email: 1 });
 UserSchema.index({ role: 1, isActive: 1 });
-UserSchema.index({ uniqueId: 1 });
+// uniqueId index is automatic due to unique: true
 
 // Generate unique ID before saving new users
 UserSchema.pre('save', async function(next) {
