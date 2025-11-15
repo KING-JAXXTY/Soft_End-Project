@@ -52,6 +52,38 @@ const UserSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
+    isSuspended: {
+        type: Boolean,
+        default: false
+    },
+    suspendedAt: {
+        type: Date,
+        default: null
+    },
+    suspendedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        default: null
+    },
+    suspensionReason: {
+        type: String,
+        default: null
+    },
+    warnings: {
+        type: Number,
+        default: 0
+    },
+    warningHistory: [{
+        reason: String,
+        issuedBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        },
+        issuedAt: {
+            type: Date,
+            default: Date.now
+        }
+    }],
     createdAt: {
         type: Date,
         default: Date.now

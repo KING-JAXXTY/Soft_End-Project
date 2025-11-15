@@ -250,4 +250,215 @@ router.post('/migrate-unique-ids', protect, authorize('admin'), async (req, res)
     }
 });
 
+// @route   PUT /api/users/:id/suspend
+// @desc    Suspend a user (Admin only - Manual action)
+// @access  Private (Admin)
+router.put('/:id/suspend', protect, authorize('admin'), async (req, res) => {
+    try {
+        const { reason } = req.body;
+
+        if (!reason) {
+            return res.status(400).json({
+                success: false,
+                message: 'Suspension reason is required'
+            });
+        }
+
+        const user = await User.findById(req.params.id);
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found'
+            });
+        }
+
+        // Prevent admin from suspending themselves
+        if (user._id.toString() === req.user._id.toString()) {
+            return res.status(400).json({
+                success: false,
+                message: 'You cannot suspend yourself'
+            });
+        }
+
+        // Prevent suspending other admins
+        if (user.role === 'admin') {
+            return res.status(400).json({
+                success: false,
+                message: 'Cannot suspend admin users'
+            });
+        }
+
+        user.isSuspended = true;
+        user.suspendedAt = Date.now();
+        user.suspendedBy = req.user._id;
+        user.suspensionReason = reason;
+
+        await user.save();
+
+        res.json({
+            success: true,
+            message: 'User suspended successfully',
+            user: {
+                _id: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                isSuspended: user.isSuspended,
+                suspendedAt: user.suspendedAt
+            }
+        });
+    } catch (error) {
+        console.error('Suspension error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error suspending user'
+        });
+    }
+});
+
+// @route   PUT /api/users/:id/unsuspend
+// @desc    Unsuspend a user (Admin only)
+// @access  Private (Admin)
+router.put('/:id/unsuspend', protect, authorize('admin'), async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found'
+            });
+        }
+
+        user.isSuspended = false;
+        user.suspendedAt = null;
+        user.suspendedBy = null;
+        user.suspensionReason = null;
+
+        await user.save();
+
+        res.json({
+            success: true,
+            message: 'User unsuspended successfully',
+            user: {
+                _id: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                isSuspended: user.isSuspended
+            }
+        });
+    } catch (error) {
+        console.error('Unsuspension error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error unsuspending user'
+        });
+    }
+});
+
+// @route   PUT /api/users/:id/warn
+// @desc    Issue a warning to a user (Admin only - Manual action)
+// @access  Private (Admin)
+router.put('/:id/warn', protect, authorize('admin'), async (req, res) => {
+    try {
+        const { reason } = req.body;
+
+        if (!reason) {
+            return res.status(400).json({
+                success: false,
+                message: 'Warning reason is required'
+            });
+        }
+
+        const user = await User.findById(req.params.id);
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found'
+            });
+        }
+
+        // Prevent warning yourself
+        if (user._id.toString() === req.user._id.toString()) {
+            return res.status(400).json({
+                success: false,
+                message: 'You cannot warn yourself'
+            });
+        }
+
+        // Prevent warning other admins
+        if (user.role === 'admin') {
+            return res.status(400).json({
+                success: false,
+                message: 'Cannot warn admin users'
+            });
+        }
+
+        // Add warning
+        user.warnings += 1;
+        user.warningHistory.push({
+            reason,
+            issuedBy: req.user._id,
+            issuedAt: Date.now()
+        });
+
+        await user.save();
+
+        res.json({
+            success: true,
+            message: `Warning issued successfully. User now has ${user.warnings} warning(s).`,
+            user: {
+                _id: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                warnings: user.warnings
+            }
+        });
+    } catch (error) {
+        console.error('Warning error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error issuing warning'
+        });
+    }
+});
+
+// @route   GET /api/users/:id/status
+// @desc    Get user suspension and warning status
+// @access  Private (Admin)
+router.get('/:id/status', protect, authorize('admin'), async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id)
+            .populate('suspendedBy', 'firstName lastName')
+            .populate('warningHistory.issuedBy', 'firstName lastName');
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found'
+            });
+        }
+
+        res.json({
+            success: true,
+            status: {
+                isSuspended: user.isSuspended,
+                suspendedAt: user.suspendedAt,
+                suspendedBy: user.suspendedBy,
+                suspensionReason: user.suspensionReason,
+                warnings: user.warnings,
+                warningHistory: user.warningHistory,
+                isActive: user.isActive
+            }
+        });
+    } catch (error) {
+        console.error('Status error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error fetching user status'
+        });
+    }
+});
+
 module.exports = router;

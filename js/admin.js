@@ -433,14 +433,22 @@ async function searchReportedUser(userId) {
     container.innerHTML = '<p style="color: var(--text-secondary);">Searching...</p>';
     
     try {
-        // Get user info and their report count
-        const [userResponse, reportsResponse] = await Promise.all([
+        // Get user info, their report count, and suspension status
+        const [userResponse, reportsResponse, statusResponse] = await Promise.all([
             API.searchUserById(userId),
-            API.getUserReports(userId)
+            API.getUserReports(userId),
+            API.getUserStatus(userResponse?.user?._id).catch(() => null)
         ]);
         
         const user = userResponse.user;
         const reportStats = reportsResponse.stats;
+        
+        // Get user status after we have the user ID
+        const userStatus = await API.getUserStatus(user._id).catch(() => ({ 
+            isSuspended: false, 
+            warnings: 0,
+            warningHistory: []
+        }));
         
         // Determine warning level based on report count
         let warningBadge = '';
@@ -454,8 +462,17 @@ async function searchReportedUser(userId) {
             warningBadge = '<span class="badge" style="background: #10b981;">No Reports</span>';
         }
         
+        // Status badges
+        let statusBadges = '';
+        if (userStatus.isSuspended) {
+            statusBadges += '<span class="badge" style="background: #ef4444; margin-top: 0.5rem;">🚫 SUSPENDED</span>';
+        }
+        if (userStatus.warnings > 0) {
+            statusBadges += `<span class="badge" style="background: #f59e0b; margin-top: 0.5rem;">⚠️ ${userStatus.warnings} Warning(s)</span>`;
+        }
+        
         container.innerHTML = `
-            <div style="background: var(--surface); border: 2px solid ${reportStats.total >= 3 ? '#ef4444' : 'var(--border-color)'}; padding: 1rem; border-radius: 8px; margin-top: 0.5rem;">
+            <div style="background: var(--surface); border: 2px solid ${userStatus.isSuspended ? '#ef4444' : reportStats.total >= 3 ? '#f59e0b' : 'var(--border-color)'}; padding: 1rem; border-radius: 8px; margin-top: 0.5rem;">
                 <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
                     <div>
                         <strong>User Found:</strong>
@@ -466,8 +483,17 @@ async function searchReportedUser(userId) {
                     </div>
                     <div style="text-align: right;">
                         ${warningBadge}
+                        ${statusBadges}
                     </div>
                 </div>
+                
+                ${userStatus.isSuspended ? `
+                    <div style="background: #fef2f2; border: 1px solid #ef4444; padding: 0.75rem; border-radius: 6px; margin-top: 1rem;">
+                        <strong style="color: #ef4444;">⚠️ Suspended</strong>
+                        <p style="margin-top: 0.5rem; font-size: 0.875rem;"><strong>Reason:</strong> ${userStatus.suspensionReason || 'No reason provided'}</p>
+                        <p style="font-size: 0.875rem;"><strong>Suspended:</strong> ${new Date(userStatus.suspendedAt).toLocaleString()}</p>
+                    </div>
+                ` : ''}
                 
                 ${reportStats.total > 0 ? `
                     <div style="background: var(--background); padding: 0.75rem; border-radius: 6px; margin-top: 1rem;">
@@ -480,13 +506,38 @@ async function searchReportedUser(userId) {
                     </div>
                 ` : ''}
                 
-                <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                ${userStatus.warningHistory && userStatus.warningHistory.length > 0 ? `
+                    <div style="background: #fffbeb; border: 1px solid #f59e0b; padding: 0.75rem; border-radius: 6px; margin-top: 1rem;">
+                        <strong style="color: #f59e0b;">⚠️ Warning History (${userStatus.warnings} total)</strong>
+                        ${userStatus.warningHistory.slice(-3).reverse().map(w => `
+                            <p style="font-size: 0.8125rem; margin-top: 0.5rem; padding-left: 0.5rem; border-left: 2px solid #f59e0b;">
+                                <strong>${new Date(w.issuedAt).toLocaleDateString()}:</strong> ${w.reason}
+                            </p>
+                        `).join('')}
+                    </div>
+                ` : ''}
+                
+                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem;">
                     <button onclick="window.open('view-profile.html?id=${user._id}', '_blank')" class="btn-secondary btn-sm">
                         View Profile
                     </button>
                     ${reportStats.total > 0 ? `
                         <button onclick="viewAllUserReports('${userId}')" class="btn-primary btn-sm">
                             View All ${reportStats.total} Report(s)
+                        </button>
+                    ` : ''}
+                    ${user.role !== 'admin' ? `
+                        ${!userStatus.isSuspended ? `
+                            <button onclick="showSuspendModal('${user._id}', '${user.firstName} ${user.lastName}')" class="btn-danger btn-sm">
+                                🚫 Suspend User
+                            </button>
+                        ` : `
+                            <button onclick="unsuspendUser('${user._id}', '${user.firstName} ${user.lastName}')" class="btn-primary btn-sm">
+                                ✓ Unsuspend User
+                            </button>
+                        `}
+                        <button onclick="showWarnModal('${user._id}', '${user.firstName} ${user.lastName}')" class="btn-secondary btn-sm" style="background: #f59e0b; color: white;">
+                            ⚠️ Issue Warning
                         </button>
                     ` : ''}
                 </div>
@@ -548,6 +599,130 @@ window.addEventListener('click', function(event) {
     const reportModal = document.getElementById('reportDetailModal');
     if (reportModal && event.target === reportModal) {
         closeReportModal();
+    }
+});
+
+// User Action Modals
+let currentActionUserId = null;
+let currentActionUserName = null;
+
+function showSuspendModal(userId, userName) {
+    currentActionUserId = userId;
+    currentActionUserName = userName;
+    document.getElementById('suspendUserName').textContent = userName;
+    document.getElementById('suspendReason').value = '';
+    document.getElementById('suspendModal').style.display = 'flex';
+}
+
+function closeSuspendModal() {
+    document.getElementById('suspendModal').style.display = 'none';
+    currentActionUserId = null;
+    currentActionUserName = null;
+}
+
+async function confirmSuspend(event) {
+    event.preventDefault();
+    
+    const reason = document.getElementById('suspendReason').value.trim();
+    if (!reason) {
+        showNotification('Please provide a reason for suspension', 'error');
+        return;
+    }
+    
+    try {
+        await API.suspendUser(currentActionUserId, reason);
+        showNotification(`${currentActionUserName} has been suspended`, 'success');
+        closeSuspendModal();
+        
+        // Refresh the user search if we have a uniqueId to search
+        const searchInput = document.getElementById('reportedUserIdInput');
+        if (searchInput && searchInput.value) {
+            searchReportedUser(searchInput.value);
+        }
+        
+        // Refresh reports
+        await loadReports();
+    } catch (error) {
+        console.error('Suspension error:', error);
+        showNotification(error.message || 'Failed to suspend user', 'error');
+    }
+}
+
+function showWarnModal(userId, userName) {
+    currentActionUserId = userId;
+    currentActionUserName = userName;
+    document.getElementById('warnUserName').textContent = userName;
+    document.getElementById('warnReason').value = '';
+    document.getElementById('warnModal').style.display = 'flex';
+}
+
+function closeWarnModal() {
+    document.getElementById('warnModal').style.display = 'none';
+    currentActionUserId = null;
+    currentActionUserName = null;
+}
+
+async function confirmWarn(event) {
+    event.preventDefault();
+    
+    const reason = document.getElementById('warnReason').value.trim();
+    if (!reason) {
+        showNotification('Please provide a reason for the warning', 'error');
+        return;
+    }
+    
+    try {
+        await API.warnUser(currentActionUserId, reason);
+        showNotification(`Warning issued to ${currentActionUserName}`, 'success');
+        closeWarnModal();
+        
+        // Refresh the user search
+        const searchInput = document.getElementById('reportedUserIdInput');
+        if (searchInput && searchInput.value) {
+            searchReportedUser(searchInput.value);
+        }
+        
+        // Refresh reports
+        await loadReports();
+    } catch (error) {
+        console.error('Warning error:', error);
+        showNotification(error.message || 'Failed to issue warning', 'error');
+    }
+}
+
+async function unsuspendUser(userId, userName) {
+    if (!confirm(`Are you sure you want to unsuspend ${userName}? They will be able to log in again.`)) {
+        return;
+    }
+    
+    try {
+        await API.unsuspendUser(userId);
+        showNotification(`${userName} has been unsuspended`, 'success');
+        
+        // Refresh the user search
+        const searchInput = document.getElementById('reportedUserIdInput');
+        if (searchInput && searchInput.value) {
+            searchReportedUser(searchInput.value);
+        }
+        
+        // Refresh reports
+        await loadReports();
+    } catch (error) {
+        console.error('Unsuspension error:', error);
+        showNotification(error.message || 'Failed to unsuspend user', 'error');
+    }
+}
+
+// Close modals on outside click
+const suspendModal = document.getElementById('suspendModal');
+const warnModal = document.getElementById('warnModal');
+
+window.addEventListener('click', (event) => {
+    if (suspendModal && event.target === suspendModal) {
+        closeSuspendModal();
+    }
+    if (warnModal && event.target === warnModal) {
+        closeWarnModal();
     }
 });
 

@@ -689,6 +689,34 @@ const API = {
         return data;
     },
 
+    async suspendUser(userId, reason) {
+        const data = await apiCall(`/users/${userId}/suspend`, {
+            method: 'PUT',
+            body: JSON.stringify({ reason })
+        });
+        return data;
+    },
+
+    async unsuspendUser(userId) {
+        const data = await apiCall(`/users/${userId}/unsuspend`, {
+            method: 'PUT'
+        });
+        return data;
+    },
+
+    async warnUser(userId, reason) {
+        const data = await apiCall(`/users/${userId}/warn`, {
+            method: 'PUT',
+            body: JSON.stringify({ reason })
+        });
+        return data;
+    },
+
+    async getUserStatus(userId) {
+        const data = await apiCall(`/users/${userId}/status`, { method: 'GET' });
+        return data.status;
+    },
+
     async migrateUserIds() {
         const data = await apiCall('/users/migrate-unique-ids', {
             method: 'POST'

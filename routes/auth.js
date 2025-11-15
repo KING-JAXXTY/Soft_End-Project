@@ -116,6 +116,14 @@ router.post('/login', [
             });
         }
 
+        // Check if user is suspended
+        if (user.isSuspended) {
+            return res.status(403).json({
+                success: false,
+                message: `Your account has been suspended. Reason: ${user.suspensionReason || 'Policy violation'}. Please contact support.`
+            });
+        }
+
         // NOTE: isActive check removed - all accounts are active by default
         // No automatic disabling exists in this system
 
