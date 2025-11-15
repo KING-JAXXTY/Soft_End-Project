@@ -354,7 +354,7 @@ function displayApplications(applications) {
             </div>
             ${app.notes ? `<div class="application-notes"><strong>Notes:</strong> ${app.notes}</div>` : ''}
             <div class="application-actions">
-                ${app.status === 'approved' ? `<button onclick="showApprovalModal({_id: '${app._id}'})" class="btn-success btn-sm">View Certificate</button>` : ''}
+                ${app.status === 'approved' ? `<button onclick="viewCertificate('${app._id}')" class="btn-success btn-sm">View Certificate</button>` : ''}
                 ${!scholarshipDeleted ? `<button onclick="viewScholarship('${scholarshipId}')" class="btn-secondary btn-sm">View Scholarship</button>` : ''}
                 <button onclick="deleteApplication('${app._id}')" class="btn-danger btn-sm">Delete Application</button>
             </div>
