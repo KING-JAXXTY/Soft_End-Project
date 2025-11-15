@@ -26,37 +26,67 @@
     </nav>
 
     <div class="container">
-        <div class="page-header">
-            <h1>My Dashboard</h1>
-            <p>Track your scholarship applications</p>
+        <div class="dashboard-page-header">
+            <div class="dashboard-header-content">
+                <div>
+                    <h1>My Dashboard</h1>
+                    <p class="dashboard-subtitle">Track your scholarship applications</p>
+                </div>
+            </div>
         </div>
 
         <div class="dashboard-stats">
             <div class="stat-card">
+                <div class="stat-icon-wrapper">
+                    <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                </div>
                 <h3 id="totalApplications">0</h3>
                 <p>Total Applications</p>
             </div>
             <div class="stat-card success">
+                <div class="stat-icon-wrapper success">
+                    <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
                 <h3 id="approvedApplications">0</h3>
                 <p>Approved</p>
             </div>
             <div class="stat-card warning">
+                <div class="stat-icon-wrapper warning">
+                    <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
                 <h3 id="pendingApplications">0</h3>
                 <p>Pending</p>
             </div>
             <div class="stat-card danger">
+                <div class="stat-icon-wrapper danger">
+                    <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
                 <h3 id="rejectedApplications">0</h3>
                 <p>Rejected</p>
             </div>
         </div>
 
         <!-- AI Scholarship Recommendations Section -->
-        <div class="section" style="margin-bottom: 2rem;">
-            <div class="section-header" style="cursor: pointer;" onclick="toggleAISection()">
-                <h2>
-                    <span id="aiToggleIcon" style="display: inline-block; transition: transform 0.3s;">▶</span>
-                    AI-Powered Recommendations
-                </h2>
+        <div class="dashboard-section ai-section">
+            <div class="section-header-ai" onclick="toggleAISection()" style="cursor: pointer; user-select: none;">
+                <div class="ai-section-title">
+                    <svg class="ai-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                    </svg>
+                    <div>
+                        <h2>AI-Powered Recommendations</h2>
+                        <p class="ai-description">Get personalized scholarship matches</p>
+                    </div>
+                </div>
+                <span id="aiToggleIcon" class="ai-toggle-icon">▼</span>
             </div>
             
             <!-- Collapsible AI Content -->
@@ -225,10 +255,14 @@
             </div>
         </div>
 
-        <div class="section">
-            <div class="section-header">
-                <h2>My Applications</h2>
-                <select id="statusFilter" onchange="filterApplications()">
+        <!-- Applications Section -->
+        <div class="dashboard-section applications-section">
+            <div class="section-header-applications">
+                <div>
+                    <h2>My Applications</h2>
+                    <p class="section-description">Track and manage your scholarship applications</p>
+                </div>
+                <select id="statusFilter" class="filter-select" onchange="filterApplications()">
                     <option value="">All Status</option>
                     <option value="pending">Pending</option>
                     <option value="approved">Approved</option>
@@ -240,8 +274,12 @@
                 <!-- Applications will be loaded here -->
             </div>
 
-            <div id="emptyState" class="empty-state" style="display: none;">
-                <p>You haven't applied to any scholarships yet.</p>
+            <div id="emptyState" class="empty-state-enhanced" style="display: none;">
+                <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <h3>No Applications Yet</h3>
+                <p>You haven't applied to any scholarships yet. Browse available scholarships and start your journey!</p>
                 <button onclick="window.location.href='student-home.html'" class="btn-primary">Browse Scholarships</button>
             </div>
         </div>
