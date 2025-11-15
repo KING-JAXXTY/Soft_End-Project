@@ -12,3 +12,9 @@ uploads/scholarships/*
 !uploads/messages/.gitkeep
 !uploads/profiles/.gitkeep
 !uploads/scholarships/.gitkeep
+
+# Test and development files (keep locally, not in repo)
+system-check.js
+test-new-features.js
+migrate-unique-ids.js
+*.backup.html
