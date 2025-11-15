@@ -88,9 +88,29 @@ async function loadMyReports() {
         const response = await API.getMyReports();
         const reports = response.reports || [];
         displayMyReports(reports);
+        
+        // Update count badge
+        const countBadge = document.getElementById('reportsCount');
+        if (countBadge) {
+            countBadge.textContent = reports.length;
+        }
     } catch (error) {
         console.error('Error loading reports:', error);
         document.getElementById('myReportsEmpty').style.display = 'block';
+    }
+}
+
+// Toggle reports panel
+function toggleReportsPanel() {
+    const panel = document.getElementById('myReportsPanel');
+    const chevron = document.getElementById('reportsChevron');
+    
+    if (panel.style.display === 'none' || panel.style.display === '') {
+        panel.style.display = 'block';
+        chevron.style.transform = 'rotate(90deg)';
+    } else {
+        panel.style.display = 'none';
+        chevron.style.transform = 'rotate(0deg)';
     }
 }
 
@@ -119,35 +139,34 @@ function displayMyReports(reports) {
     };
     
     container.innerHTML = reports.map(report => `
-        <div class="application-card" style="cursor: pointer;" onclick="viewReportDetail('${report._id}')">
-            <div class="application-header">
+        <div class="application-card" style="cursor: pointer; padding: 1rem;" onclick="viewReportDetail('${report._id}')">
+            <div class="application-header" style="margin-bottom: 0.75rem;">
                 <div>
-                    <h3 style="font-size: 1.125rem; margin-bottom: 0.25rem;">${report.subject}</h3>
-                    <p style="font-size: 0.875rem; color: var(--text-secondary);">
+                    <h3 style="font-size: 0.9375rem; margin-bottom: 0.25rem; line-height: 1.3;">${report.subject.length > 40 ? report.subject.substring(0, 40) + '...' : report.subject}</h3>
+                    <p style="font-size: 0.75rem; color: var(--text-secondary);">
                         ${new Date(report.createdAt).toLocaleDateString()}
                     </p>
                 </div>
-                <span class="badge" style="background: ${getStatusColor(report.status)};">
+                <span class="badge" style="background: ${getStatusColor(report.status)}; font-size: 0.75rem; padding: 0.25rem 0.5rem;">
                     ${report.status}
                 </span>
             </div>
             
-            <div style="margin-top: 1rem;">
-                <p style="font-size: 0.875rem; color: var(--text-secondary);">
-                    Type: <strong>${report.reportType}</strong>
+            <div style="margin-top: 0.75rem;">
+                <p style="font-size: 0.8125rem; color: var(--text-secondary);">
+                    <strong>${report.reportType}</strong>
                 </p>
-                <p style="font-size: 0.875rem; margin-top: 0.5rem; color: var(--text-secondary); 
+                <p style="font-size: 0.8125rem; margin-top: 0.5rem; color: var(--text-secondary); 
                    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; 
-                   overflow: hidden;">
+                   overflow: hidden; line-height: 1.4;">
                     ${report.description}
                 </p>
             </div>
             
             ${report.resolvedBy ? `
-                <div style="margin-top: 1rem; padding: 0.75rem; background: var(--background); 
-                     border-radius: 6px; font-size: 0.875rem;">
+                <div style="margin-top: 0.75rem; padding: 0.5rem; background: var(--background); 
+                     border-radius: 6px; font-size: 0.75rem;">
                     <strong>Resolved by:</strong> ${report.resolvedBy.firstName} ${report.resolvedBy.lastName}
-                    ${report.resolvedBy.uniqueId ? `(${report.resolvedBy.uniqueId})` : ''}
                 </div>
             ` : ''}
         </div>

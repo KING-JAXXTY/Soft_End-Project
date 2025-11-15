@@ -333,25 +333,31 @@
             </div>
         </div>
 
-        <!-- My Reports Section -->
+        <!-- My Reports Section (Collapsible) -->
         <div class="dashboard-section" style="margin-top: 2rem;">
-            <div class="section-header">
-                <div>
-                    <h2>My Reports</h2>
-                    <p class="section-description">Track the status of your submitted reports</p>
+            <div class="collapsible-header" onclick="toggleReportsPanel()" style="cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding: 1rem; background: var(--surface); border: 1px solid var(--border-color); border-radius: 8px; transition: all 0.3s ease;">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <svg id="reportsChevron" style="width: 20px; height: 20px; transition: transform 0.3s ease;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                    <h3 style="margin: 0; font-size: 1rem; font-weight: 600;">My Reports</h3>
+                    <span id="reportsCount" class="badge" style="background: var(--primary-color); font-size: 0.75rem;">0</span>
                 </div>
+                <span style="font-size: 0.875rem; color: var(--text-secondary);">Click to expand</span>
             </div>
 
-            <div id="myReportsList" class="applications-list" style="margin-top: 1rem;">
-                <!-- Reports will be loaded here -->
-            </div>
+            <div id="myReportsPanel" style="display: none; margin-top: 1rem; overflow: hidden; transition: all 0.3s ease;">
+                <div id="myReportsList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
+                    <!-- Reports will be loaded here -->
+                </div>
 
-            <div id="myReportsEmpty" class="empty-state-enhanced" style="display: none;">
-                <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                <h3>No Reports Submitted</h3>
-                <p>You haven't submitted any reports yet.</p>
+                <div id="myReportsEmpty" class="empty-state-enhanced" style="display: none; padding: 2rem;">
+                    <svg class="empty-state-icon" style="width: 48px; height: 48px; margin: 0 auto;" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <h4 style="margin-top: 1rem;">No Reports Submitted</h4>
+                    <p style="font-size: 0.875rem; color: var(--text-secondary);">You haven't submitted any reports yet.</p>
+                </div>
             </div>
         </div>
 
