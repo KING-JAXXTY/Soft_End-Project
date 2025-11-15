@@ -76,9 +76,13 @@ router.get('/:userId', protect, async (req, res) => {
             });
         }
         
+        // Remove sensitive information (phone number) from public profile view
+        const publicProfile = profile.toObject();
+        delete publicProfile.phone;
+        
         res.json({
             success: true,
-            profile
+            profile: publicProfile
         });
     } catch (error) {
         console.error(error);

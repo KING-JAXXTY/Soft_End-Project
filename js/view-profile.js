@@ -150,16 +150,10 @@ function displayProfile(profile) {
                 </div>
                 ` : ''}
 
-                ${profile.phone || profile.region || profile.address ? `
+                ${profile.region || profile.address ? `
                 <div class="profile-section">
                     <h3>Contact Information</h3>
                     <div class="info-grid">
-                        ${profile.phone ? `
-                        <div class="info-item">
-                            <span class="info-label">Phone:</span>
-                            <span>${profile.phone}</span>
-                        </div>
-                        ` : ''}
                         ${profile.region ? `
                         <div class="info-item">
                             <span class="info-label">Region:</span>
