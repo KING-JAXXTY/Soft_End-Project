@@ -12,6 +12,9 @@ function checkAuth() {
 }
 
 let allApplications = [];
+let carouselInterval = null;
+let currentSlide = 0;
+let carouselScholarships = [];
 
 // Load dashboard data
 async function loadDashboard() {
@@ -27,6 +30,12 @@ async function loadDashboard() {
             applications.filter(a => a.status === 'pending').length;
         document.getElementById('rejectedApplications').textContent = 
             applications.filter(a => a.status === 'rejected').length;
+        
+        // Load carousel scholarships
+        await loadCarouselScholarships();
+        
+        // Load upcoming deadlines
+        loadUpcomingDeadlines(applications);
         
         displayApplications(applications);
     } catch (error) {
@@ -437,6 +446,316 @@ document.addEventListener('visibilitychange', () => {
         loadDashboard();
     }
 });
+
+// ============================================
+// SCHOLARSHIP CAROUSEL FUNCTIONALITY
+// ============================================
+
+async function loadCarouselScholarships() {
+    try {
+        const allScholarships = await API.getScholarships();
+        const currentUser = API.getCurrentUser();
+        
+        if (!allScholarships || allScholarships.length === 0) {
+            displayEmptyCarousel();
+            return;
+        }
+        
+        // Get IDs of scholarships student has already applied to
+        const appliedScholarshipIds = allApplications.map(app => app.scholarshipId);
+        
+        // Filter scholarships: active, not applied, and recent (within 14 days)
+        const now = new Date();
+        const twoWeeksAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
+        
+        let availableScholarships = allScholarships.filter(scholarship => {
+            const createdDate = new Date(scholarship.createdAt || scholarship.datePosted);
+            const isRecent = createdDate >= twoWeeksAgo;
+            const notApplied = !appliedScholarshipIds.includes(scholarship._id);
+            const isActive = scholarship.status === 'active';
+            const notExpired = new Date(scholarship.deadline) > now;
+            
+            return isActive && notExpired && (isRecent || scholarship.featured);
+        });
+        
+        // Sort by priority: featured first, then by date
+        availableScholarships.sort((a, b) => {
+            if (a.featured && !b.featured) return -1;
+            if (!a.featured && b.featured) return 1;
+            return new Date(b.createdAt || b.datePosted) - new Date(a.createdAt || a.datePosted);
+        });
+        
+        // Limit to 5 scholarships
+        carouselScholarships = availableScholarships.slice(0, 5);
+        
+        if (carouselScholarships.length === 0) {
+            displayEmptyCarousel();
+            return;
+        }
+        
+        displayCarousel();
+        startCarouselAutoPlay();
+    } catch (error) {
+        console.error('Error loading carousel scholarships:', error);
+        displayEmptyCarousel();
+    }
+}
+
+function displayCarousel() {
+    const slidesContainer = document.getElementById('carouselSlides');
+    const dotsContainer = document.getElementById('carouselDots');
+    
+    // Generate slides
+    slidesContainer.innerHTML = carouselScholarships.map((scholarship, index) => {
+        const isNew = isScholarshipNew(scholarship);
+        const isFeatured = scholarship.featured;
+        
+        return `
+            <div class="carousel-slide ${index === 0 ? 'active' : ''}">
+                <div class="carousel-content">
+                    <div class="carousel-badge ${isFeatured ? 'featured' : ''}">
+                        ${isFeatured ? '⭐ FEATURED' : '✨ NEW'}
+                    </div>
+                    <h3 class="carousel-title">${scholarship.title}</h3>
+                    <div class="carousel-meta">
+                        <div class="carousel-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <strong>₱${parseFloat(scholarship.amount).toLocaleString()}</strong>
+                        </div>
+                        <div class="carousel-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <span>Deadline: ${formatDate(scholarship.deadline)}</span>
+                        </div>
+                        ${scholarship.sponsor ? `
+                        <div class="carousel-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            <span>${scholarship.sponsor.firstName} ${scholarship.sponsor.lastName}</span>
+                        </div>
+                        ` : ''}
+                    </div>
+                    <p class="carousel-description">${truncateText(scholarship.description, 150)}</p>
+                    <div class="carousel-actions">
+                        <button onclick="applyToCarouselScholarship('${scholarship._id}')" class="btn-primary">
+                            Apply Now
+                        </button>
+                        <button onclick="viewCarouselScholarship('${scholarship._id}')" class="btn-secondary">
+                            Learn More
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    // Generate dots
+    dotsContainer.innerHTML = carouselScholarships.map((_, index) => 
+        `<button class="carousel-dot ${index === 0 ? 'active' : ''}" onclick="goToSlide(${index})"></button>`
+    ).join('');
+}
+
+function displayEmptyCarousel() {
+    const slidesContainer = document.getElementById('carouselSlides');
+    const dotsContainer = document.getElementById('carouselDots');
+    
+    slidesContainer.innerHTML = `
+        <div class="carousel-slide active">
+            <div class="carousel-content" style="text-align: center;">
+                <svg style="width: 80px; height: 80px; margin: 0 auto 1rem; stroke: var(--text-secondary); opacity: 0.5;" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+                </svg>
+                <h3 style="margin: 0 0 0.5rem 0; color: var(--text-primary);">All Caught Up!</h3>
+                <p style="margin: 0 0 1.5rem 0; color: var(--text-secondary);">No new scholarships at the moment. Check back soon!</p>
+                <button onclick="window.location.href='student-home.html'" class="btn-primary">Browse All Scholarships</button>
+            </div>
+        </div>
+    `;
+    
+    dotsContainer.innerHTML = '';
+}
+
+function navigateCarousel(direction) {
+    if (carouselScholarships.length === 0) return;
+    
+    currentSlide = (currentSlide + direction + carouselScholarships.length) % carouselScholarships.length;
+    updateCarouselSlide();
+    resetCarouselAutoPlay();
+}
+
+function goToSlide(index) {
+    currentSlide = index;
+    updateCarouselSlide();
+    resetCarouselAutoPlay();
+}
+
+function updateCarouselSlide() {
+    const slides = document.querySelectorAll('.carousel-slide');
+    const dots = document.querySelectorAll('.carousel-dot');
+    
+    slides.forEach((slide, index) => {
+        slide.classList.toggle('active', index === currentSlide);
+    });
+    
+    dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentSlide);
+    });
+}
+
+function startCarouselAutoPlay() {
+    if (carouselInterval) clearInterval(carouselInterval);
+    
+    carouselInterval = setInterval(() => {
+        navigateCarousel(1);
+    }, 6000); // Change slide every 6 seconds
+}
+
+function resetCarouselAutoPlay() {
+    startCarouselAutoPlay();
+}
+
+// Pause carousel on hover
+document.addEventListener('DOMContentLoaded', () => {
+    const carousel = document.querySelector('.scholarship-carousel');
+    if (carousel) {
+        carousel.addEventListener('mouseenter', () => {
+            if (carouselInterval) clearInterval(carouselInterval);
+        });
+        
+        carousel.addEventListener('mouseleave', () => {
+            startCarouselAutoPlay();
+        });
+    }
+});
+
+function applyToCarouselScholarship(scholarshipId) {
+    window.location.href = `apply-scholarship.html?id=${scholarshipId}`;
+}
+
+function viewCarouselScholarship(scholarshipId) {
+    window.location.href = `student-home.html?highlight=${scholarshipId}`;
+}
+
+function isScholarshipNew(scholarship) {
+    const createdDate = new Date(scholarship.createdAt || scholarship.datePosted);
+    const now = new Date();
+    const daysDiff = (now - createdDate) / (1000 * 60 * 60 * 24);
+    return daysDiff <= 7;
+}
+
+// ============================================
+// DEADLINE TRACKER FUNCTIONALITY
+// ============================================
+
+function loadUpcomingDeadlines(applications) {
+    const deadlinesList = document.getElementById('deadlinesList');
+    const deadlinesEmpty = document.getElementById('deadlinesEmpty');
+    
+    if (!applications || applications.length === 0) {
+        deadlinesList.innerHTML = '';
+        deadlinesEmpty.style.display = 'block';
+        return;
+    }
+    
+    // Filter applications with upcoming deadlines (next 30 days)
+    const now = new Date();
+    const thirtyDaysFromNow = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+    
+    const upcomingDeadlines = applications
+        .filter(app => {
+            if (!app.scholarship || !app.scholarship.deadline) return false;
+            const deadline = new Date(app.scholarship.deadline);
+            return deadline > now && deadline <= thirtyDaysFromNow;
+        })
+        .sort((a, b) => new Date(a.scholarship.deadline) - new Date(b.scholarship.deadline));
+    
+    if (upcomingDeadlines.length === 0) {
+        deadlinesList.innerHTML = '';
+        deadlinesEmpty.style.display = 'block';
+        return;
+    }
+    
+    deadlinesEmpty.style.display = 'none';
+    deadlinesList.innerHTML = upcomingDeadlines.map(app => {
+        const scholarship = app.scholarship;
+        const deadline = new Date(scholarship.deadline);
+        const daysLeft = Math.ceil((deadline - now) / (1000 * 60 * 60 * 24));
+        
+        let urgencyClass = 'ok';
+        let urgencyLabel = 'ON TRACK';
+        let urgencyIcon = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />`;
+        
+        if (daysLeft <= 3) {
+            urgencyClass = 'urgent';
+            urgencyLabel = 'URGENT';
+            urgencyIcon = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />`;
+        } else if (daysLeft <= 7) {
+            urgencyClass = 'soon';
+            urgencyLabel = 'SOON';
+            urgencyIcon = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />`;
+        }
+        
+        return `
+            <div class="deadline-card ${urgencyClass}">
+                <div class="deadline-info">
+                    <div class="deadline-status ${urgencyClass}">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            ${urgencyIcon}
+                        </svg>
+                        ${urgencyLabel}
+                    </div>
+                    <h3 class="deadline-scholarship-title">${scholarship.title}</h3>
+                    <div class="deadline-date-info">
+                        <span>Deadline: ${formatDate(scholarship.deadline)}</span>
+                        <span>•</span>
+                        <span>Status: ${app.status.charAt(0).toUpperCase() + app.status.slice(1)}</span>
+                    </div>
+                </div>
+                <div class="deadline-countdown">
+                    <span class="countdown-number">${daysLeft}</span>
+                    <span class="countdown-label">${daysLeft === 1 ? 'day left' : 'days left'}</span>
+                </div>
+                <div class="deadline-actions">
+                    <button onclick="viewScholarship('${scholarship._id}')" class="btn-secondary btn-sm">
+                        View Details
+                    </button>
+                    ${app.status === 'approved' ? `
+                        <button onclick="viewCertificate('${app._id}')" class="btn-primary btn-sm">
+                            View Certificate
+                        </button>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: 'numeric', 
+        year: 'numeric' 
+    });
+}
+
+function truncateText(text, maxLength) {
+    if (!text) return '';
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength).trim() + '...';
+}
+
+function viewCertificate(applicationId) {
+    window.location.href = `certificate.html?applicationId=${applicationId}`;
+}
+
+// Initialize on page load
+checkAuth();
+loadDashboard();
 
 // Also reload when window regains focus
 window.addEventListener('focus', () => {
