@@ -314,7 +314,7 @@ router.put('/:id/suspend', protect, authorize('admin'), async (req, res) => {
             const Application = require('../models/Application');
             
             // Find all scholarships created by this sponsor
-            const scholarships = await Scholarship.find({ createdBy: user._id });
+            const scholarships = await Scholarship.find({ sponsor: user._id });
             const scholarshipIds = scholarships.map(s => s._id);
             
             // Delete all applications for these scholarships
@@ -326,7 +326,7 @@ router.put('/:id/suspend', protect, authorize('admin'), async (req, res) => {
             }
             
             // Delete all scholarships
-            const scholarshipsResult = await Scholarship.deleteMany({ createdBy: user._id });
+            const scholarshipsResult = await Scholarship.deleteMany({ sponsor: user._id });
             deletedScholarshipsCount = scholarshipsResult.deletedCount;
         }
 
