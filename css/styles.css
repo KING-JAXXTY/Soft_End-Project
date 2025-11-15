@@ -855,6 +855,104 @@ button {
     to { transform: rotate(360deg); }
 }
 
+/* AI Document Requirements Box */
+.ai-document-requirements {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border: 2px solid #3b82f6;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.ai-requirements-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    color: var(--primary-color);
+    font-size: 1.125rem;
+}
+
+.ai-requirements-header svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.ai-requirements-subtitle {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    margin: 0 0 1rem 0;
+}
+
+.ai-requirements-list {
+    margin: 0 0 1rem 0;
+    padding-left: 1.5rem;
+    list-style: none;
+}
+
+.ai-requirements-list li {
+    position: relative;
+    font-size: 0.9375rem;
+    color: var(--text-primary);
+    line-height: 1.7;
+    margin-bottom: 0.625rem;
+    padding-left: 0.5rem;
+}
+
+.ai-requirements-list li:before {
+    content: '✓';
+    position: absolute;
+    left: -1.25rem;
+    color: var(--primary-color);
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.ai-requirements-tip {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.625rem;
+    background: rgba(255, 255, 255, 0.6);
+    border-left: 3px solid var(--primary-color);
+    border-radius: 6px;
+    padding: 0.75rem;
+    margin-top: 1rem;
+}
+
+.ai-requirements-tip svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    margin-top: 0.125rem;
+    color: var(--primary-color);
+}
+
+.ai-requirements-tip span {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.ai-requirements-fallback {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.875rem 1rem;
+    background: #fef3c7;
+    border: 1px solid #fbbf24;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    color: #92400e;
+}
+
+.ai-requirements-fallback svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
 .ai-success-msg {
     display: flex;
     align-items: center;

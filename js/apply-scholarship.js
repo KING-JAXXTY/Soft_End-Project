@@ -43,7 +43,7 @@ async function loadScholarshipInfo() {
     }
 }
 
-// Analyze scholarship requirements and auto-check relevant documents
+// Analyze scholarship requirements and show AI-generated document list
 async function analyzeRequiredDocuments(scholarship) {
     try {
         // Show analyzing indicator
@@ -57,7 +57,7 @@ async function analyzeRequiredDocuments(scholarship) {
                 <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
                 <path d="M2 17l10 5 10-5M2 12l10 5 10-5"></path>
             </svg>
-            <span>AI analyzing required documents...</span>
+            <span>AI analyzing scholarship requirements...</span>
         `;
         checklistContainer.insertBefore(analyzeIndicator, checklistContainer.firstChild);
         
@@ -67,7 +67,9 @@ async function analyzeRequiredDocuments(scholarship) {
         const eligibility = scholarship.eligibility || '';
         const description = scholarship.description || '';
         
-        const prompt = `Analyze this scholarship information and determine which documents are required:
+        const prompt = `You are helping students understand what documents they need to upload to Google Drive for this scholarship application.
+
+Analyze this scholarship information:
 
 Scholarship: ${scholarship.title}
 Type: ${scholarship.scholarshipType}
@@ -76,61 +78,74 @@ Requirements: ${requirements}
 Eligibility: ${eligibility}
 Description: ${description}
 
-Based on the above information, which of these documents are REQUIRED (not optional)?
-1. transcript - Transcript of Records / Report Card
-2. id - Valid ID (Student ID, Government ID)
-3. certifications - Certificates & Awards
-4. recommendation - Recommendation Letter
-5. financial - Proof of Financial Need
-6. other - Other Supporting Documents
+Based on the above information, create a clear, bulleted list of REQUIRED documents that students must upload to their Google Drive folder. 
 
-Return ONLY a comma-separated list of the document codes that are REQUIRED (e.g., "transcript,id,financial").
-If a document type is mentioned as "if applicable", "optional", "if needed", or similar, DO NOT include it.
-Only include documents that are explicitly required or clearly mandatory.`;
+Rules:
+1. List ONLY documents that are explicitly required or clearly mandatory
+2. Skip documents mentioned as "optional", "if applicable", "if needed", etc.
+3. Be specific and clear (e.g., "Transcript of Records for the last 2 semesters")
+4. If financial documents are required, specify which ones
+5. Keep each bullet point concise and actionable
+6. Use clear, student-friendly language
+
+Format your response as a simple bulleted list using dashes (-), one document per line. Do NOT include any introductory text, explanations, or numbering. Start directly with the list.
+
+Example format:
+- Transcript of Records (last 2 semesters)
+- Valid Student or Government ID
+- Certificate of Enrollment`;
 
         const result = await GeminiAPI.generateContent(prompt);
         console.log('AI Document Analysis Result:', result);
         
-        // Parse AI response
-        const requiredDocs = result.toLowerCase()
-            .replace(/[^a-z,]/g, '')
-            .split(',')
-            .map(doc => doc.trim())
-            .filter(doc => doc);
-        
-        // Auto-check the required documents
-        requiredDocs.forEach(docCode => {
-            const checkbox = document.getElementById(`doc-${docCode}`);
-            if (checkbox) {
-                checkbox.checked = true;
-                // Add visual indicator that it was AI-suggested
-                const label = checkbox.closest('.checklist-item');
-                if (label && !label.querySelector('.ai-suggested')) {
-                    const badge = document.createElement('span');
-                    badge.className = 'ai-suggested';
-                    badge.textContent = 'AI Suggested';
-                    label.appendChild(badge);
-                }
-            }
-        });
-        
         // Remove analyzing indicator
         analyzeIndicator.remove();
         
-        // Show success message if documents were identified
-        if (requiredDocs.length > 0) {
-            const successMsg = document.createElement('div');
-            successMsg.className = 'ai-success-msg';
-            successMsg.innerHTML = `
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span>AI identified ${requiredDocs.length} required document${requiredDocs.length > 1 ? 's' : ''}</span>
+        // Clean up the AI response
+        let documentList = result
+            .trim()
+            .split('\n')
+            .filter(line => line.trim())
+            .map(line => line.replace(/^[-*•]\s*/, '').trim())
+            .filter(line => line);
+        
+        // Display AI-generated document requirements
+        if (documentList.length > 0) {
+            const aiRequirements = document.createElement('div');
+            aiRequirements.className = 'ai-document-requirements';
+            aiRequirements.innerHTML = `
+                <div class="ai-requirements-header">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                        <path d="M2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                    </svg>
+                    <strong>AI-Generated Document Requirements</strong>
+                </div>
+                <p class="ai-requirements-subtitle">Based on the scholarship information, please upload these documents to your Google Drive:</p>
+                <ul class="ai-requirements-list">
+                    ${documentList.map(doc => `<li>${doc}</li>`).join('')}
+                </ul>
+                <div class="ai-requirements-tip">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>Make sure all documents are clearly labeled and in a single Google Drive folder</span>
+                </div>
             `;
-            checklistContainer.insertBefore(successMsg, checklistContainer.children[1]);
             
-            // Auto-remove success message after 5 seconds
-            setTimeout(() => successMsg.remove(), 5000);
+            // Insert before the checklist
+            checklistContainer.parentNode.insertBefore(aiRequirements, checklistContainer);
+        } else {
+            // Fallback message if AI couldn't determine requirements
+            const fallbackMsg = document.createElement('div');
+            fallbackMsg.className = 'ai-requirements-fallback';
+            fallbackMsg.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>Please refer to the scholarship details and upload all required documents to Google Drive</span>
+            `;
+            checklistContainer.insertBefore(fallbackMsg, checklistContainer.firstChild);
         }
         
     } catch (error) {
