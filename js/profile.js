@@ -163,7 +163,10 @@ async function loadProfile() {
         
         // Populate basic info
         document.getElementById('profileName').textContent = `${profileUser.firstName} ${profileUser.lastName}`;
-        document.getElementById('profileRole').textContent = profileUser.role.toUpperCase();
+        const profileRoleBadge = document.getElementById('profileRoleBadge');
+        if (profileRoleBadge) {
+            profileRoleBadge.textContent = profileUser.role.charAt(0).toUpperCase() + profileUser.role.slice(1);
+        }
         
         // Hide email for admin users
         if (profileUser.role === 'admin') {

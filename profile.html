@@ -22,33 +22,49 @@
     </nav>
 
     <div class="container">
-        <div class="page-header">
-            <h1>My Profile</h1>
-            <p>Manage your account information</p>
+        <div class="profile-page-header">
+            <div class="profile-header-content">
+                <div>
+                    <h1>My Profile</h1>
+                    <p>Manage your account information and preferences</p>
+                </div>
+            </div>
         </div>
 
         <div class="profile-container">
             <div class="profile-sidebar">
-                <div class="profile-picture">
-                    <div id="profileAvatar" class="profile-avatar">
-                        <img id="profileAvatarImg" src="" alt="Profile Avatar" />
+                <div class="profile-sidebar-card">
+                    <div class="profile-picture">
+                        <div id="profileAvatar" class="profile-avatar-display">
+                            <img id="profileAvatarImg" src="" alt="Profile Avatar" />
+                        </div>
                     </div>
-                </div>
-                <div class="profile-info">
-                    <h3 id="profileName">User Name</h3>
-                    <p id="profileRole">Role</p>
-                    <p id="profileEmail">email@example.com</p>
+                    <div class="profile-info">
+                        <h3 id="profileName">User Name</h3>
+                        <span id="profileRoleBadge" class="profile-role-badge">Role</span>
+                        <p id="profileEmail" class="profile-email">email@example.com</p>
+                    </div>
                 </div>
             </div>
 
             <div class="profile-main">
-                <form id="profileForm" class="form-container">
-                    <div class="form-section">
+                <form id="profileForm" class="profile-form-card">
+                    <div class="form-section-header">
                         <h3>Personal Information</h3>
-                        
+                        <p>Update your personal details</p>
+                    </div>
+                    
+                    <div class="form-section-body">
                         <div class="form-group">
                             <label>Profile Avatar</label>
-                            <button type="button" id="changeAvatarBtn" class="btn-secondary">Change Avatar</button>
+                            <button type="button" id="changeAvatarBtn" class="btn-secondary btn-sm">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 0.375rem;">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                </svg>
+                                Change Avatar
+                            </button>
                             <div id="avatarSelectionContainer" class="avatar-selection imgs" style="display: none; margin-top: 1rem;">
                                 <div class="avatar-option img-wrap" data-avatar="avatar1">
                                     <img src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortFlat&accessoriesType=Round&hairColor=Blonde&facialHairType=BeardLight&facialHairColor=Auburn&clotheType=ShirtVNeck&clotheColor=Black&eyeType=Squint&eyebrowType=Default&mouthType=Smile&skinColor=Light" />
@@ -141,8 +157,12 @@
 
                     <!-- Student-specific fields -->
                     <div id="studentFields" style="display: none;">
-                        <div class="form-section">
+                        <div class="form-section-header" style="margin-top: 2rem;">
                             <h3>Academic Information</h3>
+                            <p>Your educational background and details</p>
+                        </div>
+                        
+                        <div class="form-section-body">
                             
                             <div class="form-row">
                                 <div class="form-group">
