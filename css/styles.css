@@ -6149,7 +6149,7 @@ a[href^="mailto"] {
     }
     
     .messages-area {
-        min-height: auto;
+        min-height: 0;
         flex: 1;
         padding: 1rem;
     }
