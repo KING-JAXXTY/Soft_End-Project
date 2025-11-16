@@ -11,7 +11,7 @@ window.apiCache = apiCache;
 
 // Helper function to get auth token
 function getAuthToken() {
-    return localStorage.getItem('authToken');
+    return localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
 }
 
 // Helper function to get auth headers
@@ -115,7 +115,7 @@ const API = {
         return data;
     },
 
-    async login(email, password) {
+    async login(email, password, rememberMe = false) {
         const data = await apiCall('/auth/login', {
             method: 'POST',
             body: JSON.stringify({ email, password })
@@ -124,11 +124,20 @@ const API = {
         console.log('🔐 Login response:', data);
         console.log('👤 User data:', data.user);
         console.log('🎭 User role:', data.user?.role);
+        console.log('💾 Remember Me:', rememberMe);
         
         if (data.success && data.token && data.user) {
-            localStorage.setItem('authToken', data.token);
-            localStorage.setItem('currentUser', JSON.stringify(data.user));
-            console.log('✅ Stored in localStorage:', {
+            // Store based on rememberMe preference
+            const storage = rememberMe ? localStorage : sessionStorage;
+            storage.setItem('authToken', data.token);
+            storage.setItem('currentUser', JSON.stringify(data.user));
+            
+            // Clear the other storage to avoid conflicts
+            const otherStorage = rememberMe ? sessionStorage : localStorage;
+            otherStorage.removeItem('authToken');
+            otherStorage.removeItem('currentUser');
+            
+            console.log(`✅ Stored in ${rememberMe ? 'localStorage' : 'sessionStorage'}:`, {
                 token: data.token,
                 user: data.user
             });
@@ -144,13 +153,17 @@ const API = {
     },
 
     getCurrentUser() {
-        const userStr = localStorage.getItem('currentUser');
+        // Check both localStorage and sessionStorage
+        let userStr = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
         return userStr ? JSON.parse(userStr) : null;
     },
 
     logout() {
+        // Clear from both storages
         localStorage.removeItem('authToken');
         localStorage.removeItem('currentUser');
+        sessionStorage.removeItem('authToken');
+        sessionStorage.removeItem('currentUser');
         return { success: true };
     },
 
@@ -160,7 +173,9 @@ const API = {
                 method: 'GET'
             });
             if (data.success) {
-                localStorage.setItem('currentUser', JSON.stringify(data.user));
+                // Store in whichever storage has the token
+                const storage = localStorage.getItem('authToken') ? localStorage : sessionStorage;
+                storage.setItem('currentUser', JSON.stringify(data.user));
             }
             return data;
         } catch (error) {

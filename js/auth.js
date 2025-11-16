@@ -54,14 +54,16 @@ if (document.getElementById('loginForm')) {
         
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
+        const rememberMe = document.getElementById('rememberMe').checked;
         const errorMessage = document.getElementById('errorMessage');
         
         errorMessage.style.display = 'none';
         
         try {
             console.log('📧 Attempting login for:', email);
+            console.log('💾 Remember Me:', rememberMe);
             
-            const result = await API.login(email, password);
+            const result = await API.login(email, password, rememberMe);
             
             console.log('✅ Full login response:', result);
             
