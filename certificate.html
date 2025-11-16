@@ -139,7 +139,7 @@
             // Load certificate
             (async function() {
                 try {
-                    const token = localStorage.getItem('authToken');
+                    const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
                     const API_BASE_URL = window.location.hostname === 'localhost' 
                         ? 'http://localhost:5000/api' 
                         : '/api';

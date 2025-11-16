@@ -163,7 +163,7 @@ async function showApprovalModal(application) {
         }
 
         // Fetch full application details
-        const token = localStorage.getItem('authToken');
+        const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
         console.log('Fetching application details for ID:', application._id);
 
         const apiUrl = `${API_BASE_URL}/applications/${application._id}/full-details`;
@@ -433,7 +433,7 @@ async function checkForApprovedApplications() {
 
     try {
          // Fetch recent applications
-        const token = localStorage.getItem('authToken');
+        const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
         const response = await fetch(`${API_BASE_URL}/applications/student/my-applications`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
