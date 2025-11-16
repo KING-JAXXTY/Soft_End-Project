@@ -473,12 +473,52 @@ document.querySelectorAll('.avatar-option').forEach(option => {
 // Toggle avatar selection visibility
 document.getElementById('changeAvatarBtn').addEventListener('click', function() {
     const avatarContainer = document.getElementById('avatarSelectionContainer');
+    
+    // Load avatars if not already loaded
+    if (avatarContainer.children.length === 0) {
+        loadAvatarsForProfile();
+    }
+    
     if (avatarContainer.style.display === 'none' || avatarContainer.style.display === '') {
         avatarContainer.style.display = 'grid';
     } else {
         avatarContainer.style.display = 'none';
     }
 });
+
+// Load all avatars dynamically into profile page
+function loadAvatarsForProfile() {
+    const container = document.getElementById('avatarSelectionContainer');
+    const currentUser = API.getCurrentUser();
+    
+    Object.keys(AVATAR_URLS).forEach((avatarId) => {
+        const div = document.createElement('div');
+        div.className = 'avatar-option img-wrap';
+        if (currentUser && avatarId === currentUser.avatar) {
+            div.classList.add('selected');
+        }
+        div.setAttribute('data-avatar', avatarId);
+        
+        const img = document.createElement('img');
+        img.src = getAvatarUrl(avatarId);
+        img.alt = avatarId;
+        
+        div.appendChild(img);
+        div.addEventListener('click', function() {
+            document.querySelectorAll('.avatar-option').forEach(opt => opt.classList.remove('selected'));
+            this.classList.add('selected');
+            document.getElementById('avatar').value = this.getAttribute('data-avatar');
+            
+            // Update profile avatar preview
+            const profileAvatarImg = document.querySelector('.profile-avatar img');
+            if (profileAvatarImg) {
+                profileAvatarImg.src = getAvatarUrl(this.getAttribute('data-avatar'));
+            }
+        });
+        
+        container.appendChild(div);
+    });
+}
 
 // Go back to previous page
 function goBack() {
