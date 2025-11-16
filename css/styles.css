@@ -536,10 +536,10 @@ button {
 .auth-page::before {
     content: '';
     position: absolute;
-    width: 200%;
-    height: 200%;
-    top: -50%;
-    left: -50%;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
     background-image: 
         radial-gradient(circle, rgba(255, 255, 255, 0.15) 2px, transparent 2px),
         radial-gradient(circle, rgba(255, 255, 255, 0.12) 3px, transparent 3px),
@@ -553,10 +553,10 @@ button {
 
 @keyframes floatParticles {
     0% {
-        transform: translate(0, 0);
+        background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
     }
     100% {
-        transform: translate(50px, -1000px);
+        background-position: 50px -1000px, 90px -940px, 180px -730px, 120px -900px;
     }
 }
 
