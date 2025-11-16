@@ -274,11 +274,8 @@ async function showApprovalModal(application) {
             flex-wrap: wrap;
         `;
         actions.innerHTML = `
-            <button onclick="downloadCertificate('${application._id}')" class="btn-primary">
-                Download as PDF
-            </button>
-            <button onclick="downloadCertificateAsImage('${application._id}')" class="btn-secondary">
-                Download as JPG Image
+            <button onclick="downloadCertificateAsImage('${application._id}')" class="btn-primary">
+                Download Certificate
             </button>
         `;
 
