@@ -407,7 +407,7 @@ async function deleteApplication(applicationId) {
 // View scholarship details
 function viewScholarship(scholarshipId) {
     if (scholarshipId) {
-        window.location.href = `student-home.html#scholarship-${scholarshipId}`;
+        window.location.href = `scholarship-detail.html?id=${scholarshipId}`;
     } else {
         alert('Scholarship not found');
     }
@@ -884,7 +884,7 @@ function applyToCarouselScholarship(scholarshipId) {
 }
 
 function viewCarouselScholarship(scholarshipId) {
-    window.location.href = `student-home.html?highlight=${scholarshipId}`;
+    window.location.href = `scholarship-detail.html?id=${scholarshipId}`;
 }
 
 function isScholarshipNew(scholarship) {
