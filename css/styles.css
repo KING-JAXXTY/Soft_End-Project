@@ -529,7 +529,21 @@ button {
     justify-content: center;
     padding: 1rem;
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 15s ease infinite;
     position: relative;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 @keyframes fadeInUp {
