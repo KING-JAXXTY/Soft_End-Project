@@ -140,9 +140,21 @@
             (async function() {
                 try {
                     const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+                    
+                    if (!token) {
+                        console.error('No authentication token found');
+                        document.getElementById('certificateContainer').innerHTML = 
+                            '<p style="color: white; text-align: center;">Please log in to view your certificate. <a href="login.html" style="color: white; text-decoration: underline;">Go to Login</a></p>';
+                        return;
+                    }
+                    
                     const API_BASE_URL = window.location.hostname === 'localhost' 
                         ? 'http://localhost:5000/api' 
                         : '/api';
+                    
+                    console.log('Fetching certificate for application:', applicationId);
+                    console.log('API URL:', `${API_BASE_URL}/applications/${applicationId}/full-details`);
+                    
                     const response = await fetch(`${API_BASE_URL}/applications/${applicationId}/full-details`, {
                         headers: {
                             'Authorization': `Bearer ${token}`,
@@ -150,8 +162,16 @@
                         }
                     });
 
+                    console.log('Response status:', response.status);
+
                     if (!response.ok) {
-                        throw new Error('Failed to load certificate');
+                        if (response.status === 401) {
+                            console.error('Authentication failed - token may be expired');
+                            document.getElementById('certificateContainer').innerHTML = 
+                                '<p style="color: white; text-align: center;">Your session has expired. Please <a href="login.html" style="color: white; text-decoration: underline;">log in again</a> to view your certificate.</p>';
+                            return;
+                        }
+                        throw new Error(`Failed to load certificate (Status: ${response.status})`);
                     }
 
                     const data = await response.json();
@@ -166,8 +186,21 @@
                     document.getElementById('certificateContainer').appendChild(certificate);
                 } catch (error) {
                     console.error('Error loading certificate:', error);
+                    
+                    // Show user-friendly error message
+                    let errorMessage = 'Error loading certificate. ';
+                    if (error.message.includes('401') || error.message.includes('expired') || error.message.includes('log in')) {
+                        errorMessage = 'Your session has expired. Please <a href="login.html" style="color: white; text-decoration: underline;">log in again</a> to view your certificate.';
+                    } else if (error.message.includes('not approved')) {
+                        errorMessage = 'This application has not been approved yet.';
+                    } else if (error.message.includes('403')) {
+                        errorMessage = 'You do not have permission to view this certificate.';
+                    } else {
+                        errorMessage += 'Please check the URL or <a href="student-dashboard.html" style="color: white; text-decoration: underline;">return to dashboard</a>.';
+                    }
+                    
                     document.getElementById('certificateContainer').innerHTML = 
-                        '<p style="color: white; text-align: center;">Error loading certificate. Please check the URL or contact support.</p>';
+                        `<p style="color: white; text-align: center;">${errorMessage}</p>`;
                 }
             })();
         }

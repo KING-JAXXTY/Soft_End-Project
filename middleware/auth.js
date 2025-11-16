@@ -26,6 +26,7 @@ exports.protect = async (req, res, next) => {
         req.user = await User.findById(decoded.id);
 
         if (!req.user) {
+            console.error('❌ Auth failed: User no longer exists for ID:', decoded.id);
             return res.status(401).json({
                 success: false,
                 message: 'User no longer exists'
@@ -34,6 +35,13 @@ exports.protect = async (req, res, next) => {
 
         next();
     } catch (error) {
+        console.error('❌ Auth error:', error.message);
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({
+                success: false,
+                message: 'Token has expired. Please log in again.'
+            });
+        }
         return res.status(401).json({
             success: false,
             message: 'Not authorized to access this route'
