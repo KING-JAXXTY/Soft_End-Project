@@ -528,7 +528,7 @@ button {
     align-items: center;
     justify-content: center;
     padding: 1rem;
-    background: var(--background);
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
     position: relative;
 }
 
