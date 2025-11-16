@@ -1,13 +1,14 @@
 # TulongAral+ Scholarship Management System
 
-A comprehensive full-stack scholarship platform designed for Filipino students, connecting them with educational opportunities across the Philippines. The system features three distinct user roles with dedicated dashboards and functionality.
+A comprehensive full-stack scholarship platform designed for Filipino students, connecting them with educational opportunities across the Philippines. The system features three distinct user roles with dedicated dashboards, AI-powered features, and real-time communication capabilities.
 
-## Live Demo
-Deployed on Vercel: [TulongAral+ Platform](https://your-vercel-url.vercel.app)
+## 🌟 Live Demo
+**Production:** Deployed on Vercel  
+**Status:** ✅ Fully Operational
 
 ---
 
-## Table of Contents
+## 📋 Table of Contents
 - [Overview](#overview)
 - [Features](#features)
 - [System Architecture](#system-architecture)
@@ -16,194 +17,255 @@ Deployed on Vercel: [TulongAral+ Platform](https://your-vercel-url.vercel.app)
 - [Setup Instructions](#setup-instructions)
 - [Environment Variables](#environment-variables)
 - [Deployment](#deployment)
-- [API Endpoints](#api-endpoints)
+- [API Documentation](#api-documentation)
+- [Security Features](#security-features)
+- [Contributing](#contributing)
 
 ---
 
-## Overview
+## 🎯 Overview
 
-TulongAral+ is a scholarship management platform that facilitates the entire scholarship lifecycle - from posting opportunities to application submission and review. The system incorporates AI-powered features for enhanced user experience and administrative efficiency.
+TulongAral+ is an enterprise-grade scholarship management platform that streamlines the entire scholarship lifecycle - from posting opportunities to application submission, review, and certificate generation. Built with modern web technologies and powered by AI, the platform serves students, sponsors, and administrators with role-specific functionality.
 
-### Key Highlights
-- **Multi-region Support**: Covers 17 Philippine regions with region-specific scholarships
-- **AI Integration**: Gemini AI for grammar checking, content moderation, and report analysis
-- **Real-time Communication**: Built-in messaging system between students and sponsors
-- **Community Forum**: Moderated discussion platform for scholarship-related topics
-- **Digital Certificates**: Automated certificate generation for approved applications
-- **Comprehensive Admin Tools**: User management, content moderation, and system monitoring
+### 🏆 Key Highlights
+- **🗺️ Multi-region Support**: Complete coverage of all 17 Philippine regions with region-specific scholarships
+- **🤖 AI Integration**: Powered by Google Gemini AI for grammar checking, content moderation, scholarship recommendations, and intelligent report analysis
+- **💬 Real-time Communication**: Built-in messaging system with AI assistant for student-sponsor interactions
+- **👥 Community Forum**: Moderated discussion platform for scholarship-related topics with AI content moderation
+- **📜 Digital Certificates**: Automated certificate generation with downloadable PDF/image formats for approved applications
+- **🔧 Comprehensive Admin Tools**: Advanced user management, content moderation, suspension system, and detailed analytics
+- **🎨 Customizable Avatars**: 22 unique avatar options with dynamic loading for user personalization
+- **🔐 Secure Authentication**: JWT-based authentication with "Remember Me" functionality and session management
+- **📱 Responsive Design**: Mobile-first design approach ensuring optimal experience across all devices
 
 ---
 
-## Features
+## ✨ Features
 
-### For Students
+### For Students 🎓
 - **Scholarship Discovery**
-  - Browse scholarships by region, institution, and type
-  - Advanced filtering (academic, merit-based, need-based, sports, etc.)
-  - AI-powered scholarship recommendations
-  - Scholarship details with requirements and deadlines
+  - Browse scholarships by region, institution, type, and amount
+  - Advanced filtering (academic, merit-based, need-based, sports, arts, leadership, etc.)
+  - AI-powered personalized scholarship recommendations based on profile
+  - Interactive scholarship cards with detailed requirements and deadlines
+  - Favorites system for bookmarking scholarships
+  - Map integration showing scholarship institution locations
 
 - **Application Management**
-  - Apply for scholarships with cover letters
-  - Google Drive integration for document submission
-  - Track application status in real-time
-  - View application history and feedback
+  - Streamlined application process with cover letter support
+  - Google Drive integration for secure document submission
+  - Real-time application status tracking (pending, approved, rejected)
+  - Comprehensive application history with sponsor feedback
+  - Application deadline countdown and reminders
 
 - **Communication**
   - Direct messaging with scholarship sponsors
-  - Forum participation for community support
-  - Report system for inappropriate content
+  - AI assistant in messaging for scholarship-related queries
+  - Forum participation for community support and networking
+  - Report system for inappropriate content or user behavior
+  - Real-time notifications for messages and application updates
 
-- **Certificates**
-  - Download digital certificates for approved scholarships
-  - PNG and PDF format options
+- **Digital Certificates**
+  - Auto-generated digital certificates for approved scholarships
+  - Download certificates in PNG and PDF formats with high resolution
+  - Shareable certificates for portfolio building
+  - Permanent certificate archive in dashboard
 
-### For Sponsors (Organizations/Individuals)
+- **Profile & Personalization**
+  - Customizable profile with 22 unique avatar options
+  - Region and institution information management
+  - Educational background tracking
+  - Application history and statistics
+
+### For Sponsors (Organizations/Individuals) 💼
 - **Scholarship Management**
-  - Create and publish scholarship opportunities
-  - Set eligibility criteria and requirements
-  - Define application deadlines and available slots
-  - Edit or close scholarships
+  - Create and publish scholarship opportunities with detailed information
+  - Set comprehensive eligibility criteria and requirements
+  - Define application deadlines, award amounts, and available slots
+  - Edit active scholarships or mark them as closed
+  - AI grammar assistance for scholarship descriptions
+  - Track scholarship view counts and application rates
 
 - **Application Review**
-  - View and evaluate student applications
-  - Access Google Drive documents
-  - Approve or reject applications with feedback
-  - Track application statistics
+  - Comprehensive application review dashboard
+  - View and evaluate student applications with all submitted information
+  - Direct access to applicants' Google Drive documents
+  - Approve or reject applications with detailed feedback notes
+  - Track application statistics and trends
+  - Filter applications by status (pending, approved, rejected)
 
 - **Communication**
-  - Message applicants directly
-  - Respond to inquiries
-  - Report system access
+  - Direct messaging with applicants for clarifications
+  - Bulk messaging capabilities for announcement
+  - Respond to student inquiries efficiently
+  - Access to report system for inappropriate behavior
 
-- **Dashboard Analytics**
-  - View application metrics
-  - Monitor scholarship performance
-  - Track deadlines
+- **Analytics Dashboard**
+  - Real-time application metrics and statistics
+  - Monitor scholarship performance and reach
+  - Track application deadlines and slots
+  - View sponsor activity history
+  - Export data for reporting
 
-### For Administrators
+### For Administrators 🔐
 - **User Management**
-  - View all users (students, sponsors, admins)
-  - Issue warnings to users
-  - Suspend users (temporary or permanent)
-  - Delete user accounts
-  - View user reports and history
+  - View comprehensive list of all users (students, sponsors, admins)
+  - Issue formal warnings to users with detailed reasoning
+  - Suspend user accounts (temporary or permanent with duration)
+  - Delete user accounts with cascade data cleanup
+  - View user reports, warnings history, and activity logs
+  - Unsuspend users and clear warnings (reclaim action)
+  - Advanced user search and filtering
 
-- **Scholarship Oversight**
-  - Monitor all scholarships
-  - Delete inappropriate scholarships
-  - View scholarship statistics
+- **Content Moderation**
+  - Monitor all scholarships for policy compliance
+  - Delete inappropriate or fraudulent scholarships
+  - Review forum posts and comments
+  - Remove policy-violating content
+  - View detailed scholarship statistics
 
 - **Report Management**
-  - Review user-submitted reports
-  - AI-powered report analysis
-  - Update report status
-  - Take action on reported content
+  - Review user-submitted reports with complete context
+  - AI-powered report analysis for severity assessment
+  - Update report status (pending, reviewing, resolved)
+  - Take appropriate action on reported content or users
+  - Track report trends and common issues
+  - View comprehensive report history
 
 - **System Monitoring**
-  - View system activity logs
-  - Track user statistics
-  - Monitor application trends
+  - Real-time system activity dashboard
+  - Track user registration and engagement statistics
+  - Monitor application submission trends
+  - View scholarship creation patterns
+  - Generate system health reports
+  - Access audit logs for security compliance
 
 ---
 
-## System Architecture
+## 🏗️ System Architecture
 
 ### Frontend Architecture
 ```
 Pages (HTML)
 ├── Authentication
-│   ├── login.html - User authentication
-│   ├── register.html - New user registration
+│   ├── login.html - User login with Remember Me
+│   ├── register.html - Registration with avatar selection
 │   └── forgot-password.html - Password recovery
 ├── Dashboards
-│   ├── student-dashboard.html - Student portal
-│   ├── sponsor-dashboard.html - Sponsor portal
-│   └── admin-dashboard.html - Admin panel
-├── Features
-│   ├── scholarship-detail.html - Scholarship information
-│   ├── apply-scholarship.html - Application form
-│   ├── messages.html - Messaging interface
-│   ├── forum.html - Community forum
-│   ├── profile.html - User profile management
-│   └── certificate.html - Certificate viewer
+│   ├── student-dashboard.html - Student portal with AI recommendations
+│   ├── sponsor-dashboard.html - Sponsor management portal
+│   └── admin-dashboard.html - Admin control panel
+├── Core Features
+│   ├── student-home.html - Scholarship browsing with filters
+│   ├── scholarship-detail.html - Detailed scholarship view with map
+│   ├── apply-scholarship.html - Application form with AI assistance
+│   ├── messages.html - Messaging with AI assistant
+│   ├── forum.html - Community discussions with moderation
+│   ├── profile.html - Profile management with avatar editor
+│   ├── view-profile.html - Public profile viewer
+│   ├── certificate.html - Certificate viewer and downloader
+│   └── add-scholarship.html - Scholarship creation form
 └── Landing
-    └── index.html - Public homepage
+    └── index.html - Public homepage with features overview
 ```
 
 ### Backend Architecture
 ```
 Server (Node.js/Express)
-├── Routes
-│   ├── auth.js - Authentication & authorization
-│   ├── users.js - User management
-│   ├── scholarships.js - Scholarship CRUD operations
-│   ├── applications.js - Application handling
+├── Routes (/api)
+│   ├── auth.js - JWT authentication & registration
+│   ├── users.js - User CRUD & management
+│   ├── scholarships.js - Scholarship operations & favorites
+│   ├── applications.js - Application lifecycle management
+│   ├── profile.js - User profile operations
 │   ├── messages.js - Messaging system
-│   ├── forum.js - Forum operations
-│   ├── profile.js - Profile management
-│   ├── reports.js - Report system
-│   ├── gemini.js - AI integration proxy
+│   ├── forum.js - Forum posts & comments
+│   ├── gemini.js - AI proxy for Gemini API
+│   ├── reports.js - Report management
 │   └── activity.js - System activity tracking
 ├── Models (Mongoose)
-│   ├── User.js - User schema
-│   ├── Scholarship.js - Scholarship schema
-│   ├── Application.js - Application schema
-│   ├── Message.js - Message schema
-│   ├── Conversation.js - Conversation schema
-│   ├── ForumPost.js - Forum post schema
-│   ├── Profile.js - User profile schema
-│   └── Report.js - Report schema
+│   ├── User.js - User authentication & profile
+│   ├── Scholarship.js - Scholarship data
+│   ├── Application.js - Application tracking
+│   ├── Message.js - Message data
+│   ├── Conversation.js - Conversation threads
+│   ├── ForumPost.js - Forum discussions
+│   ├── Profile.js - Extended user data
+│   └── Report.js - Report submissions
 ├── Middleware
-│   └── auth.js - JWT authentication
-└── Config
-    └── database.js - MongoDB connection
+│   └── auth.js - JWT verification & role-based access
+├── Config
+│   └── database.js - MongoDB connection with retry logic
+└── Utilities
+    ├── avatar-migration.js - Avatar system migration script
+    └── institution-coordinates.js - Map data for institutions
 ```
 
 ### Database Schema
 
 **Users Collection**
-- Authentication credentials (email, password)
-- Profile information (name, role, region)
-- Account status (warnings, suspension)
-- Unique ID system (TA-XXXXXXXX format)
+- Authentication credentials (bcrypt hashed passwords)
+- Profile information (name, role, avatar, region)
+- Account status (warnings count, suspension state, suspension duration)
+- Unique ID system (TA-XXXXXXXX format for privacy)
+- Timestamps for registration and updates
 
 **Scholarships Collection**
-- Scholarship details (title, description, requirements)
-- Eligibility criteria (region, institution, type)
-- Application parameters (deadline, slots)
-- Sponsor reference
+- Scholarship details (title, description, requirements, guidelines)
+- Eligibility criteria (region, institution, scholarship type, academic level)
+- Application parameters (deadline, award amount, available slots)
+- Sponsor reference with population
+- Status tracking (active, closed, archived)
+- View count and applicant tracking
 
 **Applications Collection**
-- Student and scholarship references
-- Cover letter and documents link
+- Student and scholarship references with cascade deletion
+- Cover letter and Google Drive documents link
 - Status tracking (pending, approved, rejected)
-- Timestamps
+- Review notes from sponsors
+- Certificate information for approved applications
+- Timestamps for submission and review
 
 **Messages & Conversations Collections**
-- User-to-user messaging
-- Conversation threads
-- Message status tracking
+- User-to-user messaging system
+- Conversation threads with participant tracking
+- Message status and read receipts
+- Last message tracking for sorting
+- Timestamp-based ordering
 
 **Forum Posts Collection**
-- Community discussions
-- User engagement (views, comments)
-- Content moderation
+- Community discussions with title and content
+- Author reference with avatar support
+- Comments array with nested replies
+- View count and engagement metrics
+- Moderation flags and timestamps
+
+**Profiles Collection**
+- Extended user information
+- Contact details (phone, region, province, municipality)
+- Student-specific data (GWA, year level, course)
+- Sponsor-specific data (organization name)
+- Bio and additional information
 
 **Reports Collection**
-- User-submitted reports
-- Report status and admin notes
-- Related user/content references
+- User-submitted reports with category
+- Report type (user, scholarship, forum post)
+- Detailed reasoning and evidence
+- Status tracking (pending, reviewing, resolved)
+- Admin review notes and actions taken
+- AI analysis results
 
 ---
 
-## Tech Stack
+## 🛠️ Tech Stack
 
 ### Frontend
-- **HTML5**: Semantic markup
-- **CSS3**: Custom styling with CSS variables
-- **Vanilla JavaScript**: No frameworks, pure ES6+
-- **SVG Icons**: Custom icon system
+- **HTML5**: Semantic markup with accessibility features
+- **CSS3**: Custom styling with CSS variables, flexbox, and grid
+- **Vanilla JavaScript**: Pure ES6+ with no frameworks (modular architecture)
+- **SVG Icons**: Custom icon system for performance
+- **Leaflet.js**: Interactive maps for scholarship locations
+- **html2canvas & html2pdf**: Certificate generation and download
 
 ### Backend
 - **Node.js** (v14+): Server runtime
