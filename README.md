@@ -3,12 +3,12 @@
 A comprehensive full-stack scholarship platform designed for Filipino students, connecting them with educational opportunities across the Philippines. The system features three distinct user roles with dedicated dashboards, AI-powered features, and real-time communication capabilities.
 
 ## 🌟 Live Demo
-**Production:** Deployed on Vercel  
-**Status:** ✅ Fully Operational
+**Production:** https://soft-end-project-ten.vercel.app/  
+**Status:** Fully Operational
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 - [Overview](#overview)
 - [Features](#features)
 - [System Architecture](#system-architecture)
@@ -23,26 +23,26 @@ A comprehensive full-stack scholarship platform designed for Filipino students, 
 
 ---
 
-## 🎯 Overview
+## Overview
 
 TulongAral+ is an enterprise-grade scholarship management platform that streamlines the entire scholarship lifecycle - from posting opportunities to application submission, review, and certificate generation. Built with modern web technologies and powered by AI, the platform serves students, sponsors, and administrators with role-specific functionality.
 
-### 🏆 Key Highlights
-- **🗺️ Multi-region Support**: Complete coverage of all 17 Philippine regions with region-specific scholarships
-- **🤖 AI Integration**: Powered by Google Gemini AI for grammar checking, content moderation, scholarship recommendations, and intelligent report analysis
-- **💬 Real-time Communication**: Built-in messaging system with AI assistant for student-sponsor interactions
-- **👥 Community Forum**: Moderated discussion platform for scholarship-related topics with AI content moderation
-- **📜 Digital Certificates**: Automated certificate generation with downloadable PDF/image formats for approved applications
-- **🔧 Comprehensive Admin Tools**: Advanced user management, content moderation, suspension system, and detailed analytics
-- **🎨 Customizable Avatars**: 22 unique avatar options with dynamic loading for user personalization
-- **🔐 Secure Authentication**: JWT-based authentication with "Remember Me" functionality and session management
-- **📱 Responsive Design**: Mobile-first design approach ensuring optimal experience across all devices
+### Key Highlights
+- **Multi-region Support**: Complete coverage of all 17 Philippine regions with region-specific scholarships
+- **AI Integration**: Powered by Google Gemini AI for grammar checking, content moderation, scholarship recommendations, and intelligent report analysis
+- **Real-time Communication**: Built-in messaging system with AI assistant for student-sponsor interactions
+- **Community Forum**: Moderated discussion platform for scholarship-related topics with AI content moderation
+- **Digital Certificates**: Automated certificate generation with downloadable PDF/image formats for approved applications
+- **Comprehensive Admin Tools**: Advanced user management, content moderation, suspension system, and detailed analytics
+- **Customizable Avatars**: 22 unique avatar options with dynamic loading for user personalization
+- **Secure Authentication**: JWT-based authentication with "Remember Me" functionality and session management
+- **Responsive Design**: Mobile-first design approach ensuring optimal experience across all devices
 
 ---
 
-## ✨ Features
+## Features
 
-### For Students 🎓
+### For Students
 - **Scholarship Discovery**
   - Browse scholarships by region, institution, type, and amount
   - Advanced filtering (academic, merit-based, need-based, sports, arts, leadership, etc.)
@@ -77,7 +77,7 @@ TulongAral+ is an enterprise-grade scholarship management platform that streamli
   - Educational background tracking
   - Application history and statistics
 
-### For Sponsors (Organizations/Individuals) 💼
+### For Sponsors (Organizations/Individuals)
 - **Scholarship Management**
   - Create and publish scholarship opportunities with detailed information
   - Set comprehensive eligibility criteria and requirements
@@ -107,7 +107,7 @@ TulongAral+ is an enterprise-grade scholarship management platform that streamli
   - View sponsor activity history
   - Export data for reporting
 
-### For Administrators 🔐
+### For Administrators
 - **User Management**
   - View comprehensive list of all users (students, sponsors, admins)
   - Issue formal warnings to users with detailed reasoning
@@ -142,7 +142,7 @@ TulongAral+ is an enterprise-grade scholarship management platform that streamli
 
 ---
 
-## 🏗️ System Architecture
+## System Architecture
 
 ### Frontend Architecture
 ```
@@ -257,7 +257,7 @@ Server (Node.js/Express)
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend
 - **HTML5**: Semantic markup with accessibility features
@@ -548,7 +548,7 @@ This project is developed as an academic requirement. All rights reserved.
 
 For issues, questions, or feature requests:
 - Open an issue on GitHub
-- Contact: [your-email@example.com]
+- Contact: ANDREWCADITAN616@GMAIL.COM
 
 ---
 
