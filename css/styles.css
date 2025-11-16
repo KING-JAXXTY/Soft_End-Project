@@ -529,20 +529,33 @@ button {
     justify-content: center;
     padding: 1rem;
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-    background-size: 200% 200%;
-    animation: gradientShift 15s ease infinite;
     position: relative;
+    overflow: hidden;
 }
 
-@keyframes gradientShift {
+.auth-page::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-image: 
+        radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        radial-gradient(circle, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+        radial-gradient(circle, rgba(255, 255, 255, 0.06) 2px, transparent 2px);
+    background-size: 50px 50px, 80px 80px, 100px 100px;
+    background-position: 0 0, 40px 60px, 130px 270px;
+    animation: floatParticles 20s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes floatParticles {
     0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
+        transform: translateY(0);
     }
     100% {
-        background-position: 0% 50%;
+        transform: translateY(-100px);
     }
 }
 
