@@ -10,7 +10,7 @@
     <div class="auth-page">
         <div class="auth-container modern-login-card">
             <div class="auth-header">
-                <h1>TulongAral+</h1>
+                <h1 id="logoText" style="cursor: pointer;">TulongAral+</h1>
                 <h2>Welcome Back</h2>
                 <p>Sign in to continue your scholarship journey</p>
             </div>
@@ -70,5 +70,47 @@
     <script src="js/notifications.js"></script>
     <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
+    <script>
+        // Confetti surprise feature
+        document.getElementById('logoText').addEventListener('click', function() {
+            createConfetti();
+        });
+
+        function createConfetti() {
+            const colors = ['#2563eb', '#3b82f6', '#60a5fa', '#93c5fd', '#dbeafe', '#fbbf24', '#f59e0b', '#ef4444'];
+            const confettiCount = 100;
+            
+            for (let i = 0; i < confettiCount; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    const size = Math.random() * 10 + 5;
+                    const leftPosition = Math.random() * 100;
+                    const duration = Math.random() * 3 + 2;
+                    const delay = Math.random() * 0.5;
+                    const drift = (Math.random() - 0.5) * 200;
+                    
+                    confetti.style.cssText = `
+                        position: fixed;
+                        width: ${size}px;
+                        height: ${size}px;
+                        background: ${colors[Math.floor(Math.random() * colors.length)]};
+                        left: ${leftPosition}vw;
+                        top: -10px;
+                        opacity: 1;
+                        transform: rotate(${Math.random() * 360}deg);
+                        border-radius: ${Math.random() > 0.5 ? '50%' : '0'};
+                        pointer-events: none;
+                        z-index: 9999;
+                        --drift: ${drift}px;
+                        animation: confettiFall ${duration}s linear ${delay}s forwards;
+                    `;
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), (duration + delay + 0.5) * 1000);
+                }, i * 10);
+            }
+        }
+    </script>
 </body>
 </html>

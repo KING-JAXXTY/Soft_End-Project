@@ -528,7 +528,7 @@ button {
     align-items: center;
     justify-content: center;
     padding: 1rem;
-    background: #f5f5f5;
+    background: var(--background);
     position: relative;
     overflow: hidden;
 }
@@ -540,7 +540,7 @@ button {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
     opacity: 0.05;
     pointer-events: none;
 }
@@ -557,20 +557,20 @@ button {
 }
 
 .auth-container {
-    background: #ffffff;
+    background: var(--surface);
     padding: 1.5rem 1.75rem;
     border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.06);
+    box-shadow: var(--shadow);
     width: 100%;
     max-width: 380px;
     position: relative;
     z-index: 1;
     animation: fadeInUp 0.4s ease-out;
-    border: 1px solid #dadce0;
+    border: 1px solid var(--border-color);
 }
 
 .modern-login-card {
-    background: #ffffff;
+    background: var(--surface);
 }
 
 @media (max-width: 768px) {
@@ -651,7 +651,7 @@ button {
 }
 
 .auth-header h1 {
-    color: #2563eb;
+    color: var(--primary-color);
     margin-bottom: 0.5rem;
     font-size: 1.75rem;
     font-weight: 500;
@@ -661,12 +661,12 @@ button {
 .auth-header h2 {
     font-size: 1.5rem;
     font-weight: 400;
-    color: #202124;
+    color: var(--text-primary);
     margin-bottom: 0.5rem;
 }
 
 .auth-header p {
-    color: #5f6368;
+    color: var(--text-secondary);
     font-size: 0.875rem;
     font-weight: 400;
 }
@@ -677,13 +677,13 @@ button {
 }
 
 .auth-footer p {
-    color: #5f6368;
+    color: var(--text-secondary);
     font-size: 0.875rem;
     margin-bottom: 0.75rem;
 }
 
 .auth-footer .link {
-    color: #2563eb;
+    color: var(--primary-color);
     font-weight: 500;
     transition: all 0.2s;
 }
@@ -695,7 +695,7 @@ button {
 .auth-footer .btn-text {
     background: none;
     border: none;
-    color: #5f6368;
+    color: var(--text-secondary);
     padding: 0.5rem 0.875rem;
     cursor: pointer;
     font-size: 0.875rem;
@@ -707,7 +707,7 @@ button {
 }
 
 .auth-footer .btn-text:hover {
-    color: #2563eb;
+    color: var(--primary-color);
     background: rgba(37, 99, 235, 0.04);
 }
 
@@ -724,7 +724,7 @@ button {
     top: 50%;
     width: 42%;
     height: 1px;
-    background: #dadce0;
+    background: var(--border-color);
 }
 
 .auth-divider::before {
@@ -736,9 +736,9 @@ button {
 }
 
 .auth-divider span {
-    background: #ffffff;
+    background: var(--surface);
     padding: 0 0.75rem;
-    color: #5f6368;
+    color: var(--text-secondary);
     font-size: 0.875rem;
     position: relative;
     z-index: 1;
@@ -769,11 +769,11 @@ button {
     display: flex;
     align-items: center;
     gap: 0.375rem;
-    color: #202124;
+    color: var(--text-primary);
 }
 
 .modern-form .form-group label svg {
-    color: #5f6368;
+    color: var(--text-secondary);
     width: 14px;
     height: 14px;
 }
@@ -783,7 +783,7 @@ button {
     font-weight: 500;
     margin-bottom: 0.5rem;
     display: block;
-    color: #202124;
+    color: var(--text-primary);
 }
 
 .modern-form .form-group input {
@@ -792,11 +792,11 @@ button {
     padding: 0.75rem 0.875rem !important;
     font-size: 1rem;
     box-sizing: border-box;
-    border: 1px solid #dadce0;
+    border: 1px solid var(--border-color);
     border-radius: 4px;
     transition: all 0.2s ease;
-    background: #ffffff;
-    color: #202124;
+    background: var(--surface);
+    color: var(--text-primary);
 }
 
 .modern-form .form-group input:hover {
@@ -805,8 +805,8 @@ button {
 
 .modern-form .form-group input:focus {
     outline: none;
-    border-color: #2563eb;
-    box-shadow: 0 0 0 1px #2563eb;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 1px var(--primary-color);
 }
 
 .auth-form .form-group input,
@@ -816,11 +816,11 @@ button {
     padding: 0.75rem 0.875rem !important;
     font-size: 1rem;
     box-sizing: border-box;
-    border: 1px solid #dadce0;
+    border: 1px solid var(--border-color);
     border-radius: 4px;
     transition: all 0.2s ease;
-    background: #ffffff;
-    color: #202124;
+    background: var(--surface);
+    color: var(--text-primary);
 }
 
 .auth-form .form-group input:hover,
@@ -831,8 +831,8 @@ button {
 .auth-form .form-group input:focus,
 .auth-form .form-group select:focus {
     outline: none;
-    border-color: #2563eb;
-    box-shadow: 0 0 0 1px #2563eb;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 1px var(--primary-color);
 }
 
 .auth-form .form-options {
@@ -844,7 +844,7 @@ button {
 }
 
 .auth-form .form-options .link {
-    color: #2563eb;
+    color: var(--primary-color);
     font-weight: 500;
     font-size: 0.875rem;
 }
@@ -907,7 +907,7 @@ button {
     font-size: 0.875rem;
     font-weight: 500;
     border-radius: 4px;
-    background: #2563eb;
+    background: var(--primary-color);
     transition: all 0.2s ease;
     border: none;
     color: white;
@@ -921,12 +921,12 @@ button {
 }
 
 .modern-btn:hover {
-    background: #1d4ed8;
+    background: var(--primary-dark);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .modern-btn:active {
-    background: #1e40af;
+    background: var(--primary-dark);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
 
@@ -8194,6 +8194,28 @@ a[href^="mailto"] {
 @keyframes pulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.7; }
+}
+
+/* Confetti Animation - Surprise Feature */
+@keyframes confettiFall {
+    0% {
+        top: -10px;
+        opacity: 1;
+        transform: translateX(0) translateY(0) rotate(0deg);
+    }
+    50% {
+        opacity: 1;
+        transform: translateX(var(--drift, 0)) translateY(50vh) rotate(180deg);
+    }
+    100% {
+        top: 100vh;
+        opacity: 0;
+        transform: translateX(calc(var(--drift, 0) * 2)) translateY(100vh) rotate(360deg);
+    }
+}
+
+.confetti {
+    --drift: calc((var(--random) - 0.5) * 200px);
 }
 
 /* Mobile fixes for message input and header */

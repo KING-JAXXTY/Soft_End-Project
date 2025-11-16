@@ -22,6 +22,7 @@
 - when changing something that already exists, make sure to check and read the whole codebase for any references to the changed part to avoid breaking functionality (TO AVOID THE SYSTEM NOT FETCHING THE RIGHT DATA).
 - WHEN EDITING CSS, CHECK THE actual height constraints.
 - always check for any problem in the code before committing.
+- WHEN YOU FIX SOMETHING, CHECK THE SYSTEM IF THERES SOME THAT CAUSE A PROBLEM THAT OVERIDES THE FIX.
 
 ### Project Structure
 - Frontend: HTML, CSS, JavaScript (Vanilla JS, no frameworks)
