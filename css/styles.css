@@ -1040,6 +1040,27 @@ button {
     color: var(--text-primary);
 }
 
+/* Collapsible Avatar Section */
+.collapsible-header {
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    transition: all 0.3s ease;
+}
+
+.collapsible-header:hover {
+    color: var(--primary-color);
+}
+
+.collapse-icon {
+    font-size: 0.875rem;
+    transition: transform 0.3s ease;
+    color: var(--text-secondary);
+}
+
 .avatar-options {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));

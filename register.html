@@ -141,45 +141,13 @@
                     </div>
                 </div>
 
-                <div class="form-section">
-                    <h3 class="section-title">Choose Your Avatar</h3>
-                    <div class="avatar-selection imgs">
-                        <div class="avatar-option img-wrap" data-avatar="avatar1">
-                            <img src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortFlat&accessoriesType=Round&hairColor=Blonde&facialHairType=BeardLight&facialHairColor=Auburn&clotheType=ShirtVNeck&clotheColor=Black&eyeType=Squint&eyebrowType=Default&mouthType=Smile&skinColor=Light" />
-                        </div>
-                        <div class="avatar-option img-wrap" data-avatar="avatar2">
-                            <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairMiaWallace&accessoriesType=Blank&hairColor=Platinum&facialHairType=Blank&clotheType=ShirtScoopNeck&clotheColor=Gray02&eyeType=Default&eyebrowType=Default&mouthType=Serious&skinColor=Light" />
-                        </div>
-                        <div class="avatar-option img-wrap" data-avatar="avatar3">
-                            <img src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairDreads01&accessoriesType=Blank&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=Gray02&eyeType=Side&eyebrowType=Default&mouthType=Twinkle&skinColor=Black" />
-                        </div>
-                        <div class="avatar-option img-wrap" data-avatar="avatar4">
-                            <img src="https://avataaars.io/?avatarStyle=Transparent&topType=Hijab&accessoriesType=Round&hatColor=Blue03&clotheType=ShirtVNeck&clotheColor=Gray02&eyeType=Squint&eyebrowType=Default&mouthType=Twinkle&skinColor=Brown" />
-                        </div>
-                        <div class="avatar-option img-wrap" data-avatar="avatar5">
-                            <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairBun&accessoriesType=Prescription02&hairColor=PastelPink&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light" />
-                        </div>
-                        <div class="avatar-option img-wrap selected" data-avatar="avatar6">
-                            <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairNotTooLong&accessoriesType=Blank&hairColor=SilverGray&facialHairType=Blank&clotheType=Hoodie&clotheColor=Heather&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Serious&skinColor=DarkBrown" />
-                        </div>
-                        <div class="avatar-option img-wrap" data-avatar="avatar7">
-                            <img src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairTheCaesarSidePart&accessoriesType=Blank&hairColor=Red&facialHairType=BeardMedium&facialHairColor=Black&clotheType=BlazerSweater&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Twinkle&skinColor=Tanned" />
-                        </div>
-                        <div class="avatar-option img-wrap" data-avatar="avatar8">
-                            <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairShavedSides&accessoriesType=Blank&facialHairType=BeardMedium&facialHairColor=BlondeGolden&clotheType=ShirtScoopNeck&clotheColor=Gray02&eyeType=Default&eyebrowType=UpDown&mouthType=Serious&skinColor=Pale" />
-                        </div>
-                        <div class="avatar-option img-wrap" data-avatar="avatar9">
-                            <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairFroBand&accessoriesType=Blank&hairColor=Black&facialHairType=Blank&clotheType=ShirtScoopNeck&clotheColor=Gray02&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Twinkle&skinColor=Black" />
-                        </div>
-                        <div class="avatar-option img-wrap" data-avatar="avatar10">
-                            <img src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairDreads&accessoriesType=Blank&hairColor=Brown&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Smile&skinColor=Brown" />
-                        </div>
-                        <div class="avatar-option img-wrap" data-avatar="avatar11">
-                            <img src="https://avataaars.io/?avatarStyle=Transparent&topType=NoHair&accessoriesType=Blank&facialHairType=BeardMajestic&facialHairColor=Red&clotheType=CollarSweater&clotheColor=Gray02&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Serious&skinColor=Pale" />
-                        </div>
-                        <div class="avatar-option img-wrap" data-avatar="avatar12">
-                            <img src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortFlat&accessoriesType=Blank&hairColor=BrownDark&facialHairType=BeardMedium&facialHairColor=BrownDark&clotheType=ShirtCrewNeck&clotheColor=Black&eyeType=Side&eyebrowType=Default&mouthType=Eating&skinColor=DarkBrown" />
-                        </div>
+                <div class="form-section avatar-section">
+                    <h3 class="section-title collapsible-header" onclick="toggleAvatarSelection()">
+                        Choose Your Avatar
+                        <span class="collapse-icon">▼</span>
+                    </h3>
+                    <div class="avatar-selection imgs" id="avatarSelectionContainer">
+                        <!-- Avatars will be dynamically loaded from avatars.js -->
                     </div>
                     <input type="hidden" id="avatar" name="avatar" value="avatar6">
                 </div>
@@ -202,6 +170,7 @@
 
     <script src="js/notifications.js"></script>
     <script src="js/api.js"></script>
+    <script src="js/avatars.js"></script>
     <script src="js/auth.js"></script>
     <script>
         // Confetti surprise feature
@@ -244,6 +213,49 @@
                 }, i * 10);
             }
         }
+
+        // Toggle avatar selection collapse
+        function toggleAvatarSelection() {
+            const container = document.getElementById('avatarSelectionContainer');
+            const icon = document.querySelector('.collapse-icon');
+            
+            if (container.style.display === 'none') {
+                container.style.display = 'grid';
+                icon.textContent = '▼';
+            } else {
+                container.style.display = 'none';
+                icon.textContent = '▶';
+            }
+        }
+
+        // Load all avatars dynamically
+        function loadAvatars() {
+            const container = document.getElementById('avatarSelectionContainer');
+            const avatarInput = document.getElementById('avatar');
+            
+            Object.keys(AVATAR_URLS).forEach((avatarId, index) => {
+                const div = document.createElement('div');
+                div.className = 'avatar-option img-wrap';
+                if (avatarId === 'avatar6') div.classList.add('selected');
+                div.setAttribute('data-avatar', avatarId);
+                
+                const img = document.createElement('img');
+                img.src = getAvatarUrl(avatarId);
+                img.alt = avatarId;
+                
+                div.appendChild(img);
+                div.addEventListener('click', function() {
+                    document.querySelectorAll('.avatar-option').forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    avatarInput.value = this.getAttribute('data-avatar');
+                });
+                
+                container.appendChild(div);
+            });
+        }
+
+        // Load avatars when page loads
+        document.addEventListener('DOMContentLoaded', loadAvatars);
     </script>
 </body>
 </html>
