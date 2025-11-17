@@ -223,14 +223,16 @@ async function loadProfile() {
         });
         
         // Populate form fields
-        document.getElementById('firstName').value = profileUser.firstName;
-        document.getElementById('lastName').value = profileUser.lastName;
-        document.getElementById('email').value = profileUser.email;
+        console.log('Loading profile data:', { profileUser, profile });
+        document.getElementById('firstName').value = profileUser.firstName || '';
+        document.getElementById('lastName').value = profileUser.lastName || '';
+        document.getElementById('email').value = profileUser.email || '';
         document.getElementById('contactNumber').value = profile.phone || '';
         
         // Set region and populate municipalities
         const regionValue = profile.region || '';
         const provinceValue = profile.province || '';
+        console.log('Region and Province:', regionValue, provinceValue);
         
         document.getElementById('region').value = regionValue;
         
