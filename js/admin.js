@@ -261,9 +261,17 @@ function deleteUserConfirm(userId, userName) {
 
 // Delete scholarship confirmation
 function deleteScholarshipConfirm(scholarshipId, title) {
+    // Find the scholarship to check for pending applications
+    const scholarship = allScholarships.find(s => s._id === scholarshipId);
+    
     deleteTarget = { type: 'scholarship', _id: scholarshipId };
-    document.getElementById('deleteMessage').textContent = 
-        `Are you sure you want to delete scholarship "${title}"? This will also delete all applications.`;
+    
+    // Show warning if there might be pending applications
+    let warningMessage = `Are you sure you want to delete scholarship "${title}"?`;
+    warningMessage += '\n\nThis will also delete ALL applications (approved, pending, rejected).';
+    warningMessage += '\n\n⚠️ WARNING: This action cannot be undone!';
+    
+    document.getElementById('deleteMessage').textContent = warningMessage;
     document.getElementById('deleteModal').style.display = 'block';
 }
 
@@ -276,8 +284,14 @@ async function confirmDelete() {
             await API.deleteUser(deleteTarget._id);
             notify.success('User deleted successfully');
         } else if (deleteTarget.type === 'scholarship') {
-            await API.deleteScholarship(deleteTarget._id);
-            notify.success('Scholarship deleted successfully');
+            const result = await API.deleteScholarship(deleteTarget._id);
+            
+            // Show detailed success message
+            let successMsg = 'Scholarship deleted successfully';
+            if (result.deletedApplications && result.deletedApplications > 0) {
+                successMsg += `\n\nAlso deleted ${result.deletedApplications} application(s).`;
+            }
+            notify.success(successMsg);
         }
         
         closeDeleteModal();

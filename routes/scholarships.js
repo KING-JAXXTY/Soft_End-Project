@@ -298,7 +298,7 @@ router.delete('/:id', protect, authorize('sponsor', 'admin'), async (req, res) =
             });
         }
         
-        // Check ownership for sponsors
+        // Check ownership for sponsors (not for admins)
         if (req.user.role === 'sponsor' && scholarship.sponsor.toString() !== req.user._id.toString()) {
             return res.status(403).json({
                 success: false,
@@ -306,25 +306,34 @@ router.delete('/:id', protect, authorize('sponsor', 'admin'), async (req, res) =
             });
         }
 
-        // Check if there are pending applications for this scholarship
+        // Check if there are pending applications
         const Application = require('../models/Application');
         const pendingApplications = await Application.countDocuments({
             scholarship: scholarship._id,
             status: { $in: ['pending', 'submitted'] }
         });
 
-        if (pendingApplications > 0) {
+        // Only block sponsors, not admins
+        if (req.user.role === 'sponsor' && pendingApplications > 0) {
             return res.status(400).json({
                 success: false,
                 message: `Cannot delete scholarship with ${pendingApplications} pending application(s). Please review all applications first.`
             });
         }
 
+        // For admins, allow deletion but include warning info in response
+        if (pendingApplications > 0) {
+            // Delete all applications associated with this scholarship
+            await Application.deleteMany({ scholarship: scholarship._id });
+            console.log(`⚠️ Admin deleted scholarship with ${pendingApplications} pending application(s)`);
+        }
+
         await scholarship.deleteOne();
 
         res.json({
             success: true,
-            message: 'Scholarship deleted successfully'
+            message: 'Scholarship deleted successfully',
+            deletedApplications: pendingApplications
         });
     } catch (error) {
         console.error(error);
