@@ -63,9 +63,9 @@
 .profile-name {
     font-size: 2rem;
     font-weight: 700;
-    color: white;
+    color: white !important;
     margin: 0 0 0.75rem 0;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .profile-meta {
@@ -80,19 +80,21 @@
 .profile-id {
     display: inline-block;
     padding: 0.25rem 0.75rem;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.25);
     border-radius: 20px;
     font-size: 0.875rem;
-    color: white;
+    color: white !important;
     font-family: 'Courier New', monospace;
     backdrop-filter: blur(10px);
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .profile-email {
-    color: white;
+    color: white !important;
     font-size: 1rem;
     margin: 0;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     font-weight: 500;
 }
 
