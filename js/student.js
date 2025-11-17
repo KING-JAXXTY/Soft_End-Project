@@ -85,15 +85,31 @@ function displayScholarships(scholarships) {
         const today = new Date();
         const daysLeft = Math.ceil((deadline - today) / (1000 * 60 * 60 * 24));
         
+        // Determine deadline display text and urgency
+        let deadlineText = `${daysLeft} days`;
+        let urgencyClass = 'normal';
+        
+        if (daysLeft === 0) {
+            deadlineText = 'Today!';
+            urgencyClass = 'urgent';
+        } else if (daysLeft === 1) {
+            deadlineText = 'Tomorrow';
+            urgencyClass = 'urgent';
+        } else if (daysLeft <= 7) {
+            urgencyClass = 'urgent';
+        } else if (daysLeft <= 14) {
+            urgencyClass = 'soon';
+        }
+        
         return `
         <div class="scholarship-card-modern">
             <div class="scholarship-card-header">
                 <span class="scholarship-type-badge badge-${badgeClass}">${scholarshipType}</span>
-                <div class="scholarship-deadline-badge ${daysLeft <= 7 ? 'urgent' : daysLeft <= 14 ? 'soon' : 'normal'}">
+                <div class="scholarship-deadline-badge ${urgencyClass}">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span>${daysLeft} days</span>
+                    <span>${deadlineText}</span>
                 </div>
             </div>
             
