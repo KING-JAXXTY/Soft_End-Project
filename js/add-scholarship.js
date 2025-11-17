@@ -13,7 +13,6 @@ function checkAuth() {
 
 let map;
 let marker;
-let selectedFiles = [];
 let isEditMode = false;
 let scholarshipId = null;
 
@@ -238,41 +237,6 @@ function initMap() {
     });
 }
 
-// Handle file selection
-document.getElementById('files').addEventListener('change', function(e) {
-    selectedFiles = Array.from(e.target.files);
-    displaySelectedFiles();
-});
-
-// Display selected files
-function displaySelectedFiles() {
-    const container = document.getElementById('filesList');
-    
-    if (selectedFiles.length === 0) {
-        container.innerHTML = '';
-        return;
-    }
-    
-    container.innerHTML = selectedFiles.map((file, index) => `
-        <div class="file-item">
-            <span class="file-name">📎 ${file.name} (${(file.size / 1024).toFixed(2)} KB)</span>
-            <button type="button" onclick="removeFile(${index})" class="btn-danger btn-sm">Remove</button>
-        </div>
-    `).join('');
-}
-
-// Remove file
-function removeFile(index) {
-    selectedFiles.splice(index, 1);
-    
-    // Update file input
-    const dataTransfer = new DataTransfer();
-    selectedFiles.forEach(file => dataTransfer.items.add(file));
-    document.getElementById('files').files = dataTransfer.files;
-    
-    displaySelectedFiles();
-}
-
 // Handle form submission
 document.getElementById('addScholarshipForm').addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -302,12 +266,7 @@ document.getElementById('addScholarshipForm').addEventListener('submit', async f
         region: document.getElementById('scholarshipRegion').value,
         affiliatedInstitution: document.getElementById('affiliatedInstitution').value,
         latitude: parseFloat(latitude),
-        longitude: parseFloat(longitude),
-        files: selectedFiles.map(f => ({
-            name: f.name,
-            size: f.size,
-            type: f.type
-        }))
+        longitude: parseFloat(longitude)
     };
     
     // Add optional fields only if they have values
@@ -331,6 +290,9 @@ document.getElementById('addScholarshipForm').addEventListener('submit', async f
     
     const renewalPolicy = document.getElementById('renewalPolicy').value.trim();
     if (renewalPolicy) scholarshipData.renewalPolicy = renewalPolicy;
+    
+    const documentsLink = document.getElementById('documentsLink').value.trim();
+    if (documentsLink) scholarshipData.documentsLink = documentsLink;
     
     try {
         let result;

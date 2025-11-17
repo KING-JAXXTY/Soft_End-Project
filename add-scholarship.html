@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Add Scholarship - TulongAral+</title>
+    <title>Create Scholarship - TulongAral+</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
@@ -23,157 +23,410 @@
         </div>
     </nav>
 
-    <div class="container">
-        <div class="page-header">
-            <h1>Add New Scholarship</h1>
-            <p>Create a scholarship program for students</p>
+    <div class="container scholarship-form-container">
+        <div class="scholarship-form-header">
+            <div class="header-content">
+                <div class="header-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                        <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                    </svg>
+                </div>
+                <div class="header-text">
+                    <h1>Create Scholarship Opportunity</h1>
+                    <p>Help students achieve their educational dreams by creating a scholarship program</p>
+                </div>
+            </div>
         </div>
 
-        <form id="addScholarshipForm" class="form-container">
-            <div class="form-section">
-                <h3>Scholarship Information</h3>
-
-                <div class="form-group">
-                    <label for="title">Scholarship Title *</label>
-                    <div style="display: flex; gap: 0.5rem;">
-                        <input type="text" id="title" name="title" required placeholder="e.g., Engineering Excellence Scholarship 2025" style="flex: 1;">
-                        <button type="button" onclick="fixGrammar('title')" class="btn-secondary" style="white-space: nowrap;">Fix Grammar</button>
+        <form id="addScholarshipForm" class="modern-scholarship-form">
+            <!-- Basic Information Section -->
+            <div class="form-card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="card-title">
+                        <h2>Basic Information</h2>
+                        <p>Define the scholarship program details</p>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="description">Description *</label>
-                    <textarea id="description" name="description" rows="4" required placeholder="Describe the scholarship program and its purpose..."></textarea>
-                    <button type="button" onclick="fixGrammar('description')" class="btn-secondary" style="margin-top: 0.5rem;">Fix Grammar</button>
-                </div>
-
-                <div class="form-group">
-                    <label for="eligibility">Eligibility Requirements *</label>
-                    <textarea id="eligibility" name="eligibility" rows="4" required placeholder="List the qualifications: GPA requirements, course, grade level, income level, etc."></textarea>
-                    <button type="button" onclick="fixGrammar('eligibility')" class="btn-secondary" style="margin-top: 0.5rem;">Fix Grammar</button>
-                </div>
-
-                <div class="form-row">
+                <div class="card-body">
                     <div class="form-group">
-                        <label for="scholarshipType">Scholarship Type *</label>
-                        <select id="scholarshipType" name="scholarshipType" required>
-                            <option value="">Select Type</option>
-                            <option value="Full Scholarship">Full Scholarship</option>
-                            <option value="Partial Scholarship">Partial Scholarship</option>
-                            <option value="Allowance">Allowance</option>
-                            <option value="Grant">Grant</option>
-                            <option value="Financial Aid">Financial Aid</option>
-                        </select>
+                        <label for="title" class="form-label">
+                            <span class="label-text">Scholarship Title</span>
+                            <span class="label-required">*</span>
+                        </label>
+                        <div class="input-with-action">
+                            <input type="text" id="title" name="title" required 
+                                   placeholder="e.g., Engineering Excellence Scholarship 2025" 
+                                   class="form-input">
+                            <button type="button" onclick="fixGrammar('title')" class="btn-icon" title="Fix Grammar">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
+
                     <div class="form-group">
-                        <label for="slots">Available Slots *</label>
-                        <input type="number" id="slots" name="slots" required min="1" placeholder="Number of slots">
+                        <label for="description" class="form-label">
+                            <span class="label-text">Description</span>
+                            <span class="label-required">*</span>
+                        </label>
+                        <textarea id="description" name="description" rows="4" required 
+                                  placeholder="Describe the scholarship program, its mission, and purpose..." 
+                                  class="form-input"></textarea>
+                        <button type="button" onclick="fixGrammar('description')" class="btn-text-action">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                            Fix Grammar
+                        </button>
                     </div>
-                </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="amount">Scholarship Amount (₱)</label>
-                        <input type="number" id="amount" name="amount" min="0" step="0.01" placeholder="e.g., 50000">
-                        <small class="form-help">Leave blank if amount varies or not disclosed</small>
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label for="scholarshipType" class="form-label">
+                                <span class="label-text">Scholarship Type</span>
+                                <span class="label-required">*</span>
+                            </label>
+                            <select id="scholarshipType" name="scholarshipType" required class="form-select">
+                                <option value="">Select Type</option>
+                                <option value="Full Scholarship">Full Scholarship</option>
+                                <option value="Partial Scholarship">Partial Scholarship</option>
+                                <option value="Allowance">Allowance</option>
+                                <option value="Grant">Grant</option>
+                                <option value="Financial Aid">Financial Aid</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="slots" class="form-label">
+                                <span class="label-text">Available Slots</span>
+                                <span class="label-required">*</span>
+                            </label>
+                            <input type="number" id="slots" name="slots" required min="1" 
+                                   placeholder="Number of recipients" class="form-input">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="deadline">Application Deadline *</label>
-                        <input type="date" id="deadline" name="deadline" required>
-                        <small class="form-help">Scholarship will be automatically archived after this date</small>
+
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label for="amount" class="form-label">
+                                <span class="label-text">Scholarship Amount</span>
+                            </label>
+                            <div class="input-with-prefix">
+                                <span class="input-prefix">₱</span>
+                                <input type="number" id="amount" name="amount" min="0" step="0.01" 
+                                       placeholder="50,000" class="form-input">
+                            </div>
+                            <small class="form-hint">Leave blank if amount varies</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="deadline" class="form-label">
+                                <span class="label-text">Application Deadline</span>
+                                <span class="label-required">*</span>
+                            </label>
+                            <input type="date" id="deadline" name="deadline" required class="form-input">
+                            <small class="form-hint">Auto-archived after deadline</small>
+                        </div>
                     </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="benefits">Benefits Covered</label>
-                    <textarea id="benefits" name="benefits" rows="2" placeholder="e.g., Tuition Fee, Books, Living Allowance, Transportation"></textarea>
-                    <button type="button" onclick="fixGrammar('benefits')" class="btn-secondary" style="margin-top: 0.5rem;">Fix Grammar</button>
-                    <small class="form-help">What expenses does this scholarship cover?</small>
-                </div>
-
-                <div class="form-group">
-                    <label for="selectionCriteria">Selection Criteria</label>
-                    <textarea id="selectionCriteria" name="selectionCriteria" rows="3" placeholder="e.g., Academic merit, Financial need, Interview performance, Essay quality"></textarea>
-                    <button type="button" onclick="fixGrammar('selectionCriteria')" class="btn-secondary" style="margin-top: 0.5rem;">Fix Grammar</button>
-                    <small class="form-help">How will recipients be selected?</small>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="contactEmail">Contact Email</label>
-                        <input type="email" id="contactEmail" name="contactEmail" placeholder="scholarships@example.com">
-                    </div>
-                    <div class="form-group">
-                        <label for="contactPhone">Contact Phone</label>
-                        <input type="tel" id="contactPhone" name="contactPhone" placeholder="+63 XXX XXX XXXX">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="applicationLink">Application Link</label>
-                    <input type="url" id="applicationLink" name="applicationLink" placeholder="https://example.com/apply">
-                    <small class="form-help">External application portal (optional)</small>
-                </div>
-
-                <div class="form-group">
-                    <label for="renewalPolicy">Renewal Policy</label>
-                    <textarea id="renewalPolicy" name="renewalPolicy" rows="2" placeholder="e.g., Renewable each year with GPA of 3.0 or higher"></textarea>
-                    <button type="button" onclick="fixGrammar('renewalPolicy')" class="btn-secondary" style="margin-top: 0.5rem;">Fix Grammar</button>
-                    <small class="form-help">Can students renew this scholarship?</small>
-                </div>
-
-                <div class="form-group">
-                    <label for="documentsRequired">Documents Required *</label>
-                    <textarea id="documentsRequired" name="documentsRequired" rows="3" required placeholder="List required documents (e.g., Transcript of Records, Certificate of Good Moral Character, ID, Recommendation Letter)"></textarea>
-                    <button type="button" onclick="fixGrammar('documentsRequired')" class="btn-secondary" style="margin-top: 0.5rem;">Fix Grammar</button>
                 </div>
             </div>
 
-            <div class="form-section">
-                <h3>Location Information</h3>
-                
-                <div class="form-group">
-                    <label for="scholarshipRegion">Region *</label>
-                    <select id="scholarshipRegion" name="scholarshipRegion" required>
-                        <option value="">Select Region</option>
-                        <option value="Ilocos Region">Ilocos Region</option>
-                        <option value="Cagayan Valley">Cagayan Valley</option>
-                        <option value="National Capital Region">National Capital Region</option>
-                    </select>
+            <!-- Eligibility & Requirements Section -->
+            <div class="form-card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 11l3 3L22 4"></path>
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                        </svg>
+                    </div>
+                    <div class="card-title">
+                        <h2>Eligibility & Requirements</h2>
+                        <p>Specify who can apply and what's required</p>
+                    </div>
                 </div>
-                
-                <div class="form-group">
-                    <label for="affiliatedInstitution">Affiliated Institution *</label>
-                    <select id="affiliatedInstitution" name="affiliatedInstitution" required>
-                        <option value="">Select Region First</option>
-                    </select>
-                    <p class="form-help">Select your affiliated institution to automatically place the marker on the map. You can also click directly on the map to set a custom location.</p>
+
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="eligibility" class="form-label">
+                            <span class="label-text">Eligibility Criteria</span>
+                            <span class="label-required">*</span>
+                        </label>
+                        <textarea id="eligibility" name="eligibility" rows="4" required 
+                                  placeholder="List qualifications: GPA requirements, course, grade level, income level, etc." 
+                                  class="form-input"></textarea>
+                        <button type="button" onclick="fixGrammar('eligibility')" class="btn-text-action">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                            Fix Grammar
+                        </button>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="documentsRequired" class="form-label">
+                            <span class="label-text">Required Documents</span>
+                            <span class="label-required">*</span>
+                        </label>
+                        <textarea id="documentsRequired" name="documentsRequired" rows="3" required 
+                                  placeholder="e.g., Transcript of Records, Certificate of Good Moral, Valid ID, Recommendation Letter" 
+                                  class="form-input"></textarea>
+                        <button type="button" onclick="fixGrammar('documentsRequired')" class="btn-text-action">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                            Fix Grammar
+                        </button>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="selectionCriteria" class="form-label">
+                            <span class="label-text">Selection Criteria</span>
+                        </label>
+                        <textarea id="selectionCriteria" name="selectionCriteria" rows="3" 
+                                  placeholder="e.g., Academic merit, Financial need, Interview performance, Essay quality" 
+                                  class="form-input"></textarea>
+                        <button type="button" onclick="fixGrammar('selectionCriteria')" class="btn-text-action">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                            Fix Grammar
+                        </button>
+                        <small class="form-hint">How will recipients be selected?</small>
+                    </div>
                 </div>
-                
-                <div id="map" style="height: 400px; width: 100%; border-radius: 8px; margin-top: 10px;"></div>
-                <input type="hidden" id="latitude" name="latitude">
-                <input type="hidden" id="longitude" name="longitude">
-                <p id="coordinates" class="form-help"></p>
             </div>
 
-            <div class="form-section">
-                <h3>File Attachments</h3>
-                <p class="form-help">Upload scholarship guidelines, posters, or additional documents (PDF, DOC, DOCX, PNG, JPG - Max 10MB per file)</p>
-                <div class="form-group">
-                    <label for="files" class="file-upload-label">
-                        <span class="file-upload-icon">📎</span>
-                        <span>Choose Files</span>
-                        <input type="file" id="files" name="files" multiple accept=".pdf,.doc,.docx,.png,.jpg,.jpeg">
-                    </label>
-                    <div id="filesList" class="files-list"></div>
+            <!-- Benefits & Policies Section -->
+            <div class="form-card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="8" r="7"></circle>
+                            <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                        </svg>
+                    </div>
+                    <div class="card-title">
+                        <h2>Benefits & Policies</h2>
+                        <p>What scholars will receive and renewal terms</p>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="benefits" class="form-label">
+                            <span class="label-text">Benefits Covered</span>
+                        </label>
+                        <textarea id="benefits" name="benefits" rows="2" 
+                                  placeholder="e.g., Tuition Fee, Books, Living Allowance, Transportation" 
+                                  class="form-input"></textarea>
+                        <button type="button" onclick="fixGrammar('benefits')" class="btn-text-action">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                            Fix Grammar
+                        </button>
+                        <small class="form-hint">What expenses does this scholarship cover?</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="renewalPolicy" class="form-label">
+                            <span class="label-text">Renewal Policy</span>
+                        </label>
+                        <textarea id="renewalPolicy" name="renewalPolicy" rows="2" 
+                                  placeholder="e.g., Renewable each year with GPA of 3.0 or higher" 
+                                  class="form-input"></textarea>
+                        <button type="button" onclick="fixGrammar('renewalPolicy')" class="btn-text-action">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                            Fix Grammar
+                        </button>
+                        <small class="form-hint">Can students renew this scholarship?</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Information Section -->
+            <div class="form-card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                    </div>
+                    <div class="card-title">
+                        <h2>Contact Information</h2>
+                        <p>How students can reach you for inquiries</p>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label for="contactEmail" class="form-label">
+                                <span class="label-text">Contact Email</span>
+                            </label>
+                            <input type="email" id="contactEmail" name="contactEmail" 
+                                   placeholder="scholarships@example.com" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="contactPhone" class="form-label">
+                                <span class="label-text">Contact Phone</span>
+                            </label>
+                            <input type="tel" id="contactPhone" name="contactPhone" 
+                                   placeholder="+63 XXX XXX XXXX" class="form-input">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="applicationLink" class="form-label">
+                            <span class="label-text">External Application Link</span>
+                        </label>
+                        <input type="url" id="applicationLink" name="applicationLink" 
+                               placeholder="https://example.com/apply" class="form-input">
+                        <small class="form-hint">External application portal (optional)</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location Section -->
+            <div class="form-card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                    </div>
+                    <div class="card-title">
+                        <h2>Location & Institution</h2>
+                        <p>Where this scholarship is available</p>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label for="scholarshipRegion" class="form-label">
+                                <span class="label-text">Region</span>
+                                <span class="label-required">*</span>
+                            </label>
+                            <select id="scholarshipRegion" name="scholarshipRegion" required class="form-select">
+                                <option value="">Select Region</option>
+                                <option value="Ilocos Region">Ilocos Region</option>
+                                <option value="Cagayan Valley">Cagayan Valley</option>
+                                <option value="National Capital Region">National Capital Region</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="affiliatedInstitution" class="form-label">
+                                <span class="label-text">Affiliated Institution</span>
+                                <span class="label-required">*</span>
+                            </label>
+                            <select id="affiliatedInstitution" name="affiliatedInstitution" required class="form-select">
+                                <option value="">Select Region First</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="map-container">
+                        <div class="map-info">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            </svg>
+                            <p>Select an institution to automatically place the marker, or click the map to set a custom location</p>
+                        </div>
+                        <div id="map" class="scholarship-map"></div>
+                        <input type="hidden" id="latitude" name="latitude">
+                        <input type="hidden" id="longitude" name="longitude">
+                        <p id="coordinates" class="coordinates-display"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Documents Section -->
+            <div class="form-card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                            <polyline points="13 2 13 9 20 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="card-title">
+                        <h2>Supporting Documents</h2>
+                        <p>Share guidelines, posters, or additional materials</p>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="gdrive-info-box">
+                        <div class="info-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                            </svg>
+                        </div>
+                        <div class="info-content">
+                            <h4>Google Drive Integration</h4>
+                            <p>Upload your scholarship documents to Google Drive and share the link here. Make sure the sharing settings are set to "Anyone with the link can view".</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="documentsLink" class="form-label">
+                            <span class="label-text">Google Drive Folder Link</span>
+                        </label>
+                        <div class="input-with-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                            </svg>
+                            <input type="url" id="documentsLink" name="documentsLink" 
+                                   placeholder="https://drive.google.com/drive/folders/..." 
+                                   class="form-input with-icon">
+                        </div>
+                        <small class="form-hint">Include scholarship guidelines, posters, forms, or additional documents</small>
+                    </div>
                 </div>
             </div>
 
             <div id="errorMessage" class="error-message" style="display: none;"></div>
 
-            <div class="form-actions">
-                <button type="submit" class="btn-primary">Add Scholarship</button>
-                <button type="button" onclick="window.location.href='sponsor-dashboard.html'" class="btn-secondary">Cancel</button>
+            <div class="form-actions-modern">
+                <button type="button" onclick="window.location.href='sponsor-dashboard.html'" class="btn-cancel">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                    Cancel
+                </button>
+                <button type="submit" class="btn-submit">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Create Scholarship
+                </button>
             </div>
         </form>
     </div>
