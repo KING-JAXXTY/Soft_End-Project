@@ -135,8 +135,10 @@ async function loadScholarshipData(id) {
         console.log('Scholarship data loaded:', scholarship);
         
         // Update page title
-        document.querySelector('.page-header h1').textContent = 'Edit Scholarship';
-        document.querySelector('.page-header p').textContent = 'Update your scholarship program details';
+        const headerH1 = document.querySelector('.header-text h1');
+        const headerP = document.querySelector('.header-text p');
+        if (headerH1) headerH1.textContent = 'Edit Scholarship';
+        if (headerP) headerP.textContent = 'Update your scholarship program details';
         
         // Populate form fields
         document.getElementById('title').value = scholarship.title || '';
@@ -182,8 +184,10 @@ async function loadScholarshipData(id) {
             marker = L.marker([lat, lng]).addTo(map);
             map.setView([lat, lng], 15);
             
-            document.getElementById('coordinates').textContent = 
-                `Selected coordinates: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+            const coordsDisplay = document.getElementById('coordinates');
+            if (coordsDisplay) {
+                coordsDisplay.textContent = `Selected coordinates: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+            }
         }
         
         console.log('Form populated with scholarship data');
@@ -211,8 +215,10 @@ function setInstitutionLocation(institutionName) {
         // Update form values
         document.getElementById('latitude').value = coords.lat;
         document.getElementById('longitude').value = coords.lng;
-        document.getElementById('coordinates').textContent = 
-            `Selected coordinates: ${coords.lat.toFixed(6)}, ${coords.lng.toFixed(6)} (${institutionName})`;
+        const coordsDisplay = document.getElementById('coordinates');
+        if (coordsDisplay) {
+            coordsDisplay.textContent = `Selected coordinates: ${coords.lat.toFixed(6)}, ${coords.lng.toFixed(6)} (${institutionName})`;
+        }
         
         // Pan map to institution
         map.setView([coords.lat, coords.lng], 15);
@@ -238,8 +244,10 @@ function initMap() {
         
         document.getElementById('latitude').value = e.latlng.lat;
         document.getElementById('longitude').value = e.latlng.lng;
-        document.getElementById('coordinates').textContent = 
-            `Selected coordinates: ${e.latlng.lat.toFixed(6)}, ${e.latlng.lng.toFixed(6)}`;
+        const coordsDisplay = document.getElementById('coordinates');
+        if (coordsDisplay) {
+            coordsDisplay.textContent = `Selected coordinates: ${e.latlng.lat.toFixed(6)}, ${e.latlng.lng.toFixed(6)}`;
+        }
     });
 }
 
