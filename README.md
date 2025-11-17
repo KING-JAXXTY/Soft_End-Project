@@ -554,11 +554,11 @@ For issues, questions, or feature requests:
 
 ## Acknowledgments
 
-- **Google Gemini AI** for AI capabilities
-- **MongoDB Atlas** for database hosting
-- **Vercel** for deployment platform
+- Google Gemini AI for AI capabilities
+- MongoDB Atlas for database hosting
+- Vercel for deployment platform
 - Filipino students and educational institutions for inspiration
 
 ---
 
-**TulongAral+** - Empowering Filipino Students Through Technology
+TulongAral+ - Empowering Filipino Students Through Technology
