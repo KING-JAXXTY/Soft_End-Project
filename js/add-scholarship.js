@@ -134,11 +134,12 @@ async function loadScholarshipData(id) {
             // Populate form fields
             document.getElementById('title').value = scholarship.title || '';
             document.getElementById('description').value = scholarship.description || '';
-            document.getElementById('eligibility').value = scholarship.eligibilityRequirements || '';
+            document.getElementById('eligibility').value = scholarship.eligibility || ''; // Fixed: was eligibilityRequirements
             document.getElementById('scholarshipType').value = scholarship.scholarshipType || '';
             document.getElementById('slots').value = scholarship.availableSlots || '';
             document.getElementById('deadline').value = scholarship.deadline ? scholarship.deadline.split('T')[0] : '';
             document.getElementById('documentsRequired').value = scholarship.documentsRequired || '';
+            document.getElementById('documentsLink').value = scholarship.documentsLink || ''; // Added: Google Drive link
             
             // Optional fields
             document.getElementById('amount').value = scholarship.amount || '';
@@ -258,7 +259,7 @@ document.getElementById('addScholarshipForm').addEventListener('submit', async f
     const scholarshipData = {
         title: document.getElementById('title').value,
         description: document.getElementById('description').value,
-        eligibilityRequirements: document.getElementById('eligibility').value,
+        eligibility: document.getElementById('eligibility').value, // Fixed: was eligibilityRequirements
         scholarshipType: document.getElementById('scholarshipType').value,
         availableSlots: parseInt(document.getElementById('slots').value),
         deadline: document.getElementById('deadline').value,
