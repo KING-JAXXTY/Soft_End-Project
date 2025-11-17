@@ -122,70 +122,75 @@ async function loadAffiliatedInstitution() {
 async function loadScholarshipData(id) {
     try {
         console.log('Loading scholarship data for ID:', id);
-        const scholarship = await API.getScholarship(id);
+        const response = await API.getScholarship(id);
+        console.log('API response:', response);
         
-        if (scholarship) {
-            console.log('Scholarship data loaded:', scholarship);
-            
-            // Update page title
-            document.querySelector('.page-header h1').textContent = 'Edit Scholarship';
-            document.querySelector('.page-header p').textContent = 'Update your scholarship program details';
-            
-            // Populate form fields
-            document.getElementById('title').value = scholarship.title || '';
-            document.getElementById('description').value = scholarship.description || '';
-            document.getElementById('eligibility').value = scholarship.eligibility || ''; // Fixed: was eligibilityRequirements
-            document.getElementById('scholarshipType').value = scholarship.scholarshipType || '';
-            document.getElementById('slots').value = scholarship.availableSlots || '';
-            document.getElementById('deadline').value = scholarship.deadline ? scholarship.deadline.split('T')[0] : '';
-            document.getElementById('documentsRequired').value = scholarship.documentsRequired || '';
-            document.getElementById('documentsLink').value = scholarship.documentsLink || ''; // Added: Google Drive link
-            
-            // Optional fields
-            document.getElementById('amount').value = scholarship.amount || '';
-            document.getElementById('benefits').value = scholarship.benefits || '';
-            document.getElementById('selectionCriteria').value = scholarship.selectionCriteria || '';
-            document.getElementById('contactEmail').value = scholarship.contactEmail || '';
-            document.getElementById('contactPhone').value = scholarship.contactPhone || '';
-            document.getElementById('applicationLink').value = scholarship.applicationLink || '';
-            document.getElementById('renewalPolicy').value = scholarship.renewalPolicy || '';
-            
-            // Region and institution
-            if (scholarship.region) {
-                document.getElementById('scholarshipRegion').value = scholarship.region;
-                updateInstitutionsDropdown(scholarship.region);
-            }
-            
-            if (scholarship.affiliatedInstitution) {
-                setTimeout(() => {
-                    document.getElementById('affiliatedInstitution').value = scholarship.affiliatedInstitution;
-                }, 100);
-            }
-            
-            // Location coordinates
-            if (scholarship.location && scholarship.location.coordinates) {
-                const [lng, lat] = scholarship.location.coordinates;
-                document.getElementById('latitude').value = lat;
-                document.getElementById('longitude').value = lng;
-                
-                // Set marker on map
-                if (marker) {
-                    map.removeLayer(marker);
-                }
-                marker = L.marker([lat, lng]).addTo(map);
-                map.setView([lat, lng], 15);
-                
-                document.getElementById('coordinates').textContent = 
-                    `Selected coordinates: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-            }
-            
-            console.log('Form populated with scholarship data');
-        } else {
-            throw new Error('Failed to load scholarship data');
+        // Handle both response formats: { scholarship } or direct scholarship object
+        const scholarship = response.scholarship || response;
+        
+        if (!scholarship || !scholarship._id) {
+            throw new Error('Scholarship not found or invalid response');
         }
+        
+        console.log('Scholarship data loaded:', scholarship);
+        
+        // Update page title
+        document.querySelector('.page-header h1').textContent = 'Edit Scholarship';
+        document.querySelector('.page-header p').textContent = 'Update your scholarship program details';
+        
+        // Populate form fields
+        document.getElementById('title').value = scholarship.title || '';
+        document.getElementById('description').value = scholarship.description || '';
+        document.getElementById('eligibility').value = scholarship.eligibility || ''; // Fixed: was eligibilityRequirements
+        document.getElementById('scholarshipType').value = scholarship.scholarshipType || '';
+        document.getElementById('slots').value = scholarship.availableSlots || '';
+        document.getElementById('deadline').value = scholarship.deadline ? scholarship.deadline.split('T')[0] : '';
+        document.getElementById('documentsRequired').value = scholarship.documentsRequired || '';
+        document.getElementById('documentsLink').value = scholarship.documentsLink || ''; // Added: Google Drive link
+        
+        // Optional fields
+        document.getElementById('amount').value = scholarship.amount || '';
+        document.getElementById('benefits').value = scholarship.benefits || '';
+        document.getElementById('selectionCriteria').value = scholarship.selectionCriteria || '';
+        document.getElementById('contactEmail').value = scholarship.contactEmail || '';
+        document.getElementById('contactPhone').value = scholarship.contactPhone || '';
+        document.getElementById('applicationLink').value = scholarship.applicationLink || '';
+        document.getElementById('renewalPolicy').value = scholarship.renewalPolicy || '';
+        
+        // Region and institution
+        if (scholarship.region) {
+            document.getElementById('scholarshipRegion').value = scholarship.region;
+            updateInstitutionsDropdown(scholarship.region);
+        }
+        
+        if (scholarship.affiliatedInstitution) {
+            setTimeout(() => {
+                document.getElementById('affiliatedInstitution').value = scholarship.affiliatedInstitution;
+            }, 100);
+        }
+        
+        // Location coordinates
+        if (scholarship.location && scholarship.location.coordinates) {
+            const [lng, lat] = scholarship.location.coordinates;
+            document.getElementById('latitude').value = lat;
+            document.getElementById('longitude').value = lng;
+            
+            // Set marker on map
+            if (marker) {
+                map.removeLayer(marker);
+            }
+            marker = L.marker([lat, lng]).addTo(map);
+            map.setView([lat, lng], 15);
+            
+            document.getElementById('coordinates').textContent = 
+                `Selected coordinates: ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+        }
+        
+        console.log('Form populated with scholarship data');
     } catch (error) {
         console.error('Error loading scholarship:', error);
-        alert('Error loading scholarship data. Redirecting to dashboard...');
+        const errorMsg = error.response?.data?.message || error.message || 'Unknown error';
+        alert(`Error loading scholarship data: ${errorMsg}\n\nRedirecting to dashboard...`);
         window.location.href = 'sponsor-dashboard.html';
     }
 }
