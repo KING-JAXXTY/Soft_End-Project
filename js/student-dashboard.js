@@ -140,14 +140,14 @@ function displayMyReports(reports) {
     
     container.innerHTML = reports.map(report => `
         <div class="application-card" style="cursor: pointer; padding: 1rem;" onclick="viewReportDetail('${report._id}')">
-            <div class="application-header" style="margin-bottom: 0.75rem;">
-                <div>
+            <div class="application-header" style="margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: flex-start;">
+                <div style="flex: 1; min-width: 0;">
                     <h3 style="font-size: 0.9375rem; margin-bottom: 0.25rem; line-height: 1.3;">${report.subject.length > 40 ? report.subject.substring(0, 40) + '...' : report.subject}</h3>
-                    <p style="font-size: 0.75rem; color: var(--text-secondary);">
+                    <p style="font-size: 0.75rem; color: var(--text-secondary); margin: 0;">
                         ${new Date(report.createdAt).toLocaleDateString()}
                     </p>
                 </div>
-                <span class="badge" style="background: ${getStatusColor(report.status)}; font-size: 0.75rem; padding: 0.25rem 0.5rem;">
+                <span class="badge" style="background: ${getStatusColor(report.status)}; font-size: 0.75rem; padding: 0.25rem 0.5rem; white-space: nowrap; margin-left: 0.5rem;">
                     ${report.status}
                 </span>
             </div>

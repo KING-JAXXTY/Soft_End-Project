@@ -147,7 +147,7 @@ function displayMyReports(reports) {
             <td>${report.subject}</td>
             <td>${report.reportType}</td>
             <td>${new Date(report.createdAt).toLocaleDateString()}</td>
-            <td><span class="badge badge-${report.status.toLowerCase()}">${report.status}</span></td>
+            <td style="text-align: center; vertical-align: middle;"><span class="badge badge-${report.status.toLowerCase()}">${report.status}</span></td>
             <td>
                 <button onclick="viewReportDetail('${report._id}')" class="btn-primary btn-sm">View Details</button>
             </td>
