@@ -612,7 +612,6 @@ document.getElementById('editProfileBtn').addEventListener('click', function() {
     document.getElementById('editProfileBtn').style.display = 'none';
     document.getElementById('saveProfileBtn').style.display = 'inline-block';
     document.getElementById('cancelEditBtn').style.display = 'inline-block';
-    document.getElementById('backBtn').style.display = 'none';
 });
 
 // Cancel Edit button handler
@@ -626,7 +625,6 @@ document.getElementById('cancelEditBtn').addEventListener('click', function() {
     document.getElementById('editProfileBtn').style.display = 'inline-block';
     document.getElementById('saveProfileBtn').style.display = 'none';
     document.getElementById('cancelEditBtn').style.display = 'none';
-    document.getElementById('backBtn').style.display = 'inline-block';
 });
 
 // Delete Account function
