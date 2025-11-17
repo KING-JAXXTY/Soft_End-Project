@@ -196,7 +196,6 @@ async function loadProfile() {
             document.getElementById('editProfileBtn').style.display = 'none';
             document.getElementById('saveProfileBtn').style.display = 'none';
             document.getElementById('cancelEditBtn').style.display = 'none';
-            document.getElementById('backBtn').style.display = 'inline-block';
             // Hide avatar change button when viewing other profiles
             const changeAvatarBtn = document.getElementById('changeAvatarBtn');
             if (changeAvatarBtn) {
@@ -205,7 +204,6 @@ async function loadProfile() {
         } else {
             // Own profile - show normal controls
             document.getElementById('editProfileBtn').style.display = 'inline-block';
-            document.getElementById('backBtn').style.display = 'inline-block';
             const changeAvatarBtn = document.getElementById('changeAvatarBtn');
             if (changeAvatarBtn) {
                 changeAvatarBtn.style.display = 'inline-block';
