@@ -32,7 +32,7 @@ TulongAral+ is an enterprise-grade scholarship management platform that streamli
 - **AI Integration**: Powered by Google Gemini AI for grammar checking, content moderation, scholarship recommendations, duplicate scholarship detection, and intelligent report analysis
 - **Smart Slot Management**: Automatic scholarship slot tracking with real-time availability updates and validation
 - **Deadline Management**: Advanced deadline filtering with visual countdown indicators (Today, Tomorrow, X days remaining)
-- **Duplicate Detection**: AI-powered duplicate scholarship detection system with 80% similarity threshold to prevent redundant postings
+- **Duplicate Detection**: AI-powered exact duplicate detection system to prevent identical scholarship reposts (95%+ match threshold)
 - **Real-time Communication**: Built-in messaging system with AI assistant for student-sponsor interactions
 - **Community Forum**: Moderated discussion platform for scholarship-related topics with AI content moderation
 - **Digital Certificates**: Automated certificate generation with downloadable PDF/image formats for approved applications
@@ -91,7 +91,7 @@ TulongAral+ is an enterprise-grade scholarship management platform that streamli
 ### For Sponsors (Organizations/Individuals)
 - **Scholarship Management**
   - Create and publish scholarship opportunities with detailed information
-  - AI-powered duplicate scholarship detection before posting (80% similarity threshold)
+  - AI-powered exact duplicate detection to prevent identical scholarship reposts (95%+ match threshold)
   - Set comprehensive eligibility criteria and requirements
   - Define application deadlines, award amounts, and available slots
   - Real-time slot tracking with automatic decrements on approval
@@ -568,9 +568,10 @@ POST   /api/gemini/check-duplicate - Check for duplicate scholarships
 - Countdown display on scholarship detail pages
 
 ### AI Duplicate Detection
-- Pre-submission scholarship duplicate checking using Gemini AI
-- 80% similarity threshold for duplicate detection
-- Compares title, type, description, eligibility, benefits, requirements, region, institution, and amount
+- Pre-submission exact duplicate checking using Gemini AI
+- Strict 95%+ match threshold - only flags near-identical copies
+- Focuses on exact title, description, eligibility, benefits, and requirements matches
+- Does NOT flag scholarships simply because they share same region, institution, or type
 - Round-robin API key usage for rate limit management
 - Warning system with option to proceed or cancel
 

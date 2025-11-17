@@ -356,14 +356,14 @@ document.getElementById('addScholarshipForm').addEventListener('submit', async f
                 
                 if (duplicateCheck.isDuplicate) {
                     // Show warning modal
-                    const shouldProceed = confirm(`⚠️ DUPLICATE SCHOLARSHIP DETECTED
+                    const shouldProceed = confirm(`WARNING: EXACT DUPLICATE DETECTED
 
 Confidence: ${duplicateCheck.confidence?.toUpperCase() || 'HIGH'}
-${duplicateCheck.matchedScholarship ? `Similar to: "${duplicateCheck.matchedScholarship}"` : ''}
+${duplicateCheck.matchedScholarship ? `Matches: "${duplicateCheck.matchedScholarship}"` : ''}
 
-Reason: ${duplicateCheck.reason || 'This scholarship appears to be very similar to one you already created.'}
+Reason: ${duplicateCheck.reason || 'This scholarship appears to be an exact or near-exact copy of one you already created.'}
 
-Recommendation: ${duplicateCheck.recommendation || 'Please review your existing scholarships or make significant changes to this one.'}
+Recommendation: ${duplicateCheck.recommendation || 'Please review your existing scholarships to avoid creating duplicate entries.'}
 
 Do you want to go back and make changes?`);
                     
@@ -373,7 +373,7 @@ Do you want to go back and make changes?`);
                         return;
                     } else {
                         // User insists on proceeding - show final warning
-                        const finalConfirm = confirm('⚠️ FINAL WARNING\n\nYou are about to create what appears to be a duplicate scholarship. This may confuse students and violate platform policies.\n\nAre you ABSOLUTELY SURE you want to proceed?');
+                        const finalConfirm = confirm('FINAL WARNING\n\nYou are about to create what appears to be an exact duplicate scholarship. This may confuse students and could violate platform policies.\n\nAre you ABSOLUTELY SURE you want to proceed?');
                         
                         if (!finalConfirm) {
                             console.log('User cancelled after final warning');

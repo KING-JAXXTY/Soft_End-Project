@@ -344,19 +344,28 @@ Institution: ${newScholarship.affiliatedInstitution || 'N/A'}
 Amount: ${newScholarship.amount || 'N/A'}
             `;
 
-            const prompt = `You are a scholarship duplicate detection system. Analyze if the NEW SCHOLARSHIP is a duplicate or very similar to any EXISTING ACTIVE SCHOLARSHIPS.
+            const prompt = `You are a scholarship duplicate detection system. Analyze if the NEW SCHOLARSHIP is an EXACT or NEAR-EXACT COPY of any EXISTING ACTIVE SCHOLARSHIPS.
 
 EXISTING ACTIVE SCHOLARSHIPS:
 ${existingScholarshipsText}
 
 ${newScholarshipText}
 
-ANALYSIS CRITERIA:
-1. Compare title, type, description, eligibility, benefits, requirements
-2. Consider it a duplicate if 80% or more of the content is similar
-3. Small differences in wording or formatting should still flag as duplicate
-4. Different amounts or regions do NOT make it unique if everything else is similar
-5. Focus on the INTENT and CONTENT, not exact wording
+CRITICAL ANALYSIS CRITERIA - ONLY FLAG AS DUPLICATE IF:
+1. Title is IDENTICAL or NEARLY IDENTICAL (minor typo differences only)
+2. Description content is 95%+ THE SAME (not just similar topic, but copied text)
+3. Eligibility requirements are EXACTLY THE SAME or trivially reworded
+4. Benefits are IDENTICAL in substance and wording
+5. Requirements list is VIRTUALLY IDENTICAL
+
+DO NOT FLAG AS DUPLICATE IF:
+- Same region or institution (many scholarships can target the same area)
+- Same scholarship type (many academic/merit scholarships exist)
+- Similar topic but different description/requirements
+- Different amounts (even if everything else similar)
+- Similar wording but clearly different scholarships
+
+ONLY flag as duplicate if this appears to be a DIRECT COPY or REPOST of an existing scholarship with minimal changes.
 
 RESPOND IN THIS EXACT JSON FORMAT (no markdown, no code blocks):
 {
@@ -364,7 +373,7 @@ RESPOND IN THIS EXACT JSON FORMAT (no markdown, no code blocks):
   "confidence": "high" or "medium" or "low",
   "matchedScholarshipIndex": number or null (0-based index),
   "matchedScholarshipTitle": "title" or null,
-  "reason": "brief explanation of why it's a duplicate or unique",
+  "reason": "brief explanation of why it's an exact duplicate or clearly unique",
   "recommendation": "what the sponsor should do"
 }`;
 
