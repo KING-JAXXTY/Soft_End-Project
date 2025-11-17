@@ -298,6 +298,133 @@ Important: Return ONLY valid JSON. No markdown formatting, no code blocks, no ex
         }
         
         throw new Error('All API keys failed');
+    },
+
+    // Duplicate scholarship detection
+    async checkDuplicateScholarship(newScholarship, activeScholarships) {
+        try {
+            // Only compare with ACTIVE scholarships (not expired or closed)
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            const relevantScholarships = activeScholarships.filter(s => {
+                const deadline = new Date(s.deadline);
+                deadline.setHours(0, 0, 0, 0);
+                return s.status === 'active' && deadline >= today;
+            });
+
+            if (relevantScholarships.length === 0) {
+                return { isDuplicate: false, message: 'No active scholarships to compare against.' };
+            }
+
+            // Build comparison data
+            const existingScholarshipsText = relevantScholarships.map((s, idx) => `
+SCHOLARSHIP ${idx + 1}:
+Title: ${s.title}
+Type: ${s.scholarshipType}
+Description: ${s.description || 'N/A'}
+Eligibility: ${s.eligibility || 'N/A'}
+Benefits: ${s.benefits || 'N/A'}
+Requirements: ${s.documentsRequired || 'N/A'}
+Region: ${s.region || 'N/A'}
+Institution: ${s.affiliatedInstitution || 'N/A'}
+Amount: ${s.amount || 'N/A'}
+            `).join('\n---\n');
+
+            const newScholarshipText = `
+NEW SCHOLARSHIP BEING CREATED:
+Title: ${newScholarship.title}
+Type: ${newScholarship.scholarshipType}
+Description: ${newScholarship.description || 'N/A'}
+Eligibility: ${newScholarship.eligibilityRequirements || 'N/A'}
+Benefits: ${newScholarship.benefits || 'N/A'}
+Requirements: ${newScholarship.documentsRequired || 'N/A'}
+Region: ${newScholarship.region || 'N/A'}
+Institution: ${newScholarship.affiliatedInstitution || 'N/A'}
+Amount: ${newScholarship.amount || 'N/A'}
+            `;
+
+            const prompt = `You are a scholarship duplicate detection system. Analyze if the NEW SCHOLARSHIP is a duplicate or very similar to any EXISTING ACTIVE SCHOLARSHIPS.
+
+EXISTING ACTIVE SCHOLARSHIPS:
+${existingScholarshipsText}
+
+${newScholarshipText}
+
+ANALYSIS CRITERIA:
+1. Compare title, type, description, eligibility, benefits, requirements
+2. Consider it a duplicate if 80% or more of the content is similar
+3. Small differences in wording or formatting should still flag as duplicate
+4. Different amounts or regions do NOT make it unique if everything else is similar
+5. Focus on the INTENT and CONTENT, not exact wording
+
+RESPOND IN THIS EXACT JSON FORMAT (no markdown, no code blocks):
+{
+  "isDuplicate": true or false,
+  "confidence": "high" or "medium" or "low",
+  "matchedScholarshipIndex": number or null (0-based index),
+  "matchedScholarshipTitle": "title" or null,
+  "reason": "brief explanation of why it's a duplicate or unique",
+  "recommendation": "what the sponsor should do"
+}`;
+
+            // Use both API keys with round-robin
+            for (let i = 0; i < GEMINI_API_KEYS.length; i++) {
+                const apiKey = getNextApiKey();
+                try {
+                    const response = await fetch(`${GEMINI_API_URL}?key=${apiKey}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            contents: [{
+                                parts: [{ text: prompt }]
+                            }]
+                        })
+                    });
+
+                    if (!response.ok) {
+                        console.error('Gemini API Error for duplicate check');
+                        continue;
+                    }
+
+                    const json = await response.json();
+                    let resultText = json.candidates?.[0]?.content?.parts?.[0]?.text || '';
+                    
+                    // Clean up response - remove markdown code blocks if present
+                    resultText = resultText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+                    
+                    const result = JSON.parse(resultText);
+                    
+                    return {
+                        isDuplicate: result.isDuplicate,
+                        confidence: result.confidence,
+                        matchedScholarship: result.matchedScholarshipTitle,
+                        reason: result.reason,
+                        recommendation: result.recommendation
+                    };
+
+                } catch (err) {
+                    console.error(`Duplicate check API key ${i + 1} error:`, err);
+                    if (i === GEMINI_API_KEYS.length - 1) {
+                        // If all keys fail, return safe default (don't block submission)
+                        return { 
+                            isDuplicate: false, 
+                            message: 'Could not verify duplicates. Please proceed with caution.' 
+                        };
+                    }
+                    continue;
+                }
+            }
+
+            return { isDuplicate: false, message: 'Duplicate check completed.' };
+
+        } catch (error) {
+            console.error('Error in duplicate check:', error);
+            // Don't block submission if check fails
+            return { isDuplicate: false, message: 'Could not verify duplicates. Please proceed with caution.' };
+        }
     }
 };
 

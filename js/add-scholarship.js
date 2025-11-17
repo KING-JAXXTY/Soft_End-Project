@@ -298,7 +298,7 @@ document.getElementById('addScholarshipForm').addEventListener('submit', async f
         let result;
         
         if (isEditMode && scholarshipId) {
-            // Update existing scholarship
+            // Update existing scholarship (skip duplicate check for edits)
             console.log('Updating scholarship:', scholarshipId, scholarshipData);
             result = await API.updateScholarship(scholarshipId, scholarshipData);
             
@@ -307,13 +307,94 @@ document.getElementById('addScholarshipForm').addEventListener('submit', async f
                 window.location.href = 'sponsor-dashboard.html';
             }
         } else {
-            // Create new scholarship
-            console.log('Creating new scholarship:', scholarshipData);
-            result = await API.createScholarship(scholarshipData);
+            // Create new scholarship - CHECK FOR DUPLICATES FIRST
+            console.log('Creating new scholarship - checking for duplicates...');
             
-            if (result) {
-                alert('Scholarship created successfully!');
-                window.location.href = 'sponsor-dashboard.html';
+            // Show checking indicator
+            const submitBtn = document.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: spin 1s linear infinite;">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                    <path d="M2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                </svg>
+                Checking for duplicates...
+            `;
+            
+            try {
+                // Fetch active scholarships to compare
+                const currentUser = API.getCurrentUser();
+                const response = await API.getScholarships({ status: 'active' });
+                const activeScholarships = response || [];
+                
+                // Filter to only current sponsor's scholarships
+                const sponsorScholarships = activeScholarships.filter(s => 
+                    s.sponsor._id === currentUser._id || s.sponsor === currentUser._id
+                );
+                
+                // Run duplicate check with Gemini AI
+                const duplicateCheck = await GeminiAPI.checkDuplicateScholarship(scholarshipData, sponsorScholarships);
+                
+                // Reset button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+                
+                if (duplicateCheck.isDuplicate) {
+                    // Show warning modal
+                    const shouldProceed = confirm(`⚠️ DUPLICATE SCHOLARSHIP DETECTED
+
+Confidence: ${duplicateCheck.confidence?.toUpperCase() || 'HIGH'}
+${duplicateCheck.matchedScholarship ? `Similar to: "${duplicateCheck.matchedScholarship}"` : ''}
+
+Reason: ${duplicateCheck.reason || 'This scholarship appears to be very similar to one you already created.'}
+
+Recommendation: ${duplicateCheck.recommendation || 'Please review your existing scholarships or make significant changes to this one.'}
+
+Do you want to go back and make changes?`);
+                    
+                    if (shouldProceed) {
+                        // User wants to fix it - don't submit
+                        console.log('User chose to modify scholarship');
+                        return;
+                    } else {
+                        // User insists on proceeding - show final warning
+                        const finalConfirm = confirm('⚠️ FINAL WARNING\n\nYou are about to create what appears to be a duplicate scholarship. This may confuse students and violate platform policies.\n\nAre you ABSOLUTELY SURE you want to proceed?');
+                        
+                        if (!finalConfirm) {
+                            console.log('User cancelled after final warning');
+                            return;
+                        }
+                    }
+                }
+                
+                // No duplicate or user confirmed - proceed with creation
+                console.log('Creating scholarship:', scholarshipData);
+                result = await API.createScholarship(scholarshipData);
+                
+                if (result) {
+                    alert('Scholarship created successfully!');
+                    window.location.href = 'sponsor-dashboard.html';
+                }
+                
+            } catch (duplicateError) {
+                console.error('Error during duplicate check:', duplicateError);
+                // Reset button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+                
+                // If duplicate check fails, ask user if they want to proceed anyway
+                const proceedAnyway = confirm('Could not verify for duplicates. Do you want to proceed with creating this scholarship?');
+                if (!proceedAnyway) {
+                    return;
+                }
+                
+                // Proceed with creation
+                result = await API.createScholarship(scholarshipData);
+                if (result) {
+                    alert('Scholarship created successfully!');
+                    window.location.href = 'sponsor-dashboard.html';
+                }
             }
         }
     } catch (error) {
