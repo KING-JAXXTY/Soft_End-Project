@@ -194,8 +194,10 @@ async function loadScholarshipData(id) {
     } catch (error) {
         console.error('Error loading scholarship:', error);
         const errorMsg = error.response?.data?.message || error.message || 'Unknown error';
-        alert(`Error loading scholarship data: ${errorMsg}\n\nRedirecting to dashboard...`);
-        window.location.href = 'sponsor-dashboard.html';
+        notify.error(`Error loading scholarship data: ${errorMsg}. Redirecting to dashboard...`);
+        setTimeout(() => {
+            window.location.href = 'sponsor-dashboard.html';
+        }, 2000);
     }
 }
 
@@ -317,8 +319,10 @@ document.getElementById('addScholarshipForm').addEventListener('submit', async f
             result = await API.updateScholarship(scholarshipId, scholarshipData);
             
             if (result) {
-                alert('Scholarship updated successfully!');
-                window.location.href = 'sponsor-dashboard.html';
+                notify.success('Scholarship updated successfully!');
+                setTimeout(() => {
+                    window.location.href = 'sponsor-dashboard.html';
+                }, 1500);
             }
         } else {
             // Create new scholarship - CHECK FOR DUPLICATES FIRST
@@ -355,31 +359,11 @@ document.getElementById('addScholarshipForm').addEventListener('submit', async f
                 submitBtn.innerHTML = originalBtnText;
                 
                 if (duplicateCheck.isDuplicate) {
-                    // Show warning modal
-                    const shouldProceed = confirm(`WARNING: EXACT DUPLICATE DETECTED
-
-Confidence: ${duplicateCheck.confidence?.toUpperCase() || 'HIGH'}
-${duplicateCheck.matchedScholarship ? `Matches: "${duplicateCheck.matchedScholarship}"` : ''}
-
-Reason: ${duplicateCheck.reason || 'This scholarship appears to be an exact or near-exact copy of one you already created.'}
-
-Recommendation: ${duplicateCheck.recommendation || 'Please review your existing scholarships to avoid creating duplicate entries.'}
-
-Do you want to go back and make changes?`);
+                    // Show custom duplicate warning modal
+                    await showDuplicateWarning(duplicateCheck);
                     
-                    if (shouldProceed) {
-                        // User wants to fix it - don't submit
-                        console.log('User chose to modify scholarship');
-                        return;
-                    } else {
-                        // User insists on proceeding - show final warning
-                        const finalConfirm = confirm('FINAL WARNING\n\nYou are about to create what appears to be an exact duplicate scholarship. This may confuse students and could violate platform policies.\n\nAre you ABSOLUTELY SURE you want to proceed?');
-                        
-                        if (!finalConfirm) {
-                            console.log('User cancelled after final warning');
-                            return;
-                        }
-                    }
+                    // If we reach here, user cancelled or wanted to edit
+                    return;
                 }
                 
                 // No duplicate or user confirmed - proceed with creation
@@ -387,8 +371,10 @@ Do you want to go back and make changes?`);
                 result = await API.createScholarship(scholarshipData);
                 
                 if (result) {
-                    alert('Scholarship created successfully!');
-                    window.location.href = 'sponsor-dashboard.html';
+                    notify.success('Scholarship created successfully!');
+                    setTimeout(() => {
+                        window.location.href = 'sponsor-dashboard.html';
+                    }, 1500);
                 }
                 
             } catch (duplicateError) {
@@ -397,18 +383,9 @@ Do you want to go back and make changes?`);
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalBtnText;
                 
-                // If duplicate check fails, ask user if they want to proceed anyway
-                const proceedAnyway = confirm('Could not verify for duplicates. Do you want to proceed with creating this scholarship?');
-                if (!proceedAnyway) {
-                    return;
-                }
-                
-                // Proceed with creation
-                result = await API.createScholarship(scholarshipData);
-                if (result) {
-                    alert('Scholarship created successfully!');
-                    window.location.href = 'sponsor-dashboard.html';
-                }
+                // If duplicate check fails, show error notification
+                notify.error('Could not verify for duplicates. Please try again or contact support.');
+                return;
             }
         }
     } catch (error) {
@@ -513,4 +490,110 @@ Corrected text:`;
         button.textContent = originalButtonText;
         field.disabled = false;
     }
+}
+
+// Custom Modal Functions for Duplicate Warning
+function showDuplicateWarning(duplicateCheck) {
+    return new Promise((resolve, reject) => {
+        const modal = document.getElementById('duplicateModal');
+        const overlay = modal.querySelector('.modal-overlay');
+        
+        // Populate modal content
+        document.getElementById('duplicateConfidence').textContent = (duplicateCheck.confidence || 'HIGH').toUpperCase();
+        document.getElementById('duplicateReason').textContent = duplicateCheck.reason || 'This scholarship appears to be an exact or near-exact copy of one you already created.';
+        document.getElementById('duplicateRecommendation').textContent = duplicateCheck.recommendation || 'Please review your existing scholarships to avoid creating duplicate entries.';
+        
+        // Show/hide matched scholarship
+        const matchedContainer = document.getElementById('matchedScholarshipContainer');
+        if (duplicateCheck.matchedScholarship) {
+            matchedContainer.style.display = 'block';
+            document.getElementById('matchedScholarship').textContent = duplicateCheck.matchedScholarship;
+        } else {
+            matchedContainer.style.display = 'none';
+        }
+        
+        // Show modal
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        
+        // Button handlers
+        const btnGoBack = document.getElementById('btnGoBack');
+        const btnProceedAnyway = document.getElementById('btnProceedAnyway');
+        
+        const cleanup = () => {
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+            btnGoBack.removeEventListener('click', handleGoBack);
+            btnProceedAnyway.removeEventListener('click', handleProceed);
+            overlay.removeEventListener('click', handleOverlayClick);
+        };
+        
+        const handleGoBack = () => {
+            cleanup();
+            console.log('User chose to modify scholarship');
+            reject('User wants to edit');
+        };
+        
+        const handleProceed = async () => {
+            cleanup();
+            // Show final warning modal
+            try {
+                await showFinalWarning();
+                resolve(); // User confirmed, proceed with creation
+            } catch (err) {
+                reject('User cancelled at final warning');
+            }
+        };
+        
+        const handleOverlayClick = () => {
+            handleGoBack();
+        };
+        
+        btnGoBack.addEventListener('click', handleGoBack);
+        btnProceedAnyway.addEventListener('click', handleProceed);
+        overlay.addEventListener('click', handleOverlayClick);
+    });
+}
+
+function showFinalWarning() {
+    return new Promise((resolve, reject) => {
+        const modal = document.getElementById('finalWarningModal');
+        const overlay = modal.querySelector('.modal-overlay');
+        
+        // Show modal
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        
+        // Button handlers
+        const btnCancel = document.getElementById('btnCancelFinal');
+        const btnConfirm = document.getElementById('btnConfirmFinal');
+        
+        const cleanup = () => {
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+            btnCancel.removeEventListener('click', handleCancel);
+            btnConfirm.removeEventListener('click', handleConfirm);
+            overlay.removeEventListener('click', handleOverlayClick);
+        };
+        
+        const handleCancel = () => {
+            cleanup();
+            console.log('User cancelled after final warning');
+            reject('User cancelled');
+        };
+        
+        const handleConfirm = () => {
+            cleanup();
+            console.log('User confirmed duplicate creation');
+            resolve();
+        };
+        
+        const handleOverlayClick = () => {
+            handleCancel();
+        };
+        
+        btnCancel.addEventListener('click', handleCancel);
+        btnConfirm.addEventListener('click', handleConfirm);
+        overlay.addEventListener('click', handleOverlayClick);
+    });
 }
