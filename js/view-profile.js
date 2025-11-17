@@ -145,91 +145,107 @@ function displayProfile(profile) {
         ? getAvatarUrl(profile.avatar) 
         : '';
     
-    // Build profile HTML
+    // Build profile HTML with professional scholarship theme
     container.innerHTML = `
-        <div class="card">
-            <div class="card-header" style="text-align: center; padding: 2rem;">
-                <div class="profile-avatar-large" style="width: 120px; height: 120px; margin: 0 auto 1rem; ${avatarUrl ? `background-image: url('${avatarUrl}'); background-size: cover; background-position: center;` : ''}">
-                    ${!avatarUrl ? `${profile.firstName.charAt(0)}${profile.lastName.charAt(0)}` : ''}
+        <div class="modern-profile-card">
+            <!-- Profile Header with Cover -->
+            <div class="profile-cover-section">
+                <div class="profile-cover-gradient"></div>
+                <div class="profile-header-content">
+                    <div class="profile-avatar-wrapper">
+                        ${avatarUrl ? 
+                            `<img src="${avatarUrl}" alt="${profile.firstName} ${profile.lastName}" class="profile-avatar-img" />` :
+                            `<div class="profile-avatar-initials">${profile.firstName.charAt(0)}${profile.lastName.charAt(0)}</div>`
+                        }
+                    </div>
+                    <div class="profile-header-info">
+                        <h1 class="profile-name">${profile.firstName} ${profile.lastName}</h1>
+                        <div class="profile-meta">
+                            ${roleBadge}
+                            ${profile.uniqueId ? `<span class="profile-id">ID: ${profile.uniqueId}</span>` : ''}
+                        </div>
+                        ${profile.email && profile.role !== 'admin' ? `<p class="profile-email">${profile.email}</p>` : ''}
+                    </div>
                 </div>
-                <h2 style="margin: 0.5rem 0;">${profile.firstName} ${profile.lastName}</h2>
-                ${roleBadge}
-                <p style="color: var(--text-secondary); margin: 0.5rem 0 0.25rem 0;">${profile.email}</p>
-                ${profile.uniqueId ? `<p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0; font-family: 'Courier New', monospace;">ID: ${profile.uniqueId}</p>` : ''}
             </div>
 
-            <div class="card-body">
+            <!-- Profile Body -->
+            <div class="profile-body-content">
                 ${profile.bio ? `
-                <div class="profile-section">
-                    <h3>About</h3>
-                    <p>${profile.bio}</p>
-                </div>
-                ` : ''}
-
-                ${profile.region || profile.address ? `
-                <div class="profile-section">
-                    <h3>Contact Information</h3>
-                    <div class="info-grid">
-                        ${profile.region ? `
-                        <div class="info-item">
-                            <span class="info-label">Region:</span>
-                            <span>${profile.region}</span>
-                        </div>
-                        ` : ''}
-                        ${profile.province ? `
-                        <div class="info-item">
-                            <span class="info-label">City/Municipality:</span>
-                            <span>${profile.province}</span>
-                        </div>
-                        ` : ''}
-                        ${profile.address ? `
-                        <div class="info-item">
-                            <span class="info-label">Address:</span>
-                            <span>${profile.address}</span>
-                        </div>
-                        ` : ''}
+                <div class="profile-info-card">
+                    <div class="info-card-header">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <h3>About</h3>
                     </div>
+                    <p class="about-text">${profile.bio}</p>
                 </div>
                 ` : ''}
 
                 ${profile.role === 'student' && profile.studentInfo ? `
-                <div class="profile-section">
-                    <h3>Student Information</h3>
-                    <div class="info-grid">
+                <div class="profile-info-card">
+                    <div class="info-card-header">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                            <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                        </svg>
+                        <h3>Academic Information</h3>
+                    </div>
+                    <div class="info-grid-modern">
                         ${profile.studentInfo.institution ? `
-                        <div class="info-item">
-                            <span class="info-label">Institution:</span>
-                            <span>${profile.studentInfo.institution}</span>
+                        <div class="info-item-modern">
+                            <span class="info-icon">🏫</span>
+                            <div class="info-content">
+                                <span class="info-label-modern">Institution</span>
+                                <span class="info-value-modern">${profile.studentInfo.institution}</span>
+                            </div>
                         </div>
                         ` : ''}
                         ${profile.studentInfo.region ? `
-                        <div class="info-item">
-                            <span class="info-label">Institution Region:</span>
-                            <span>${profile.studentInfo.region}</span>
-                        </div>
-                        ` : ''}
-                        ${profile.studentInfo.gradeLevel ? `
-                        <div class="info-item">
-                            <span class="info-label">Year Level:</span>
-                            <span>${profile.studentInfo.gradeLevel}</span>
+                        <div class="info-item-modern">
+                            <span class="info-icon">📍</span>
+                            <div class="info-content">
+                                <span class="info-label-modern">Region</span>
+                                <span class="info-value-modern">${profile.studentInfo.region}</span>
+                            </div>
                         </div>
                         ` : ''}
                         ${profile.studentInfo.major ? `
-                        <div class="info-item">
-                            <span class="info-label">Course/Program:</span>
-                            <span>${profile.studentInfo.major}</span>
+                        <div class="info-item-modern">
+                            <span class="info-icon">📚</span>
+                            <div class="info-content">
+                                <span class="info-label-modern">Course/Program</span>
+                                <span class="info-value-modern">${profile.studentInfo.major}</span>
+                            </div>
+                        </div>
+                        ` : ''}
+                        ${profile.studentInfo.gradeLevel ? `
+                        <div class="info-item-modern">
+                            <span class="info-icon">🎓</span>
+                            <div class="info-content">
+                                <span class="info-label-modern">Year Level</span>
+                                <span class="info-value-modern">${profile.studentInfo.gradeLevel}</span>
+                            </div>
                         </div>
                         ` : ''}
                         ${profile.studentInfo.gpa ? `
-                        <div class="info-item">
-                            <span class="info-label">GPA:</span>
-                            <span>${profile.studentInfo.gpa}</span>
+                        <div class="info-item-modern">
+                            <span class="info-icon">⭐</span>
+                            <div class="info-content">
+                                <span class="info-label-modern">GPA</span>
+                                <span class="info-value-modern">${profile.studentInfo.gpa}</span>
+                            </div>
                         </div>
                         ` : ''}
                         ${profile.studentInfo.graduationYear ? `
-                        <div class="info-item">
-                            <span class="info-label">Expected Graduation:</span>
-                            <span>${profile.studentInfo.graduationYear}</span>
+                        <div class="info-item-modern">
+                            <span class="info-icon">📅</span>
+                            <div class="info-content">
+                                <span class="info-label-modern">Expected Graduation</span>
+                                <span class="info-value-modern">${profile.studentInfo.graduationYear}</span>
+                            </div>
                         </div>
                         ` : ''}
                     </div>
@@ -237,63 +253,92 @@ function displayProfile(profile) {
                 ` : ''}
 
                 ${profile.role === 'sponsor' && profile.sponsorInfo ? `
-                <div class="profile-section">
-                    <h3>Sponsor Information</h3>
-                    <div class="info-grid">
+                <div class="profile-info-card">
+                    <div class="info-card-header">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        <h3>Organization Details</h3>
+                    </div>
+                    <div class="info-grid-modern">
                         ${profile.sponsorInfo.organization ? `
-                        <div class="info-item">
-                            <span class="info-label">Organization:</span>
-                            <span>${profile.sponsorInfo.organization}</span>
+                        <div class="info-item-modern">
+                            <span class="info-icon">🏢</span>
+                            <div class="info-content">
+                                <span class="info-label-modern">Organization</span>
+                                <span class="info-value-modern">${profile.sponsorInfo.organization}</span>
+                            </div>
                         </div>
                         ` : ''}
                         ${profile.sponsorInfo.website ? `
-                        <div class="info-item">
-                            <span class="info-label">Affiliated Institution:</span>
-                            <span>${profile.sponsorInfo.website}</span>
-                        </div>
-                        ` : ''}
-                        ${profile.sponsorInfo.contactEmail ? `
-                        <div class="info-item">
-                            <span class="info-label">Contact Email:</span>
-                            <span><a href="mailto:${profile.sponsorInfo.contactEmail}">${profile.sponsorInfo.contactEmail}</a></span>
-                        </div>
-                        ` : ''}
-                        ${profile.sponsorInfo.description ? `
-                        <div class="info-item" style="grid-column: 1 / -1;">
-                            <span class="info-label">About Organization:</span>
-                            <span>${profile.sponsorInfo.description}</span>
+                        <div class="info-item-modern">
+                            <span class="info-icon">🏫</span>
+                            <div class="info-content">
+                                <span class="info-label-modern">Affiliated Institution</span>
+                                <span class="info-value-modern">${profile.sponsorInfo.website}</span>
+                            </div>
                         </div>
                         ` : ''}
                         ${profile.sponsorInfo.verified ? `
-                        <div class="info-item">
-                            <span class="info-label">Verification Status:</span>
-                            <span><span class="badge badge-success">Verified</span></span>
+                        <div class="info-item-modern">
+                            <span class="info-icon">✓</span>
+                            <div class="info-content">
+                                <span class="info-label-modern">Status</span>
+                                <span class="badge badge-success">Verified Sponsor</span>
+                            </div>
+                        </div>
+                        ` : ''}
+                        ${profile.sponsorInfo.description ? `
+                        <div class="info-item-modern full-width">
+                            <span class="info-icon">📝</span>
+                            <div class="info-content">
+                                <span class="info-label-modern">About Organization</span>
+                                <span class="info-value-modern">${profile.sponsorInfo.description}</span>
+                            </div>
                         </div>
                         ` : ''}
                     </div>
                 </div>
                 ` : ''}
 
-                ${profile.socialLinks && (profile.socialLinks.facebook || profile.socialLinks.twitter || profile.socialLinks.linkedin) ? `
-                <div class="profile-section">
-                    <h3>Social Links</h3>
-                    <div class="info-grid">
-                        ${profile.socialLinks.facebook ? `
-                        <div class="info-item">
-                            <span class="info-label">Facebook:</span>
-                            <span><a href="${profile.socialLinks.facebook}" target="_blank">View Profile</a></span>
+                ${profile.region || profile.province || profile.address ? `
+                <div class="profile-info-card">
+                    <div class="info-card-header">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <h3>Location</h3>
+                    </div>
+                    <div class="info-grid-modern">
+                        ${profile.region ? `
+                        <div class="info-item-modern">
+                            <span class="info-icon">🗺️</span>
+                            <div class="info-content">
+                                <span class="info-label-modern">Region</span>
+                                <span class="info-value-modern">${profile.region}</span>
+                            </div>
                         </div>
                         ` : ''}
-                        ${profile.socialLinks.twitter ? `
-                        <div class="info-item">
-                            <span class="info-label">Twitter:</span>
-                            <span><a href="${profile.socialLinks.twitter}" target="_blank">View Profile</a></span>
+                        ${profile.province ? `
+                        <div class="info-item-modern">
+                            <span class="info-icon">🏙️</span>
+                            <div class="info-content">
+                                <span class="info-label-modern">City/Municipality</span>
+                                <span class="info-value-modern">${profile.province}</span>
+                            </div>
                         </div>
                         ` : ''}
-                        ${profile.socialLinks.linkedin ? `
-                        <div class="info-item">
-                            <span class="info-label">LinkedIn:</span>
-                            <span><a href="${profile.socialLinks.linkedin}" target="_blank">View Profile</a></span>
+                        ${profile.address ? `
+                        <div class="info-item-modern full-width">
+                            <span class="info-icon">📍</span>
+                            <div class="info-content">
+                                <span class="info-label-modern">Address</span>
+                                <span class="info-value-modern">${profile.address}</span>
+                            </div>
                         </div>
                         ` : ''}
                     </div>
@@ -302,9 +347,9 @@ function displayProfile(profile) {
 
                 ${((currentUser.role === 'student' && profile.role === 'sponsor') || 
                    (currentUser.role === 'sponsor' && profile.role === 'student')) ? `
-                <div class="profile-section" style="text-align: center; padding-top: 1.5rem; border-top: 2px solid var(--border-color);">
-                    <button onclick="sendMessage('${profile._id}')" class="btn-primary" style="padding: 0.875rem 2rem; font-size: 1rem;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 0.5rem;">
+                <div class="profile-action-section">
+                    <button onclick="sendMessage('${profile._id}')" class="btn-message-user">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                         </svg>
                         Send Message
