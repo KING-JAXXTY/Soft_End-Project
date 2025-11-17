@@ -127,6 +127,14 @@ router.get('/', async (req, res) => {
 // @access  Public
 router.get('/:id', async (req, res) => {
     try {
+        // Validate MongoDB ObjectId format
+        if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid scholarship ID format'
+            });
+        }
+
         const scholarship = await Scholarship.findById(req.params.id)
             .populate('sponsor', 'firstName lastName email uniqueId avatar');
         
@@ -142,7 +150,7 @@ router.get('/:id', async (req, res) => {
             scholarship
         });
     } catch (error) {
-        console.error(error);
+        console.error('Error fetching scholarship:', error);
         res.status(500).json({
             success: false,
             message: 'Error fetching scholarship'
