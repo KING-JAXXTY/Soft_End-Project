@@ -89,6 +89,8 @@ async function loadUserProfile() {
         const response = await API.getUserProfile(userId);
         const profile = response.profile || response;
         
+        console.log('Raw profile data:', profile);
+        
         // Extract user data if nested
         const user = profile.user || {};
         const profileData = {
@@ -108,6 +110,8 @@ async function loadUserProfile() {
             sponsorInfo: profile.sponsorInfo,
             socialLinks: profile.socialLinks
         };
+        
+        console.log('Processed profile data:', profileData);
         
         displayProfile(profileData);
         

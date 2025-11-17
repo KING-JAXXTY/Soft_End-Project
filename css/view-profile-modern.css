@@ -89,9 +89,11 @@
 }
 
 .profile-email {
-    color: rgba(255, 255, 255, 0.9);
+    color: white;
     font-size: 1rem;
     margin: 0;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    font-weight: 500;
 }
 
 .profile-body-content {
@@ -240,6 +242,25 @@
     letter-spacing: 0.5px;
 }
 
+/* Badges in profile header - white background for visibility */
+.profile-meta .badge {
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.profile-meta .badge-primary {
+    color: #2563eb;
+}
+
+.profile-meta .badge-success {
+    color: #10b981;
+}
+
+.profile-meta .badge-danger {
+    color: #ef4444;
+}
+
+/* Badges in body content - colored backgrounds */
 .badge-primary {
     background: rgba(37, 99, 235, 0.15);
     color: var(--primary-color);
