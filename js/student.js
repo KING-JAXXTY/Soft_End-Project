@@ -30,8 +30,19 @@ async function loadScholarships(filters = {}) {
     document.body.appendChild(loadingEl);
     
     try {
-        allScholarships = await API.getScholarships(filters);
-        console.log('Scholarships received:', allScholarships.length);
+        const scholarships = await API.getScholarships(filters);
+        
+        // Filter out expired scholarships
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        allScholarships = scholarships.filter(s => {
+            const deadline = new Date(s.deadline);
+            deadline.setHours(0, 0, 0, 0);
+            return deadline >= today; // Only show scholarships with deadline today or in future
+        });
+        
+        console.log(`Scholarships received: ${scholarships.length}, Active: ${allScholarships.length}`);
         console.log('First scholarship (if any):', allScholarships[0]);
         displayScholarships(allScholarships);
     } catch (error) {

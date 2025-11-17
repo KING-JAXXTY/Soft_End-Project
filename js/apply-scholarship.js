@@ -30,6 +30,39 @@ async function loadScholarshipInfo() {
         }
         
         const scholarship = await API.getScholarship(scholarshipId);
+        
+        // Check if deadline has passed
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const deadlineDate = new Date(scholarship.deadline);
+        deadlineDate.setHours(0, 0, 0, 0);
+        
+        if (deadlineDate < today) {
+            notify.error('Application deadline has passed for this scholarship');
+            setTimeout(() => {
+                window.location.href = `scholarship-detail.html?id=${scholarshipId}`;
+            }, 2000);
+            return;
+        }
+        
+        // Check if scholarship has available slots
+        if (scholarship.availableSlots === 0) {
+            notify.error('No available slots remaining for this scholarship');
+            setTimeout(() => {
+                window.location.href = `scholarship-detail.html?id=${scholarshipId}`;
+            }, 2000);
+            return;
+        }
+        
+        // Check if scholarship is active
+        if (scholarship.status !== 'active') {
+            notify.error('This scholarship is no longer accepting applications');
+            setTimeout(() => {
+                window.location.href = `scholarship-detail.html?id=${scholarshipId}`;
+            }, 2000);
+            return;
+        }
+        
         document.getElementById('scholarshipTitle').textContent = scholarship.title;
         
         // Analyze required documents with AI

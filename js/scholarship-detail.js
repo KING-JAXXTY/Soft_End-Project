@@ -56,6 +56,14 @@ async function loadScholarshipDetail() {
         const scholarship = await API.getScholarship(scholarshipId);
         const currentUser = API.getCurrentUser();
         
+        // Check if deadline has passed
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const deadlineDate = new Date(scholarship.deadline);
+        deadlineDate.setHours(0, 0, 0, 0);
+        const isExpired = deadlineDate < today;
+        const hasNoSlots = scholarship.availableSlots === 0;
+        
         // Build the detail view
         const container = document.getElementById('scholarshipDetailContent');
         
@@ -185,9 +193,27 @@ async function loadScholarshipDetail() {
 
                     ${currentUser.role === 'student' ? `
                     <div class="detail-card sidebar-card action-card">
-                        <button onclick="applyForScholarship('${scholarship._id}')" class="btn-primary btn-block">
-                            Apply Now
-                        </button>
+                        ${isExpired ? `
+                            <div style="background: #fee2e2; border: 1px solid #dc2626; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                                <p style="color: #dc2626; font-weight: 600; margin: 0;">Deadline has passed</p>
+                                <p style="color: #991b1b; font-size: 0.875rem; margin: 0.5rem 0 0 0;">This scholarship is no longer accepting applications.</p>
+                            </div>
+                            <button class="btn-primary btn-block" disabled style="background: #9ca3af; cursor: not-allowed;">
+                                Application Closed
+                            </button>
+                        ` : hasNoSlots ? `
+                            <div style="background: #fee2e2; border: 1px solid #dc2626; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                                <p style="color: #dc2626; font-weight: 600; margin: 0;">No slots available</p>
+                                <p style="color: #991b1b; font-size: 0.875rem; margin: 0.5rem 0 0 0;">All slots for this scholarship have been filled.</p>
+                            </div>
+                            <button class="btn-primary btn-block" disabled style="background: #9ca3af; cursor: not-allowed;">
+                                No Slots Available
+                            </button>
+                        ` : `
+                            <button onclick="applyForScholarship('${scholarship._id}')" class="btn-primary btn-block">
+                                Apply Now
+                            </button>
+                        `}
                     </div>
                     ` : ''}
 
