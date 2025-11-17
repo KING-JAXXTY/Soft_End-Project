@@ -89,6 +89,10 @@ const ScholarshipSchema = new mongoose.Schema({
         path: String,
         uploadDate: Date
     }],
+    documentsLink: {
+        type: String,
+        default: ''
+    },
     applicantsCount: {
         type: Number,
         default: 0

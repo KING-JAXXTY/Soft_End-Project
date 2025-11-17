@@ -180,7 +180,8 @@ router.post('/', protect, authorize('sponsor'), upload.array('documents', 5), as
             affiliatedInstitution,
             latitude,
             longitude,
-            address
+            address,
+            documentsLink
         } = req.body;
         
         console.log('scholarshipType extracted:', scholarshipType);
@@ -203,6 +204,7 @@ router.post('/', protect, authorize('sponsor'), upload.array('documents', 5), as
             ...(contactPhone && { contactPhone }),
             ...(applicationLink && { applicationLink }),
             ...(renewalPolicy && { renewalPolicy }),
+            ...(documentsLink && { documentsLink }),
             scholarshipType,
             type: type || 'other',
             deadline,
