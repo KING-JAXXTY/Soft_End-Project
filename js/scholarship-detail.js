@@ -145,10 +145,10 @@ async function loadScholarshipDetail() {
                             <span class="info-value">${new Date(scholarship.deadline).toLocaleDateString()}</span>
                         </div>
                         ` : ''}
-                        ${scholarship.availableSlots ? `
+                        ${scholarship.availableSlots !== undefined ? `
                         <div class="info-row">
                             <span class="info-label">Slots Available</span>
-                            <span class="info-value">${scholarship.availableSlots}</span>
+                            <span class="info-value" style="${scholarship.availableSlots === 0 ? 'color: #dc2626; font-weight: 600;' : ''}">${scholarship.availableSlots}${scholarship.availableSlots === 0 ? ' (FULL)' : ''}</span>
                         </div>
                         ` : ''}
                         ${scholarship.region ? `

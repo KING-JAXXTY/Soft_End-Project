@@ -168,7 +168,7 @@ router.post('/', protect, authorize('student'), async (req, res) => {
 router.get('/student/my-applications', protect, authorize('student'), async (req, res) => {
     try {
         const applications = await Application.find({ student: req.user._id })
-            .populate('scholarship', 'title amount deadline sponsor')
+            .populate('scholarship', 'title amount deadline sponsor availableSlots')
             .populate('reviewedBy', 'firstName lastName uniqueId')
             .populate({
                 path: 'scholarship',
@@ -204,7 +204,7 @@ router.get('/sponsor/received', protect, authorize('sponsor'), async (req, res) 
         
         // Get applications for those scholarships
         const applications = await Application.find({ scholarship: { $in: scholarshipIds } })
-            .populate('scholarship', 'title amount deadline')
+            .populate('scholarship', 'title amount deadline availableSlots')
             .populate('student', 'firstName lastName email uniqueId avatar')
             .populate('reviewedBy', 'firstName lastName uniqueId')
             .sort({ appliedAt: -1 });
@@ -399,7 +399,7 @@ router.put('/:id/status', protect, authorize('sponsor'), async (req, res) => {
         const { status, reviewNotes } = req.body;
         
         const application = await Application.findById(req.params.id)
-            .populate('scholarship', 'sponsor');
+            .populate('scholarship', 'sponsor availableSlots');
         
         if (!application) {
             return res.status(404).json({
@@ -416,6 +416,34 @@ router.put('/:id/status', protect, authorize('sponsor'), async (req, res) => {
             });
         }
         
+        const oldStatus = application.status;
+        const newStatus = status;
+        
+        // Get full scholarship details for slot validation
+        const scholarship = await Scholarship.findById(application.scholarship._id);
+        
+        // Check slot availability when approving
+        if (newStatus === 'approved' && oldStatus !== 'approved') {
+            if (scholarship.availableSlots <= 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'No available slots remaining for this scholarship'
+                });
+            }
+            
+            // Decrement available slots
+            scholarship.availableSlots -= 1;
+            await scholarship.save();
+            console.log(`✅ Approved application - Slots decreased to ${scholarship.availableSlots}`);
+        }
+        
+        // Restore slot when changing from approved to other status
+        if (oldStatus === 'approved' && newStatus !== 'approved') {
+            scholarship.availableSlots += 1;
+            await scholarship.save();
+            console.log(`↩️ Unapproved application - Slots increased to ${scholarship.availableSlots}`);
+        }
+        
         application.status = status;
         application.reviewNotes = reviewNotes;
         application.reviewedBy = req.user._id;
@@ -425,7 +453,8 @@ router.put('/:id/status', protect, authorize('sponsor'), async (req, res) => {
         
         res.json({
             success: true,
-            application
+            application,
+            availableSlots: scholarship.availableSlots
         });
     } catch (error) {
         console.error(error);

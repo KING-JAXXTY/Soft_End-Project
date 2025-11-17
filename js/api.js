@@ -358,7 +358,7 @@ const API = {
             method: 'PUT',
             body: JSON.stringify({ status, reviewNotes })
         });
-        return data.application;
+        return data; // Return full response including availableSlots
     },
 
     async deleteApplication(id) {

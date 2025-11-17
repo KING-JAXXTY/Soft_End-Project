@@ -315,7 +315,7 @@ function displayScholarships(scholarships) {
         <tr class="deadline-${deadlineClass}">
             <td>${s.title || 'Untitled'}</td>
             <td>${s.scholarshipType || 'N/A'}</td>
-            <td>${s.availableSlots || 0}</td>
+            <td style="${s.availableSlots === 0 ? 'color: #dc2626; font-weight: 600;' : ''}">${s.availableSlots || 0}${s.availableSlots === 0 ? ' (FULL)' : ''}</td>
             <td>
                 ${new Date(s.deadline).toLocaleDateString()}<br>
                 <small>${deadlineStatus}</small>
@@ -396,6 +396,7 @@ function reviewApplication(applicationId) {
         : 'N/A';
     const studentEmail = application.student?.email || 'N/A';
     const scholarshipTitle = application.scholarship?.title || 'N/A';
+    const scholarshipSlots = application.scholarship?.availableSlots;
     const appliedDate = application.appliedAt ? new Date(application.appliedAt).toLocaleDateString() : 'N/A';
     
     const detailContainer = document.getElementById('applicationDetail');
@@ -416,8 +417,16 @@ function reviewApplication(applicationId) {
             <h3>Cover Letter</h3>
             <p style="white-space: pre-wrap;">${application.coverLetter || 'No cover letter provided'}</p>
             
-            <h3>Scholarship</h3>
-            <p>${scholarshipTitle}</p>
+            <h3>Scholarship Information</h3>
+            <p><strong>Title:</strong> ${scholarshipTitle}</p>
+            ${scholarshipSlots !== undefined ? `
+            <p style="margin-top: 0.5rem;">
+                <strong>Available Slots:</strong> 
+                <span style="${scholarshipSlots === 0 ? 'color: #dc2626; font-weight: 600;' : 'color: #10b981; font-weight: 600;'}">
+                    ${scholarshipSlots}${scholarshipSlots === 0 ? ' (FULL - Cannot approve more applications)' : ''}
+                </span>
+            </p>
+            ` : ''}
             
             <h3>Application Date</h3>
             <p>${appliedDate}</p>
@@ -482,12 +491,22 @@ async function submitReview() {
     const notes = document.getElementById('reviewNotes').value;
     
     try {
-        await API.updateApplicationStatus(currentReviewApp, status, notes);
-        alert('Application reviewed successfully');
+        const response = await API.updateApplicationStatus(currentReviewApp, status, notes);
+        
+        // Show success message with updated slot info if available
+        let successMsg = 'Application reviewed successfully';
+        if (response.availableSlots !== undefined && status === 'approved') {
+            successMsg += `\n\nRemaining slots: ${response.availableSlots}`;
+        }
+        
+        alert(successMsg);
         closeReviewModal();
         loadDashboard();
     } catch (error) {
-        alert('Error reviewing application');
+        // Show specific error message from backend
+        const errorMsg = error.response?.data?.message || error.message || 'Error reviewing application';
+        alert(errorMsg);
+        console.error('Review error:', error);
     }
 }
 

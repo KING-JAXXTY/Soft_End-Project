@@ -331,7 +331,7 @@ function displayApplications(applications) {
                 <h3>${scholarshipTitle}</h3>
                 <span class="badge badge-${app.status}">${app.status.toUpperCase()}</span>
             </div>
-            ${scholarshipDeleted ? '<p class="warning-text" style="color: #e74c3c; font-size: 0.875rem; margin-bottom: 0.5rem;">⚠️ This scholarship has been deleted</p>' : ''}
+            ${scholarshipDeleted ? '<p class="warning-text" style="color: #e74c3c; font-size: 0.875rem; margin-bottom: 0.5rem;">This scholarship has been deleted</p>' : ''}
             <div class="application-info">
                 <div class="info-item">
                     <span class="info-label">Sponsor:</span>
@@ -349,6 +349,12 @@ function displayApplications(applications) {
                 <div class="info-item">
                     <span class="info-label">Deadline:</span>
                     <span>${new Date(scholarshipDeadline).toLocaleDateString()}</span>
+                </div>
+                ` : ''}
+                ${scholarship.availableSlots !== undefined && !scholarshipDeleted ? `
+                <div class="info-item">
+                    <span class="info-label">Slots Available:</span>
+                    <span style="${scholarship.availableSlots === 0 ? 'color: #dc2626; font-weight: 600;' : ''}">${scholarship.availableSlots}${scholarship.availableSlots === 0 ? ' (FULL)' : ''}</span>
                 </div>
                 ` : ''}
             </div>
