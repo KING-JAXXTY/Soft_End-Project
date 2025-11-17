@@ -167,19 +167,31 @@ function displayScholarships(scholarships) {
         return;
     }
     
-    tbody.innerHTML = scholarships.map(s => `
+    tbody.innerHTML = scholarships.map(s => {
+        // Handle sponsor data - could be populated object or just ID
+        let sponsorName = 'Unknown';
+        if (s.sponsor) {
+            if (typeof s.sponsor === 'object' && s.sponsor.firstName && s.sponsor.lastName) {
+                sponsorName = `${s.sponsor.firstName} ${s.sponsor.lastName}`;
+            } else if (s.sponsorName) {
+                sponsorName = s.sponsorName;
+            }
+        }
+        
+        return `
         <tr>
-            <td>${s.title}</td>
-            <td>${s.sponsorName}</td>
-            <td>${s.scholarshipType}</td>
-            <td>${s.availableSlots}</td>
-            <td>${new Date(s.deadline).toLocaleDateString()}</td>
-            <td><span class="badge badge-${s.status}">${s.status}</span></td>
+            <td>${s.title || 'Untitled'}</td>
+            <td>${sponsorName}</td>
+            <td>${s.scholarshipType || 'N/A'}</td>
+            <td>${s.availableSlots !== undefined ? s.availableSlots : 'N/A'}</td>
+            <td>${s.deadline ? new Date(s.deadline).toLocaleDateString() : 'N/A'}</td>
+            <td><span class="badge badge-${s.status || 'active'}">${s.status || 'active'}</span></td>
             <td>
-                <button onclick="deleteScholarshipConfirm('${s._id}', '${s.title}')" class="btn-danger btn-sm">Delete</button>
+                <button onclick="deleteScholarshipConfirm('${s._id}', '${(s.title || 'this scholarship').replace(/'/g, "\\'")}')" class="btn-danger btn-sm">Delete</button>
             </td>
         </tr>
-    `).join('');
+        `;
+    }).join('');
 }
 
 // Filter scholarships
