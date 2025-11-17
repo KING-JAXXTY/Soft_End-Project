@@ -29,12 +29,16 @@ TulongAral+ is an enterprise-grade scholarship management platform that streamli
 
 ### Key Highlights
 - **Multi-region Support**: Complete coverage of all 17 Philippine regions with region-specific scholarships
-- **AI Integration**: Powered by Google Gemini AI for grammar checking, content moderation, scholarship recommendations, and intelligent report analysis
+- **AI Integration**: Powered by Google Gemini AI for grammar checking, content moderation, scholarship recommendations, duplicate scholarship detection, and intelligent report analysis
+- **Smart Slot Management**: Automatic scholarship slot tracking with real-time availability updates and validation
+- **Deadline Management**: Advanced deadline filtering with visual countdown indicators (Today, Tomorrow, X days remaining)
+- **Duplicate Detection**: AI-powered duplicate scholarship detection system with 80% similarity threshold to prevent redundant postings
 - **Real-time Communication**: Built-in messaging system with AI assistant for student-sponsor interactions
 - **Community Forum**: Moderated discussion platform for scholarship-related topics with AI content moderation
 - **Digital Certificates**: Automated certificate generation with downloadable PDF/image formats for approved applications
-- **Comprehensive Admin Tools**: Advanced user management, content moderation, suspension system, and detailed analytics
+- **Comprehensive Admin Tools**: Advanced user management, content moderation, suspension system, and detailed analytics with override capabilities
 - **Customizable Avatars**: 22 unique avatar options with dynamic loading for user personalization
+- **Modern Profile Views**: Professional scholarship-themed profile interface with gradient headers and card-based layouts
 - **Secure Authentication**: JWT-based authentication with "Remember Me" functionality and session management
 - **Responsive Design**: Mobile-first design approach ensuring optimal experience across all devices
 
@@ -48,6 +52,9 @@ TulongAral+ is an enterprise-grade scholarship management platform that streamli
   - Advanced filtering (academic, merit-based, need-based, sports, arts, leadership, etc.)
   - AI-powered personalized scholarship recommendations based on profile
   - Interactive scholarship cards with detailed requirements and deadlines
+  - Real-time available slots display on all scholarship listings
+  - Automatic filtering of expired scholarships from browse page
+  - Visual deadline indicators (Today, Tomorrow, X days remaining)
   - Favorites system for bookmarking scholarships
   - Map integration showing scholarship institution locations
 
@@ -55,6 +62,8 @@ TulongAral+ is an enterprise-grade scholarship management platform that streamli
   - Streamlined application process with cover letter support
   - Google Drive integration for secure document submission
   - Real-time application status tracking (pending, approved, rejected)
+  - Automatic validation preventing applications to expired scholarships
+  - Automatic validation preventing applications to full scholarships (0 slots)
   - Comprehensive application history with sponsor feedback
   - Application deadline countdown and reminders
 
@@ -76,21 +85,28 @@ TulongAral+ is an enterprise-grade scholarship management platform that streamli
   - Region and institution information management
   - Educational background tracking
   - Application history and statistics
+  - Streamlined profile editing without unnecessary navigation elements
+  - Auto-populated form fields for easy updates
 
 ### For Sponsors (Organizations/Individuals)
 - **Scholarship Management**
   - Create and publish scholarship opportunities with detailed information
+  - AI-powered duplicate scholarship detection before posting (80% similarity threshold)
   - Set comprehensive eligibility criteria and requirements
   - Define application deadlines, award amounts, and available slots
+  - Real-time slot tracking with automatic decrements on approval
   - Edit active scholarships or mark them as closed
   - AI grammar assistance for scholarship descriptions
   - Track scholarship view counts and application rates
+  - Dashboard refresh button for real-time data updates
 
 - **Application Review**
   - Comprehensive application review dashboard
   - View and evaluate student applications with all submitted information
   - Direct access to applicants' Google Drive documents
   - Approve or reject applications with detailed feedback notes
+  - Automatic slot management (decrease on approve, increase on reject/pending)
+  - Validation preventing approval when slots are full
   - Track application statistics and trends
   - Filter applications by status (pending, approved, rejected)
 
@@ -114,15 +130,18 @@ TulongAral+ is an enterprise-grade scholarship management platform that streamli
   - Suspend user accounts (temporary or permanent with duration)
   - Delete user accounts with cascade data cleanup
   - View user reports, warnings history, and activity logs
+  - View professional user profiles with modern interface
   - Unsuspend users and clear warnings (reclaim action)
   - Advanced user search and filtering
 
 - **Content Moderation**
   - Monitor all scholarships for policy compliance
   - Delete inappropriate or fraudulent scholarships
+  - Override deletion restrictions (can delete scholarships with pending applications)
+  - Automatic cascade deletion of applications when scholarship is removed
   - Review forum posts and comments
   - Remove policy-violating content
-  - View detailed scholarship statistics
+  - View detailed scholarship statistics including available slots
 
 - **Report Management**
   - Review user-submitted reports with complete context
@@ -528,7 +547,52 @@ GET    /api/reports/user/:id   - Get reports for user (admin)
 ### Gemini AI
 ```
 POST   /api/gemini/generate    - Generate AI response (proxied)
+POST   /api/gemini/check-duplicate - Check for duplicate scholarships
 ```
+
+---
+
+## Recent Updates
+
+### Slot Management System
+- Automatic slot tracking for all scholarships
+- Real-time slot decrements when applications are approved
+- Slot increments when changing from approved to pending/rejected
+- Validation preventing approvals when slots reach zero
+- Display of available slots on all scholarship views
+
+### Deadline Management
+- Automatic filtering of expired scholarships from student browse page
+- Visual deadline indicators (Today, Tomorrow, X days remaining)
+- Backend and frontend validation preventing applications to expired scholarships
+- Countdown display on scholarship detail pages
+
+### AI Duplicate Detection
+- Pre-submission scholarship duplicate checking using Gemini AI
+- 80% similarity threshold for duplicate detection
+- Compares title, type, description, eligibility, benefits, requirements, region, institution, and amount
+- Round-robin API key usage for rate limit management
+- Warning system with option to proceed or cancel
+
+### Admin Enhancements
+- Override capability to delete scholarships with pending applications
+- Cascade deletion of applications when admin removes scholarship
+- Improved error messages with detailed feedback
+- Enhanced scholarship list display with slot information
+
+### Profile Improvements
+- Removed redundant back button from profile page
+- Auto-populated form fields showing current user data
+- Improved profile data loading with error handling
+- Streamlined editing experience with Cancel button only
+
+### Modern Profile Views
+- Professional gradient header with scholarship theme colors
+- Card-based information layout with hover effects
+- Icon-based section headers for better visual hierarchy
+- Improved text visibility with white text on blue backgrounds
+- Mobile-responsive design with proper breakpoints
+- Enhanced badge visibility for role indicators
 
 ---
 
