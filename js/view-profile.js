@@ -153,13 +153,9 @@ function displayProfile(profile) {
                     ${!avatarUrl ? `${profile.firstName.charAt(0)}${profile.lastName.charAt(0)}` : ''}
                 </div>
                 <h2 style="margin: 0.5rem 0;">${profile.firstName} ${profile.lastName}</h2>
-                <div style="display: flex; justify-content: center; margin: 0.5rem 0;">
-                    ${roleBadge}
-                </div>
-                <p style="color: var(--text-secondary); margin-top: 0.5rem;">${profile.email}</p>
-                <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.5rem; font-family: 'Courier New', monospace;">
-                    <strong>User ID:</strong> ${profile.uniqueId || 'Not assigned'}
-                </p>
+                ${roleBadge}
+                <p style="color: var(--text-secondary); margin: 0.5rem 0 0.25rem 0;">${profile.email}</p>
+                ${profile.uniqueId ? `<p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0; font-family: 'Courier New', monospace;">ID: ${profile.uniqueId}</p>` : ''}
             </div>
 
             <div class="card-body">
