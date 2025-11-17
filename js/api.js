@@ -72,7 +72,9 @@ async function apiCall(endpoint, options = {}) {
 
         if (!response.ok) {
             console.error('❌ API Error:', data.message);
-            throw new Error(data.message || 'API request failed');
+            const error = new Error(data.message || 'API request failed');
+            error.response = { data }; // Preserve response data for error handling
+            throw error;
         }
         
         // Cache successful GET requests

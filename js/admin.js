@@ -283,7 +283,10 @@ async function confirmDelete() {
         closeDeleteModal();
         loadDashboard();
     } catch (error) {
-        notify.error('Error deleting item');
+        console.error('Delete error:', error);
+        // Show specific error message from backend
+        const errorMessage = error.response?.data?.message || error.message || 'Error deleting item';
+        notify.error(errorMessage);
     }
 }
 
